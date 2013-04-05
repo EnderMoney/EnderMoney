@@ -7,11 +7,6 @@ public class ClientProxy extends CommonProxy {
 	public static int renderPass, oreRenderType;
 
 	@Override
-	public void registerRenderers() {
-
-	}
-
-	@Override
 	public void setCustomRenderers() {
 		oreRenderType = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new Ore.Renderer());

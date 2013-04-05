@@ -57,7 +57,6 @@ public class EnderMoney {
 
 	@Init
 	public void init(FMLInitializationEvent event) {
-		proxy.registerRenderers();
 		proxy.setCustomRenderers();
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
