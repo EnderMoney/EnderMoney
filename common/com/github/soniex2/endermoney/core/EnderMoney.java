@@ -25,7 +25,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 // @SuppressWarnings("unused")
-@Mod(modid = "EnderMoneyCore", name = "EnderMoney Core", version = Version.MOD_VERSION)
+@Mod(modid = "EnderMoneyCore", name = "EnderMoney Core", version = Version.MOD_VERSION,
+		dependencies = "required-after:Forge")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class EnderMoney {
 
