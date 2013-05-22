@@ -17,5 +17,22 @@
     "dependencies": [ "Forge" ],
     "dependants": [],
     "useDependencyInformation": "true"
+  },{
+    "modid": "EnderMoneyTrading",
+    "name": "EnderMoney Trading",
+    "description": "The Ultimate Currency Mod.",
+    "version": "0.0.1 r1",
+    "mcversion": "1.5.1",
+    "url": "http://www.minecraftforum.net/topic/1753762-/",
+    "updateUrl": "",
+    "authors": [ "SoniEx2" ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "parent": "EnderMoneyCore",
+    "requiredMods": [ "Forge", "EnderMoneyCore" ],
+    "dependencies": [ "Forge", "EnderMoneyCore" ],
+    "dependants": [],
+    "useDependencyInformation": "true"
   }]
 }
