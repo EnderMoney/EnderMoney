@@ -21,7 +21,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "EnderMoneyTrading", name = "EnderMoney Trading", version = Version.MOD_VERSION,
 		dependencies = "required-after:EnderMoneyCore;required-after:Forge")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false,
+		channels = { "EMTrading" }, packetHandler = PacketHandler.class)
 public class EnderMoneyTrading {
 
 	@Instance("EnderMoneyTrading")

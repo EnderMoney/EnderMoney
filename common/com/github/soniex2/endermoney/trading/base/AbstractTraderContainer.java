@@ -67,5 +67,7 @@ public abstract class AbstractTraderContainer extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return tileEntity.isUseableByPlayer(player);
 	}
+	
+	public abstract void doTrade(EntityPlayer player);
 
 }
