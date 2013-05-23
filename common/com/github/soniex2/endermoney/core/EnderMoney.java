@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.github.soniex2.endermoney.core.EnderItem.EnderSubItem;
 import com.github.soniex2.endermoney.core.item.GenericItem;
@@ -70,9 +71,9 @@ public class EnderMoney {
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.EnderMoney", "EnderMoney");
 		GameRegistry.addRecipe(new CoinCrafter());
-		GameRegistry.addShapedRecipe(((EnderCoin) coin).getItemStack(1, 64), "xyx", "y#y", "xyx",
-				'x', ender.getItemStack(), 'y', ironDust.getItemStack(), '#', new ItemStack(
-						Item.enderPearl));
+		GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64), false, "xyx",
+				"y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#',
+				new ItemStack(Item.enderPearl)));
 		FurnaceRecipes.smelting().addSmelting(ironDust.superID, ironDust.itemID,
 				new ItemStack(Item.ingotIron, 1), 0F);
 		MinecraftForge.EVENT_BUS.register(new EventListener());
