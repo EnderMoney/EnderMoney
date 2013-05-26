@@ -139,13 +139,15 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		Side s = FMLCommonHandler.instance().getEffectiveSide();
 		System.out.println("Trading! On side: " + (s == Side.CLIENT ? "CLIENT" : "SERVER"));
 		try {
-			((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 9, 9, 18);
+			System.out.println(((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 9, 10, 18));
 		} catch (TradeError e) {
 			if (e.id == 0) {
+				e.printStackTrace();
 				if (e.getMessage().equals("Couldn't complete trade: Out of inventory space")) {
 					player.addChatMessage("Please empty the output inventory");
 				}
 			} else if (e.id == 1) {
+				e.printStackTrace();
 				if (e.getMessage().equals("Invalid inventory")) {
 					player.addChatMessage("Stop hacking, motherfucker!");
 				}
