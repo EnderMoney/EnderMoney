@@ -14,6 +14,7 @@ import com.github.soniex2.endermoney.core.EnderCoin;
 import com.github.soniex2.endermoney.core.EnderMoney;
 import com.github.soniex2.endermoney.trading.TradeError;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
+import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
 
 public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 
@@ -41,18 +42,19 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			int outputMinSlot, int outputMaxSlot) throws TradeError {
 		if (fakeInv == null) { throw new TradeError(1, "Invalid inventory",
 				new NullPointerException()); }
-		HashMap<Object[], Integer> tradeInputs = new HashMap<Object[], Integer>();
+		HashMap<ItemStackMapKey, Integer> tradeInputs = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger moneyRequired = BigInteger.ZERO;
 		for (ItemStack i : getTradeInputs()) {
 			if (i == null) {
 				continue;
 			}
 			if (i.getItem() == EnderMoney.coin) {
-				moneyRequired = moneyRequired.add(BigInteger.valueOf(EnderCoin
-						.getValueFromItemStack(i)));
+				moneyRequired = moneyRequired.add(BigInteger.valueOf(
+						EnderCoin.getValueFromItemStack(i)).multiply(
+						BigInteger.valueOf(i.stackSize)));
 				continue;
 			}
-			Object[] index = new Object[] { i.itemID, i.getItemDamage(), i.stackTagCompound };
+			ItemStackMapKey index = new ItemStackMapKey(i);
 			if (tradeInputs.containsKey(index)) {
 				tradeInputs.put(index, i.stackSize + tradeInputs.get(index));
 			} else {
@@ -60,7 +62,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			}
 		}
 
-		HashMap<Object[], Integer> tradeInput = new HashMap<Object[], Integer>();
+		HashMap<ItemStackMapKey, Integer> tradeInput = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger money = BigInteger.ZERO;
 		for (int i = inputMinSlot; i < inputMaxSlot; i++) {
 			ItemStack is = fakeInv.getStackInSlot(i);
@@ -68,11 +70,12 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				continue;
 			}
 			if (is.getItem() == EnderMoney.coin) {
-				moneyRequired = moneyRequired.add(BigInteger.valueOf(EnderCoin
-						.getValueFromItemStack(is)));
+				moneyRequired = moneyRequired.add(BigInteger.valueOf(
+						EnderCoin.getValueFromItemStack(is)).multiply(
+						BigInteger.valueOf(is.stackSize)));
 				continue;
 			}
-			Object[] index = new Object[] { is.itemID, is.getItemDamage(), is.stackTagCompound };
+			ItemStackMapKey index = new ItemStackMapKey(is);
 			if (tradeInput.containsKey(index)) {
 				tradeInput.put(index, is.stackSize + tradeInput.get(index));
 			} else {
@@ -83,12 +86,12 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		if (money.compareTo(moneyRequired) < 0) { return false; }
 		BigInteger newMoney = money.subtract(moneyRequired);
 
-		Set<Entry<Object[], Integer>> itemsRequired = tradeInputs.entrySet();
-		Iterator<Entry<Object[], Integer>> i = itemsRequired.iterator();
-		HashMap<Object[], Integer> newInput = new HashMap<Object[], Integer>();
+		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = tradeInputs.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> i = itemsRequired.iterator();
+		HashMap<ItemStackMapKey, Integer> newInput = new HashMap<ItemStackMapKey, Integer>();
 		while (i.hasNext()) {
-			Entry<Object[], Integer> entry = i.next();
-			Object[] item = entry.getKey();
+			Entry<ItemStackMapKey, Integer> entry = i.next();
+			ItemStackMapKey item = entry.getKey();
 			Integer amount = entry.getValue();
 			Integer available = tradeInput.get(item); // TODO fix this
 			if (available == null) { return false; }
@@ -105,8 +108,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			long b = coinCount[1].longValue();
 			ItemStack is1 = ((EnderCoin) EnderMoney.coin).getItemStack(Long.MAX_VALUE, 1);
 			ItemStack is2 = ((EnderCoin) EnderMoney.coin).getItemStack(b, 1);
-			Object[] index1 = new Object[] { is1.itemID, is1.getItemDamage(), is1.stackTagCompound };
-			Object[] index2 = new Object[] { is2.itemID, is2.getItemDamage(), is2.stackTagCompound };
+			ItemStackMapKey index1 = new ItemStackMapKey(is1);
+			ItemStackMapKey index2 = new ItemStackMapKey(is2);
 			newInput.put(index1, a);
 			newInput.put(index2, 1);
 		}
@@ -141,8 +144,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		for (int a = 0; a < outputMaxSlot - outputMinSlot; a++) {
 			fakeInv.setInventorySlotContents(a + outputMinSlot, tradeOutputs[a]);
 		}
-		Set<Entry<Object[], Integer>> input = newInput.entrySet();
-		Iterator<Entry<Object[], Integer>> it = input.iterator();
+		Set<Entry<ItemStackMapKey, Integer>> input = newInput.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();
 		int slot = inputMinSlot;
 		while (it.hasNext()) {
 			if (slot >= inputMaxSlot) { throw new TradeError(0,
@@ -151,10 +154,10 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				slot++;
 				continue;
 			}
-			Entry<Object[], Integer> entry = it.next();
-			Object[] itemData = entry.getKey();
-			ItemStack item = new ItemStack((Integer) itemData[0], 1, (Integer) itemData[1]);
-			item.stackTagCompound = (NBTTagCompound) itemData[2];
+			Entry<ItemStackMapKey, Integer> entry = it.next();
+			ItemStackMapKey itemData = entry.getKey();
+			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
+			item.stackTagCompound = (NBTTagCompound) itemData.getTag();
 			Integer amount = entry.getValue();
 			if (amount == 0) { // shouldn't happen but who knows...
 				continue;
