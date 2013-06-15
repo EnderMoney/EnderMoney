@@ -96,11 +96,11 @@ public class EnderItem extends Item {
 		if (items[dmg] != null)
 			return items[dmg].getIcon();
 		else
-			return iconIndex;
+			return itemIcon;
 	}
 
 	@Override
-	public void updateIcons(IconRegister ireg) {
+	public void registerIcons(IconRegister ireg) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
 				items[x].updateIcons(ireg);

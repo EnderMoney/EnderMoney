@@ -59,8 +59,8 @@ public class EnderCoin extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister ireg) {
-		iconIndex = ireg.registerIcon("endermoneycore:coin");
+	public void registerIcons(IconRegister ireg) {
+		itemIcon = ireg.registerIcon("endermoneycore:coin");
 	}
 
 	public static long getValueFromItemStack(ItemStack is) {

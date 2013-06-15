@@ -51,64 +51,64 @@ public class Ore extends BlockOre {
 			if (par2 == 0) {
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 0, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 1, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 2, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 3, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 4, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 5, par2));
 				tessellator.draw();
 			} else {
 				Block b = Block.whiteStone;
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderBottomFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 0, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderTopFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYPos(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 1, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderEastFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXPos(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 2, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderWestFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 3, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderNorthFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 4, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderSouthFace(b, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZPos(b, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(b, 5, par2));
 				tessellator.draw();
 
@@ -120,32 +120,32 @@ public class Ore extends BlockOre {
 
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 0, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 1, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 2, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 3, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 4, par2));
 				tessellator.draw();
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D,
+				renderer.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D,
 						renderer.getBlockIconFromSideAndMetadata(par1Block, 5, par2));
 				tessellator.draw();
 			}
@@ -266,7 +266,7 @@ public class Ore extends BlockOre {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int s, int m) {
+	public Icon getIcon(int s, int m) {
 		if (m == 0)
 			return blockIcon;
 		else
