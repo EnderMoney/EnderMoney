@@ -35,6 +35,6 @@ public class ItemStackMapKey {
 	}
 
 	public NBTTagCompound getTag() {
-		return (NBTTagCompound) tag.copy();
+		return (NBTTagCompound) (tag != null ? tag.copy() : null);
 	}
 }
