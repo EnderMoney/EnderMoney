@@ -153,5 +153,6 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 				}
 			}
 		}
+		this.detectAndSendChanges();
 	}
 }
