@@ -141,8 +141,39 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		 * }
 		 * }
 		 */
-		for (int a = 0; a <= outputMaxSlot - outputMinSlot; a++) {
-			fakeInv.setInventorySlotContents(a + outputMinSlot, tradeOutputs[a]);
+		ItemStack[] oldOutInv = new ItemStack[outputMaxSlot - outputMinSlot + 1];
+		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
+			oldOutInv[a - outputMinSlot] = fakeInv.getStackInSlot(a);
+		}
+		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
+			ItemStack is = fakeInv.getStackInSlot(a);
+			for (int b = 0; b < tradeOutputs.length; b++) {
+				if (is != null && ItemStack.areItemStacksEqual(is, tradeOutputs[b])) {
+					if (is.isStackable()) {
+						if (is.stackSize < is.getMaxStackSize()) {
+							if (is.stackSize + tradeOutputs[b].stackSize > is.getMaxStackSize()) {
+								tradeOutputs[b].stackSize = (is.stackSize + tradeOutputs[b].stackSize)
+										- is.getMaxStackSize();
+								is.stackSize = is.getMaxStackSize();
+							} else {
+								is.stackSize = is.stackSize + tradeOutputs[b].stackSize;
+								tradeOutputs[b] = null;
+							}
+						}
+					}
+				} else if (is == null && tradeOutputs[b] != null) {
+					fakeInv.setInventorySlotContents(a, tradeOutputs[b]);
+					tradeOutputs[b] = null;
+				}
+			}
+		}
+		for (int a = 0; a < tradeOutputs.length; a++) {
+			if (tradeOutputs[a] != null) {
+				for (int b = 0; b < oldOutInv.length; b++) {
+					fakeInv.setInventorySlotContents(b + outputMinSlot, oldOutInv[b]);
+				}
+				throw new TradeError(0, "Couldn't complete trade: Out of inventory space");
+			}
 		}
 		for (int _i = inputMinSlot; _i < inputMaxSlot; _i++) {
 			fakeInv.setInventorySlotContents(_i, null);
