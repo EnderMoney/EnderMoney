@@ -64,7 +64,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 
 		HashMap<ItemStackMapKey, Integer> tradeInput = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger money = BigInteger.ZERO;
-		for (int i = inputMinSlot; i < inputMaxSlot; i++) {
+		for (int i = inputMinSlot; i <= inputMaxSlot; i++) {
 			ItemStack is = fakeInv.getStackInSlot(i);
 			if (is == null) {
 				continue;
@@ -141,8 +141,11 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		 * }
 		 * }
 		 */
-		for (int a = 0; a < outputMaxSlot - outputMinSlot; a++) {
+		for (int a = 0; a <= outputMaxSlot - outputMinSlot; a++) {
 			fakeInv.setInventorySlotContents(a + outputMinSlot, tradeOutputs[a]);
+		}
+		for (int _i = inputMinSlot; _i < inputMaxSlot; _i++) {
+			fakeInv.setInventorySlotContents(_i, null);
 		}
 		Set<Entry<ItemStackMapKey, Integer>> input = newInput.entrySet();
 		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();

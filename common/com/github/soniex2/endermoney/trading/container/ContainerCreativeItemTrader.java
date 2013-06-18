@@ -139,7 +139,7 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		Side s = FMLCommonHandler.instance().getEffectiveSide();
 		System.out.println("Trading! On side: " + (s == Side.CLIENT ? "CLIENT" : "SERVER"));
 		try {
-			System.out.println(((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 9, 10, 18));
+			System.out.println(((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8, 9, 17));
 		} catch (TradeError e) {
 			if (e.id == 0) {
 				e.printStackTrace();
