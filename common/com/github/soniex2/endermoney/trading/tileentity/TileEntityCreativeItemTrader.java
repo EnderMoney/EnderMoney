@@ -93,7 +93,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			Entry<ItemStackMapKey, Integer> entry = i.next();
 			ItemStackMapKey item = entry.getKey();
 			Integer amount = entry.getValue();
-			Integer available = tradeInput.get(item); // TODO fix this
+			Integer available = tradeInput.get(item);
 			if (available == null) { return false; }
 			if (available < amount) { return false; }
 			if (available - amount == 0) {
@@ -143,17 +143,22 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		 */
 		ItemStack[] oldOutInv = new ItemStack[outputMaxSlot - outputMinSlot + 1];
 		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
-			oldOutInv[a - outputMinSlot] = fakeInv.getStackInSlot(a);
+			oldOutInv[a - outputMinSlot] = fakeInv.getStackInSlot(a) != null ? fakeInv
+					.getStackInSlot(a).copy() : null;
 		}
 		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
 			ItemStack is = fakeInv.getStackInSlot(a);
 			for (int b = 0; b < tradeOutputs.length; b++) {
-				if (is != null && ItemStack.areItemStacksEqual(is, tradeOutputs[b])) {
+				if (is != null && tradeOutputs[b] != null && is.isItemEqual(tradeOutputs[b])
+						&& ItemStack.areItemStackTagsEqual(is, tradeOutputs[b])) {
 					if (is.isStackable()) {
 						if (is.stackSize < is.getMaxStackSize()) {
 							if (is.stackSize + tradeOutputs[b].stackSize > is.getMaxStackSize()) {
-								tradeOutputs[b].stackSize = (is.stackSize + tradeOutputs[b].stackSize)
-										- is.getMaxStackSize();
+								int newStackSize = tradeOutputs[b].stackSize + is.stackSize;
+								if (newStackSize > is.getMaxStackSize()) {
+									newStackSize = newStackSize - is.getMaxStackSize();
+								}
+								tradeOutputs[b].stackSize = newStackSize;
 								is.stackSize = is.getMaxStackSize();
 							} else {
 								is.stackSize = is.stackSize + tradeOutputs[b].stackSize;
@@ -163,6 +168,10 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 					}
 				} else if (is == null && tradeOutputs[b] != null) {
 					fakeInv.setInventorySlotContents(a, tradeOutputs[b]);
+					is = fakeInv.getStackInSlot(a);
+					tradeOutputs[b] = null;
+				}
+				if (tradeOutputs[b] != null && tradeOutputs[b].stackSize <= 0) {
 					tradeOutputs[b] = null;
 				}
 			}
