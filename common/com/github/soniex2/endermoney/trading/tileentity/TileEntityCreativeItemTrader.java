@@ -25,7 +25,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	public ItemStack[] getTradeInputs() {
 		ItemStack[] tradeInputs = new ItemStack[9];
 		for (int i = 0; i < 9; i++) {
-			tradeInputs[i] = inv[i] != null ? inv[i].copy() : null;
+			tradeInputs[i] = ItemStack.copyItemStack(inv[i]);
 		}
 		return tradeInputs;
 	}
@@ -33,7 +33,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	public ItemStack[] getTradeOutputs() {
 		ItemStack[] tradeOutputs = new ItemStack[9];
 		for (int i = 0; i < 9; i++) {
-			tradeOutputs[i] = inv[i + 9] != null ? inv[i + 9].copy() : null;
+			tradeOutputs[i] = ItemStack.copyItemStack(inv[i + 9]);
 		}
 		return tradeOutputs;
 	}
@@ -143,8 +143,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		 */
 		ItemStack[] oldOutInv = new ItemStack[outputMaxSlot - outputMinSlot + 1];
 		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
-			oldOutInv[a - outputMinSlot] = fakeInv.getStackInSlot(a) != null ? fakeInv
-					.getStackInSlot(a).copy() : null;
+			oldOutInv[a - outputMinSlot] = ItemStack.copyItemStack(fakeInv.getStackInSlot(a));
 		}
 		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
 			ItemStack is = fakeInv.getStackInSlot(a);
