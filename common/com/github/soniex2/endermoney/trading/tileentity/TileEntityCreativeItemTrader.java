@@ -70,8 +70,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				continue;
 			}
 			if (is.getItem() == EnderMoney.coin) {
-				moneyRequired = moneyRequired.add(BigInteger.valueOf(
-						EnderCoin.getValueFromItemStack(is)).multiply(
+				money = money.add(BigInteger.valueOf(EnderCoin.getValueFromItemStack(is)).multiply(
 						BigInteger.valueOf(is.stackSize)));
 				continue;
 			}
