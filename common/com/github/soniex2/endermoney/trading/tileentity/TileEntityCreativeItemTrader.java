@@ -111,6 +111,10 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			ItemStackMapKey index2 = new ItemStackMapKey(is2);
 			newInput.put(index1, a);
 			newInput.put(index2, 1);
+		} else if (!newMoney.equals(BigInteger.ZERO)) {
+			ItemStack is = ((EnderCoin) EnderMoney.coin).getItemStack(newMoney.longValue(), 1);
+			ItemStackMapKey index = new ItemStackMapKey(is);
+			newInput.put(index, 1);
 		}
 		ItemStack[] tradeOutputs = getTradeOutputs();
 		// TODO put commented out code below somewhere else
