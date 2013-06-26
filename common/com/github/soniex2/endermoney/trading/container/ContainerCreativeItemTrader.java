@@ -11,9 +11,6 @@ import com.github.soniex2.endermoney.trading.TradeError;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-
 public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 
 	private InventoryBasic fakeInv;
@@ -136,10 +133,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 
 	@Override
 	public void doTrade(EntityPlayer player) {
-		Side s = FMLCommonHandler.instance().getEffectiveSide();
-		System.out.println("Trading! On side: " + (s == Side.CLIENT ? "CLIENT" : "SERVER"));
 		try {
-			System.out.println(((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8, 9, 17));
+			((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8, 9, 17);
 		} catch (TradeError e) {
 			if (e.id == 0) {
 				e.printStackTrace();
