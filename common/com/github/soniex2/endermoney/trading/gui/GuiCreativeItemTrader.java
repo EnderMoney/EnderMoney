@@ -37,7 +37,7 @@ public class GuiCreativeItemTrader extends AbstractTraderGui {
 	@Override
 	public void initGui() {
 		super.initGui();
-		buttonList.add(new GuiButton(1, 0, 0, 30, 10, "Trade!"));
+		buttonList.add(new GuiButtonArrow(1, guiLeft+76, guiTop+25));
 	}
 
 	@Override
