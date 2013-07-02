@@ -18,6 +18,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "EnderMoneyTrading", name = "EnderMoney Trading", version = Version.MOD_VERSION,
 		dependencies = "required-after:EnderMoneyCore;required-after:Forge")
@@ -46,6 +47,7 @@ public class EnderMoneyTrading {
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
 				"blockCreativeItemTrader");
 		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class, "containerItemTrader");
+		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 	}
 
 	@PostInit
