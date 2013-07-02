@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.soniex2.endermoney.core.EnderCoin;
 import com.github.soniex2.endermoney.core.EnderMoney;
-import com.github.soniex2.endermoney.trading.ThingyTradersThrowThatExtendsException;
+import com.github.soniex2.endermoney.trading.TradeException;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
 
@@ -39,8 +39,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	}
 
 	public boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
-			int outputMinSlot, int outputMaxSlot) throws ThingyTradersThrowThatExtendsException {
-		if (fakeInv == null) { throw new ThingyTradersThrowThatExtendsException(1, "Invalid inventory",
+			int outputMinSlot, int outputMaxSlot) throws TradeException {
+		if (fakeInv == null) { throw new TradeException(1, "Invalid inventory",
 				new NullPointerException()); }
 		HashMap<ItemStackMapKey, Integer> tradeInputs = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger moneyRequired = BigInteger.ZERO;
@@ -183,7 +183,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				for (int b = 0; b < oldOutInv.length; b++) {
 					fakeInv.setInventorySlotContents(b + outputMinSlot, oldOutInv[b]);
 				}
-				throw new ThingyTradersThrowThatExtendsException(0, "Couldn't complete trade: Out of inventory space");
+				throw new TradeException(0, "Couldn't complete trade: Out of inventory space");
 			}
 		}
 		for (int _i = inputMinSlot; _i < inputMaxSlot; _i++) {
@@ -193,7 +193,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();
 		int slot = inputMinSlot;
 		while (it.hasNext()) {
-			if (slot >= inputMaxSlot) { throw new ThingyTradersThrowThatExtendsException(0,
+			if (slot >= inputMaxSlot) { throw new TradeException(0,
 					"Couldn't complete trade: Out of inventory space"); }
 			if (fakeInv.getStackInSlot(slot) != null) {
 				slot++;
