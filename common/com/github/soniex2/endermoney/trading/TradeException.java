@@ -1,15 +1,15 @@
 package com.github.soniex2.endermoney.trading;
 
-public class ThingyTradersThrowThatExtendsException extends Exception {
+public class TradeException extends Exception {
 	private static final long serialVersionUID = 1L;
 	public final int id;
 
-	public ThingyTradersThrowThatExtendsException(int id, String s) {
+	public TradeException(int id, String s) {
 		super(s);
 		this.id = id;
 	}
 
-	public ThingyTradersThrowThatExtendsException(int id, String s, Throwable cause) {
+	public TradeException(int id, String s, Throwable cause) {
 		super(s, cause);
 		this.id = id;
 	}
