@@ -40,77 +40,55 @@ public class Ore extends BlockOre {
 
 	public static class Renderer implements ISimpleBlockRenderingHandler {
 
+		private void
+				renderFace(int s, double x, double y, double z, Block b, int m, RenderBlocks r) {
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			switch (s) {
+				case 0: // -Y
+					tessellator.setNormal(0.0F, -1.0F, 0.0F);
+					r.renderFaceYNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 1, m));
+					break;
+				case 1: // +Y
+					tessellator.setNormal(0.0F, 1.0F, 0.0F);
+					r.renderFaceYPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 1, m));
+					break;
+				case 2: // +X
+					tessellator.setNormal(1.0F, 0.0F, 0.0F);
+					r.renderFaceXPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 2, m));
+					break;
+				case 3: // -X
+					tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+					r.renderFaceXNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 3, m));
+					break;
+				case 4: // +Z
+					tessellator.setNormal(0.0F, 0.0F, 1.0F);
+					r.renderFaceZPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 4, m));
+					break;
+				case 5: // -Z
+					tessellator.setNormal(0.0F, 0.0F, -1.0F);
+					r.renderFaceZNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 5, m));
+					break;
+			}
+			tessellator.draw();
+		}
+
 		@Override
 		public void renderInventoryBlock(Block par1Block, int par2, int modelID,
 				RenderBlocks renderer) {
-			Tessellator tessellator = Tessellator.instance;
 			par1Block.setBlockBoundsForItemRender();
 			renderer.setRenderBoundsFromBlock(par1Block);
 			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			if (par2 == 0) {
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 0, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 1, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 2, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 3, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 4, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 5, par2));
-				tessellator.draw();
+				for (int a = 0; a < 6; a++) {
+					renderFace(a, 0.0, 0.0, 0.0, par1Block, par2, renderer);
+				}
 			} else {
 				Block b = Block.whiteStone;
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 0, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderFaceYPos(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 1, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderFaceXPos(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 2, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 3, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 4, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZPos(b, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(b, 5, par2));
-				tessellator.draw();
+				for (int a = 0; a < 6; a++) {
+					renderFace(a, 0.0, 0.0, 0.0, b, 0, renderer);
+				}
 
 				float red, green, blue;
 				red = 0x22 / 255.0F;
@@ -118,36 +96,9 @@ public class Ore extends BlockOre {
 				blue = 0x66 / 255.0F;
 				GL11.glColor4f(red, green, blue, 1.0F);
 
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, -1.0F, 0.0F);
-				renderer.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 0, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderer.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 1, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, -1.0F);
-				renderer.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 2, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderer.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 3, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 4, par2));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderer.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D,
-						renderer.getBlockIconFromSideAndMetadata(par1Block, 5, par2));
-				tessellator.draw();
+				for (int a = 0; a < 6; a++) {
+					renderFace(a, 0.0, 0.0, 0.0, par1Block, par2, renderer);
+				}
 			}
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		}
