@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -37,7 +38,7 @@ public class GuiCreativeItemTrader extends AbstractTraderGui {
 	@Override
 	public void initGui() {
 		super.initGui();
-		buttonList.add(new GuiButtonArrow(1, guiLeft+76, guiTop+25));
+		buttonList.add(new GuiButtonArrow(1, guiLeft + 76, guiTop + 25));
 	}
 
 	@Override
@@ -68,7 +69,10 @@ public class GuiCreativeItemTrader extends AbstractTraderGui {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture("/mods/endermoneytrading/textures/gui/itemtrader.png");
+		ResourceLocation rs = new ResourceLocation("endermoneytrading",
+				"textures/gui/itemtrader.png");
+		this.mc.func_110434_K().func_110577_a(rs);
+		// this.mc.renderEngine.bindTexture("/assets/endermoneytrading/textures/gui/itemtrader.png");
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

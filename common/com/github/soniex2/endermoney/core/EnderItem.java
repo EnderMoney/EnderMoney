@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringTranslate;
 
 public class EnderItem extends Item {
 
@@ -58,7 +57,7 @@ public class EnderItem extends Item {
 		}
 
 		public String getItemDisplayName(ItemStack is) {
-			return ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalizedName(is)))
+			return ("" + StatCollector.translateToLocal(this.getLocalizedName(is) + ".name"))
 					.trim();
 		}
 
@@ -88,6 +87,7 @@ public class EnderItem extends Item {
 		setCreativeTab(EnderMoney.tab);
 		setUnlocalizedName("EnderItem");
 		setHasSubtypes(true);
+		func_111206_d("EnderItem");
 	}
 
 	@Override

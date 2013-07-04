@@ -13,10 +13,8 @@ import com.github.soniex2.endermoney.core.EnderItem.EnderSubItem;
 import com.github.soniex2.endermoney.core.item.GenericItem;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -52,28 +50,23 @@ public class EnderMoney {
 			serverSide = "com.github.soniex2.endermoney.core.CommonProxy")
 	public static CommonProxy proxy;
 
-	@PreInit
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-
-	}
-
-	@Init
-	public void init(FMLInitializationEvent event) {
-		proxy.setCustomRenderers();
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
-		LanguageRegistry.instance().addStringLocalization("item.endercoin.name", "EnderCoin");
+		LanguageRegistry langRegistry = LanguageRegistry.instance();
+		langRegistry.addStringLocalization("item.endercoin.name", "EnderCoin");
 		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
 		LanguageRegistry.addName(ironDust.getItemStack(), "Iron Dust");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
-		LanguageRegistry.instance().addStringLocalization("itemGroup.EnderMoney", "EnderMoney");
+		langRegistry.addStringLocalization("itemGroup.EnderMoney", "EnderMoney");
 		GameRegistry.addRecipe(new CoinCrafter());
-		GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64), false, "xyx",
-				"y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#',
-				new ItemStack(Item.enderPearl)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64), false,
+				"xyx", "y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#', new ItemStack(
+						Item.enderPearl)));
 		FurnaceRecipes.smelting().addSmelting(ironDust.superID, ironDust.itemID,
 				new ItemStack(Item.ingotIron, 1), 0F);
 		MinecraftForge.EVENT_BUS.register(new EventListener());
@@ -81,7 +74,12 @@ public class EnderMoney {
 		GameRegistry.registerWorldGenerator(new WorldGenerator());
 	}
 
-	@PostInit
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		proxy.setCustomRenderers();
+	}
+
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
 	}

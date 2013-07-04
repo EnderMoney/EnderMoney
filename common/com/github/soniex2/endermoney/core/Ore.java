@@ -156,7 +156,7 @@ public class Ore extends BlockOre {
 		public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block,
 				int modelId, RenderBlocks renderer) {
 			if (world.getBlockMetadata(x, y, z) == 0) {
-				renderer.renderStandardBlock(block, x, y, z);
+				renderer.renderStandardBlock(Block.oreIron, x, y, z);
 			} else {
 				renderer.renderStandardBlock(Block.whiteStone, x, y, z);
 				renderer.setOverrideBlockTexture(enderTexture);
@@ -188,8 +188,9 @@ public class Ore extends BlockOre {
 		setHardness(3.0F);
 		setResistance(5.0F);
 		setStepSound(soundStoneFootstep);
-		setUnlocalizedName("ore");
+		setUnlocalizedName("enderOre");
 		setCreativeTab(EnderMoney.tab);
+		this.func_111022_d("EnderOre");
 	}
 
 	@Override
@@ -225,7 +226,7 @@ public class Ore extends BlockOre {
 
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = par1IconRegister.registerIcon("oreIron");
+		blockIcon = Block.oreIron.getIcon(0, 0);
 		enderTexture = par1IconRegister.registerIcon("endermoneycore:orebase");
 	}
 

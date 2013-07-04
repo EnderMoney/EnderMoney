@@ -7,10 +7,8 @@ import com.github.soniex2.endermoney.trading.block.BlockCreativeItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -35,14 +33,8 @@ public class EnderMoneyTrading {
 
 	public static final Block blockCreativeItemTrader = new BlockCreativeItemTrader(1999);
 
-	@PreInit
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-
-	}
-
-	@Init
-	public void init(FMLInitializationEvent event) {
-		proxy.setCustomRenderers();
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
 				"blockCreativeItemTrader");
@@ -50,7 +42,12 @@ public class EnderMoneyTrading {
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 	}
 
-	@PostInit
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		proxy.setCustomRenderers();
+	}
+
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
 	}

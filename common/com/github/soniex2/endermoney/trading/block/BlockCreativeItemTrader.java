@@ -3,7 +3,7 @@ package com.github.soniex2.endermoney.trading.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +26,7 @@ public class BlockCreativeItemTrader extends AbstractTraderBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity,
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity,
 			ItemStack stack) {
 		if (entity instanceof EntityPlayer) {
 			TileEntity te = world.getBlockTileEntity(x, y, z);

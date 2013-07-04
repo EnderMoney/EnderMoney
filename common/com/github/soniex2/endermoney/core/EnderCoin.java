@@ -20,6 +20,7 @@ public class EnderCoin extends Item {
 		setCreativeTab(EnderMoney.tab);
 		setUnlocalizedName("endercoin");
 		this.setHasSubtypes(true);
+		this.func_111206_d("EnderCoin");
 	}
 
 	public ItemStack getItemStack(long value) {
