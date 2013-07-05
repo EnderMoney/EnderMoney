@@ -16,6 +16,7 @@ public class EnderItem extends Item {
 		public final int superID = EnderItem.this.itemID;
 		protected Icon iconIndex;
 		private String unlocalizedName;
+		protected Icon altPassIcon;
 
 		public EnderSubItem(int id) {
 			itemID = id;
@@ -76,6 +77,14 @@ public class EnderItem extends Item {
 
 		public boolean hasEffect(ItemStack is) {
 			return false;
+		}
+
+		public Icon getIconFromDamageForRenderPass(int damage, int pass) {
+			return iconIndex;
+		}
+
+		public int getRenderPasses(int metadata) {
+			return 1;
 		}
 	}
 
@@ -162,5 +171,23 @@ public class EnderItem extends Item {
 		int dmg = is.getItemDamage();
 		if (items[dmg] != null) return items[dmg].hasEffect(is);
 		return false;
+	}
+
+	@Override
+	public boolean requiresMultipleRenderPasses() {
+		return true;
+	}
+	
+	@Override
+	public int getRenderPasses(int metadata) {
+		if (items[metadata] != null) return items[metadata].getRenderPasses(metadata);
+		return 1;
+	}
+
+	@Override
+	public Icon getIconFromDamageForRenderPass(int damage, int pass) {
+		if (items[damage] != null)
+			return items[damage].getIconFromDamageForRenderPass(damage, pass);
+		return this.itemIcon;
 	}
 }

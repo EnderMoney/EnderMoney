@@ -35,7 +35,7 @@ public class GenericItem extends EnderSubItem {
 
 	@Override
 	public int getColorFromItemStack(ItemStack is, int pass) {
-		return color;
+		return pass > 0 ? 16777215 : color;
 	}
 
 	@Override
