@@ -82,7 +82,7 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
 	}
 

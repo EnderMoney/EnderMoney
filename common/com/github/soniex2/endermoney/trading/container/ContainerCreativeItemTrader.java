@@ -119,8 +119,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 	}
 
 	@Override
-	public void onCraftGuiClosed(EntityPlayer player) {
-		super.onCraftGuiClosed(player);
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
 		if (!tileEntity.worldObj.isRemote) {
 			for (int i = 0; i < fakeInv.getSizeInventory(); ++i) {
 				ItemStack itemstack = this.fakeInv.getStackInSlotOnClosing(i);
