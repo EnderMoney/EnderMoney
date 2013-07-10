@@ -186,14 +186,14 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				throw new TradeException(0, "Couldn't complete trade: Out of inventory space");
 			}
 		}
-		for (int _i = inputMinSlot; _i < inputMaxSlot; _i++) {
+		for (int _i = inputMinSlot; _i <= inputMaxSlot; _i++) {
 			fakeInv.setInventorySlotContents(_i, null);
 		}
 		Set<Entry<ItemStackMapKey, Integer>> input = newInput.entrySet();
 		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();
 		int slot = inputMinSlot;
 		while (it.hasNext()) {
-			if (slot >= inputMaxSlot) { throw new TradeException(0,
+			if (slot > inputMaxSlot) { throw new TradeException(0,
 					"Couldn't complete trade: Out of inventory space"); }
 			if (fakeInv.getStackInSlot(slot) != null) {
 				slot++;
