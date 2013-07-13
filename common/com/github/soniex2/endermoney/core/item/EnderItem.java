@@ -1,6 +1,8 @@
-package com.github.soniex2.endermoney.core;
+package com.github.soniex2.endermoney.core.item;
 
 import java.util.List;
+
+import com.github.soniex2.endermoney.core.EnderMoney;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

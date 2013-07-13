@@ -1,4 +1,4 @@
-package com.github.soniex2.endermoney.core;
+package com.github.soniex2.endermoney.core.block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
+import com.github.soniex2.endermoney.core.ClientProxy;
+import com.github.soniex2.endermoney.core.EnderMoney;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 

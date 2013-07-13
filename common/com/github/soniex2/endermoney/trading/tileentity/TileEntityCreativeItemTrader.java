@@ -10,8 +10,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.github.soniex2.endermoney.core.EnderCoin;
 import com.github.soniex2.endermoney.core.EnderMoney;
+import com.github.soniex2.endermoney.core.item.EnderCoin;
 import com.github.soniex2.endermoney.trading.TradeException;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;

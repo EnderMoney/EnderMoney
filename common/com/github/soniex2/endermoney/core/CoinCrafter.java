@@ -1,5 +1,7 @@
 package com.github.soniex2.endermoney.core;
 
+import com.github.soniex2.endermoney.core.item.EnderCoin;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;

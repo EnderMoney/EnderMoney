@@ -9,8 +9,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.github.soniex2.endermoney.core.EnderItem.EnderSubItem;
+import com.github.soniex2.endermoney.core.block.Ore;
+import com.github.soniex2.endermoney.core.item.EnderCoin;
+import com.github.soniex2.endermoney.core.item.EnderItem;
 import com.github.soniex2.endermoney.core.item.GenericItem;
+import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

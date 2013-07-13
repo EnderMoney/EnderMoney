@@ -1,8 +1,10 @@
-package com.github.soniex2.endermoney.core;
+package com.github.soniex2.endermoney.core.item;
 
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Random;
+
+import com.github.soniex2.endermoney.core.EnderMoney;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

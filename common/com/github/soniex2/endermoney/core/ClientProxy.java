@@ -1,5 +1,7 @@
 package com.github.soniex2.endermoney.core;
 
+import com.github.soniex2.endermoney.core.block.Ore;
+
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {

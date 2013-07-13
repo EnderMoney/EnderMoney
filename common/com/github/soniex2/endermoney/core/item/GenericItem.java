@@ -3,8 +3,7 @@ package com.github.soniex2.endermoney.core.item;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 
-import com.github.soniex2.endermoney.core.EnderItem;
-import com.github.soniex2.endermoney.core.EnderItem.EnderSubItem;
+import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
 
 public class GenericItem extends EnderSubItem {
 
