@@ -1,7 +1,11 @@
 package com.github.soniex2.endermoney.trading;
 
+import java.io.File;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 
 import com.github.soniex2.endermoney.trading.block.BlockCreativeItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
@@ -20,8 +24,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "EnderMoneyTrading", name = "EnderMoney Trading", version = Version.MOD_VERSION,
 		dependencies = "required-after:EnderMoneyCore;required-after:Forge")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false,
-		channels = { "EMTrading" }, packetHandler = PacketHandler.class)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = { "EMTrading" },
+		packetHandler = PacketHandler.class)
 public class EnderMoneyTrading {
 
 	@Instance("EnderMoneyTrading")
@@ -31,14 +35,26 @@ public class EnderMoneyTrading {
 			serverSide = "com.github.soniex2.endermoney.trading.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static final Block blockCreativeItemTrader = new BlockCreativeItemTrader(1999);
+	public static Block blockCreativeItemTrader;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		File configDir = new File(event.getSuggestedConfigurationFile().getParentFile(),
+				"EnderMoney/Trading.cfg");
+		Configuration config = new Configuration(configDir);
+		config.load();
+		Property creativeItemTrader = config.getBlock("trader.creative.item", 501,
+				"Creative Item Trader Block ID");
+		config.save();
+		
+		blockCreativeItemTrader = new BlockCreativeItemTrader(creativeItemTrader.getInt(501));
+
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+		
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
 				"blockCreativeItemTrader");
 		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class, "containerItemTrader");
+		
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 	}
 

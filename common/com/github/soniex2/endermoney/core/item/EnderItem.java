@@ -91,9 +91,9 @@ public class EnderItem extends Item {
 	}
 
 	private EnderSubItem[] items = new EnderSubItem[256];
-	public static final EnderItem instance = new EnderItem(27001);
+	public static EnderItem instance;
 
-	private EnderItem(int id) {
+	public EnderItem(int id) {
 		super(id);
 		setCreativeTab(EnderMoney.tab);
 		setUnlocalizedName("EnderItem");

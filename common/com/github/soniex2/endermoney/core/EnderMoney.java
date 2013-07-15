@@ -1,19 +1,23 @@
 package com.github.soniex2.endermoney.core;
 
+import java.io.File;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.github.soniex2.endermoney.core.block.Ore;
 import com.github.soniex2.endermoney.core.item.EnderCoin;
 import com.github.soniex2.endermoney.core.item.EnderItem;
-import com.github.soniex2.endermoney.core.item.GenericItem;
 import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
+import com.github.soniex2.endermoney.core.item.GenericItem;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -38,13 +42,11 @@ public class EnderMoney {
 			return ((EnderCoin) coin).getItemStack(10000000L);
 		}
 	};
-	public static final EnderItem enderItem = EnderItem.instance;
-	public static final Item coin = new EnderCoin(27000);
-	public static final Block ore = new Ore(500);
-	public static final EnderSubItem ender = new GenericItem(0, "dustEnder", "endermoneycore:dust",
-			0x228866, true);
-	public static final EnderSubItem ironDust = new GenericItem(1, "dustIron",
-			"endermoneycore:dust", 0xDDDDDD);
+	public static EnderItem enderItem;
+	public static Item coin;
+	public static Block ore;
+	public static EnderSubItem ender;
+	public static EnderSubItem ironDust;
 
 	@Instance("EnderMoneyCore")
 	public static EnderMoney instance;
@@ -55,10 +57,29 @@ public class EnderMoney {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		File configDir = new File(event.getSuggestedConfigurationFile().getParentFile(),
+				"EnderMoney/Core.cfg");
+		Configuration config = new Configuration(configDir);
+		config.load();
+		Property oreID = config.getBlock("ore", 500, "Ore Block ID");
+		Property coinID = config.getItem("coin", 27000, "EnderCoin Item ID");
+		Property itemID = config.getItem("item", 27001, "EnderItem Item ID");
+		Property craftable = config.get(Configuration.CATEGORY_GENERAL, "coin.craftable", true,
+				"Set to false to disable coin crafting");
+		config.save();
+
+		enderItem = EnderItem.instance = new EnderItem(itemID.getInt(27001));
+		coin = new EnderCoin(coinID.getInt(27000));
+		ore = new Ore(oreID.getInt(500));
+		ender = new GenericItem(0, "dustEnder", "endermoneycore:dust", 0x228866, true);
+		ironDust = new GenericItem(1, "dustIron", "endermoneycore:dust", 0xDDDDDD);
+
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
+
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
+
 		LanguageRegistry langRegistry = LanguageRegistry.instance();
 		langRegistry.addStringLocalization("item.endercoin.name", "EnderCoin");
 		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
@@ -66,14 +87,21 @@ public class EnderMoney {
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
 		langRegistry.addStringLocalization("itemGroup.EnderMoney", "EnderMoney");
+
 		GameRegistry.addRecipe(new CoinCrafter());
-		GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64), false,
-				"xyx", "y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#', new ItemStack(
-						Item.enderPearl)));
+
+		if (craftable.getBoolean(true)) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64),
+					false, "xyx", "y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#',
+					new ItemStack(Item.enderPearl)));
+		}
+
 		FurnaceRecipes.smelting().addSmelting(ironDust.superID, ironDust.itemID,
 				new ItemStack(Item.ingotIron, 1), 0F);
+
 		MinecraftForge.EVENT_BUS.register(new EventListener());
 		MinecraftForge.ORE_GEN_BUS.register(new OreGenListener());
+
 		GameRegistry.registerWorldGenerator(new WorldGenerator());
 	}
 
