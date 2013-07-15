@@ -4,13 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.github.soniex2.endermoney.trading.container.ContainerCreativeItemTrader;
-import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+
+import com.github.soniex2.endermoney.trading.container.ContainerCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
+
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
