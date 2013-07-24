@@ -6,13 +6,22 @@ import java.util.Random;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fluids.ItemFluidContainer;
 
-public class EnderCoin extends Item {
+public class EnderCoin extends ItemFluidContainer {
 
 	private Random rand = new Random();
 
@@ -95,5 +104,122 @@ public class EnderCoin extends Item {
 		ItemStack is = getItemStack(value);
 		is.stackSize = amount;
 		return is;
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world,
+				player, true);
+
+		if (movingobjectposition == null) {
+			return item;
+		} else {
+			FillBucketEvent event = new FillBucketEvent(player, item, world, movingobjectposition);
+			if (MinecraftForge.EVENT_BUS.post(event)) { return item; }
+
+			if (event.getResult() == Event.Result.ALLOW) {
+				if (player.capabilities.isCreativeMode) { return item; }
+
+				//if (--item.stackSize <= 0) { return event.result; }
+
+				if (!player.inventory.addItemStackToInventory(event.result)) {
+					player.dropPlayerItem(event.result);
+				}
+
+				return item;
+			}
+
+			if (movingobjectposition.typeOfHit == EnumMovingObjectType.TILE) {
+				int x = movingobjectposition.blockX;
+				int y = movingobjectposition.blockY;
+				int z = movingobjectposition.blockZ;
+
+				if (!world.canMineBlock(player, x, y, z)) { return item; }
+
+				if (movingobjectposition.sideHit == 0) {
+					--y;
+				}
+
+				if (movingobjectposition.sideHit == 1) {
+					++y;
+				}
+
+				if (movingobjectposition.sideHit == 2) {
+					--z;
+				}
+
+				if (movingobjectposition.sideHit == 3) {
+					++z;
+				}
+
+				if (movingobjectposition.sideHit == 4) {
+					--x;
+				}
+
+				if (movingobjectposition.sideHit == 5) {
+					++x;
+				}
+
+				if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, item)) { return item; }
+
+				if (this.tryPlaceContainedLiquid(world, x, y, z)
+						&& !player.capabilities.isCreativeMode) {
+					long value = getValueFromItemStack(item);
+					if (value - 1 > 0) {
+						if (item.stackSize - 1 <= 0) {
+							return getItemStack(value - 1);
+						}
+						ItemStack newItem = getItemStack(value - 1);
+						if (!player.inventory.addItemStackToInventory(newItem)) {
+							player.dropPlayerItem(newItem);
+						}
+					}
+					item.stackSize -= 1;
+					return item;
+				}
+
+			}
+
+			return item;
+		}
+	}
+
+	public boolean tryPlaceContainedLiquid(World par1World, int par2, int par3, int par4) {
+		if (EnderMoney.blockLiqEC.blockID <= 0) {
+			return false;
+		} else {
+			Material material = par1World.getBlockMaterial(par2, par3, par4);
+			boolean flag = !material.isSolid();
+
+			if (!par1World.isAirBlock(par2, par3, par4) && !flag) {
+				return false;
+			} else {
+				if (par1World.provider.isHellWorld
+						&& EnderMoney.blockLiqEC.blockID == Block.waterMoving.blockID) {
+					par1World
+							.playSoundEffect(
+									(double) ((float) par2 + 0.5F),
+									(double) ((float) par3 + 0.5F),
+									(double) ((float) par4 + 0.5F),
+									"random.fizz",
+									0.5F,
+									2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+
+					for (int l = 0; l < 8; ++l) {
+						par1World.spawnParticle("largesmoke", (double) par2 + Math.random(),
+								(double) par3 + Math.random(), (double) par4 + Math.random(), 0.0D,
+								0.0D, 0.0D);
+					}
+				} else {
+					if (!par1World.isRemote && flag && !material.isLiquid()) {
+						par1World.destroyBlock(par2, par3, par4, true);
+					}
+
+					par1World.setBlock(par2, par3, par4, EnderMoney.blockLiqEC.blockID, 0, 3);
+				}
+
+				return true;
+			}
+		}
 	}
 }
