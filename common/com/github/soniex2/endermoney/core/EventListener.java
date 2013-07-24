@@ -62,7 +62,11 @@ public class EventListener {
 	@ForgeSubscribe
 	public void FillBucket(FillBucketEvent event) {
 		if (event.current.itemID == EnderMoney.coin.itemID) {
-			ItemStack result = attemptFill(event.world, event.target);
+			if (EnderCoin.getValueFromItemStack(event.current) == Long.MAX_VALUE) {
+				event.setResult(Result.DENY);
+				return;
+			}
+			ItemStack result = attemptFill(event.world, event.target, event.current);
 			if (result != null) {
 				event.result = result;
 				event.setResult(Result.ALLOW);
@@ -70,12 +74,13 @@ public class EventListener {
 		}
 	}
 
-	private ItemStack attemptFill(World world, MovingObjectPosition p) {
+	private ItemStack attemptFill(World world, MovingObjectPosition p, ItemStack item) {
 		int id = world.getBlockId(p.blockX, p.blockY, p.blockZ);
 		if (id == EnderMoney.blockLiqEC.blockID) {
 			if (world.getBlockMetadata(p.blockX, p.blockY, p.blockZ) == 0) {
 				world.setBlock(p.blockX, p.blockY, p.blockZ, 0);
-				return ((EnderCoin) EnderMoney.coin).getItemStack(1);
+				EnderCoin c = ((EnderCoin) EnderMoney.coin);
+				return c.getItemStack(EnderCoin.getValueFromItemStack(item) + 1);
 			}
 		}
 		return null;
