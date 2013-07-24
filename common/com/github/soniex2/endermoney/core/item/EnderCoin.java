@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumMovingObjectType;
@@ -19,9 +20,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fluids.ItemFluidContainer;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class EnderCoin extends ItemFluidContainer {
+public class EnderCoin extends Item implements IFluidContainerItem {
 
 	private Random rand = new Random();
 
@@ -120,8 +122,6 @@ public class EnderCoin extends ItemFluidContainer {
 			if (event.getResult() == Event.Result.ALLOW) {
 				if (player.capabilities.isCreativeMode) { return item; }
 
-				//if (--item.stackSize <= 0) { return event.result; }
-
 				if (!player.inventory.addItemStackToInventory(event.result)) {
 					player.dropPlayerItem(event.result);
 				}
@@ -166,9 +166,7 @@ public class EnderCoin extends ItemFluidContainer {
 						&& !player.capabilities.isCreativeMode) {
 					long value = getValueFromItemStack(item);
 					if (value - 1 > 0) {
-						if (item.stackSize - 1 <= 0) {
-							return getItemStack(value - 1);
-						}
+						if (item.stackSize - 1 <= 0) { return getItemStack(value - 1); }
 						ItemStack newItem = getItemStack(value - 1);
 						if (!player.inventory.addItemStackToInventory(newItem)) {
 							player.dropPlayerItem(newItem);
@@ -221,5 +219,25 @@ public class EnderCoin extends ItemFluidContainer {
 				return true;
 			}
 		}
+	}
+
+	@Override
+	public FluidStack getFluid(ItemStack container) {
+		return null;
+	}
+
+	@Override
+	public int getCapacity(ItemStack container) {
+		return 0;
+	}
+
+	@Override
+	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+		return null;
 	}
 }
