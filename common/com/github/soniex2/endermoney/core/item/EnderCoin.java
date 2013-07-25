@@ -24,6 +24,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class EnderCoin extends Item implements IFluidContainerItem {
 
+	private long capacity = Long.MAX_VALUE;
+
 	private Random rand = new Random();
 
 	public EnderCoin(int id) {
@@ -206,21 +208,52 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 
 	@Override
 	public FluidStack getFluid(ItemStack container) {
-		return null;
+		long value = getValueFromItemStack(container);
+		return new FluidStack(EnderMoney.fluidEC, value > Integer.MAX_VALUE ? Integer.MAX_VALUE
+				: (int) value);
 	}
 
 	@Override
 	public int getCapacity(ItemStack container) {
-		return 0;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override
 	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-		return 0;
+		if (resource == null) return 0;
+		if (!doFill) {
+			if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("value"))
+				return resource.amount;
+			if (resource.getFluid() != EnderMoney.fluidEC) return 0;
+			long amount = getValueFromItemStack(container);
+			return Math.min((capacity - amount > Integer.MAX_VALUE ? Integer.MAX_VALUE
+					: (int) (capacity - amount)), resource.amount);
+		}
+		if (resource.getFluid() != EnderMoney.fluidEC) return 0;
+		if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();
+		if (!container.stackTagCompound.hasKey("value")) {
+			container.stackTagCompound.setLong("value", resource.amount);
+			return resource.amount;
+		}
+		long amount = getValueFromItemStack(container);
+		if (resource.amount + amount < 0) {
+			container.stackTagCompound.setLong("value", capacity);
+			return (int) ~(resource.amount + amount);
+		}
+		container.stackTagCompound.setLong("value", amount + resource.amount);
+		return resource.amount;
 	}
 
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-		return null;
+		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("value"))
+			return null;
+		FluidStack stack = getFluid(container);
+		if (stack == null) return null;
+		stack.amount = Math.min(stack.amount, maxDrain);
+		if (doDrain)
+			container.stackTagCompound
+					.setLong("value", getValueFromItemStack(container) - maxDrain);
+		return stack;
 	}
 }
