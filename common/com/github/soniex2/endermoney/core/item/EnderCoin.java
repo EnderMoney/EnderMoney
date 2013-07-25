@@ -118,12 +118,18 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 			return item;
 		} else {
 			FillBucketEvent event = new FillBucketEvent(player, item, world, movingobjectposition);
-			if (MinecraftForge.EVENT_BUS.post(event)) { return item; }
+			if (MinecraftForge.EVENT_BUS.post(event)) {
+				return item;
+			}
 
 			if (event.getResult() == Event.Result.ALLOW) {
-				if (player.capabilities.isCreativeMode) { return item; }
+				if (player.capabilities.isCreativeMode) {
+					return item;
+				}
 
-				if (--item.stackSize <= 0) { return event.result; }
+				if (--item.stackSize <= 0) {
+					return event.result;
+				}
 
 				if (!player.inventory.addItemStackToInventory(event.result)) {
 					player.dropPlayerItem(event.result);
@@ -137,7 +143,9 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 				int y = movingobjectposition.blockY;
 				int z = movingobjectposition.blockZ;
 
-				if (!world.canMineBlock(player, x, y, z)) { return item; }
+				if (!world.canMineBlock(player, x, y, z)) {
+					return item;
+				}
 
 				if (movingobjectposition.sideHit == 0) {
 					--y;
@@ -163,13 +171,17 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 					++x;
 				}
 
-				if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, item)) { return item; }
+				if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, item)) {
+					return item;
+				}
 
 				if (this.tryPlaceContainedLiquid(world, x, y, z)
 						&& !player.capabilities.isCreativeMode) {
 					long value = getValueFromItemStack(item);
 					if (value - 1 > 0) {
-						if (item.stackSize - 1 <= 0) { return getItemStack(value - 1); }
+						if (item.stackSize - 1 <= 0) {
+							return getItemStack(value - 1);
+						}
 						ItemStack newItem = getItemStack(value - 1);
 						if (!player.inventory.addItemStackToInventory(newItem)) {
 							player.dropPlayerItem(newItem);

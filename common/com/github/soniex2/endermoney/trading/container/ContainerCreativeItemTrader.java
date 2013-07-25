@@ -100,11 +100,15 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 
 			// merges the item into player inventory since its in the tileEntity
 			if (slot < 9) {
-				if (!this.mergeItemStack(stackInSlot, 9, 45, true)) { return null; }
+				if (!this.mergeItemStack(stackInSlot, 9, 45, true)) {
+					return null;
+				}
 			}
 			// places it into the tileEntity is possible since its in the player
 			// inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) { return null; }
+			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
+				return null;
+			}
 
 			if (stackInSlot.stackSize == 0) {
 				slotObject.putStack(null);
@@ -112,7 +116,9 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 				slotObject.onSlotChanged();
 			}
 
-			if (stackInSlot.stackSize == stack.stackSize) { return null; }
+			if (stackInSlot.stackSize == stack.stackSize) {
+				return null;
+			}
 			slotObject.onPickupFromSlot(player, stackInSlot);
 		}
 		return stack;

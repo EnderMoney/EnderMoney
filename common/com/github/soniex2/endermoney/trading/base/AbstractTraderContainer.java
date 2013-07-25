@@ -8,12 +8,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public abstract class AbstractTraderContainer extends Container {
-	
+
 	protected class ReadOnlySlot extends Slot {
 		public ReadOnlySlot(IInventory par1iInventory, int par2, int par3, int par4) {
 			super(par1iInventory, par2, par3, par4);
 		}
-		
+
 		@Override
 		public boolean isItemValid(ItemStack par1ItemStack) {
 			return false;
@@ -67,7 +67,7 @@ public abstract class AbstractTraderContainer extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return tileEntity.isUseableByPlayer(player);
 	}
-	
+
 	public abstract void doTrade(EntityPlayer player);
 
 }

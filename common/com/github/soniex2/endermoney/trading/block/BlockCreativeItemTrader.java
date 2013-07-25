@@ -44,7 +44,9 @@ public class BlockCreativeItemTrader extends AbstractTraderBlock {
 	@Override
 	public boolean onBlockActivated(World world, int worldx, int worldy, int worldz,
 			EntityPlayer player, int side, float blockx, float blocky, float blockz) {
-		if (player.isSneaking()) { return false; }
+		if (player.isSneaking()) {
+			return false;
+		}
 		if (!world.isRemote)
 			player.openGui(EnderMoneyTrading.instance, 0, world, worldx, worldy, worldz);
 		return true;

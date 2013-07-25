@@ -179,7 +179,7 @@ public class EnderItem extends Item {
 	public boolean requiresMultipleRenderPasses() {
 		return true;
 	}
-	
+
 	@Override
 	public int getRenderPasses(int metadata) {
 		if (items[metadata] != null) return items[metadata].getRenderPasses(metadata);

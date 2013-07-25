@@ -30,7 +30,9 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		if (i < 0 || i >= inv.length) { return null; }
+		if (i < 0 || i >= inv.length) {
+			return null;
+		}
 		return inv[i];
 	}
 
@@ -132,7 +134,7 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 		this.writeToNBT(nbttagcompound);
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 3, nbttagcompound);
 	}
-	
+
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
 		NBTTagCompound tag = pkt.customParam1;

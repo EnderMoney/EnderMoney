@@ -79,7 +79,7 @@ public class EnderMoney {
 		ender = new GenericItem(0, "dustEnder", "endermoneycore:dust", 0x228866, true);
 		ironDust = new GenericItem(1, "dustIron", "endermoneycore:dust", 0xDDDDDD);
 		fluidEC = new FluidEnderCoin();
-		blockLiqEC = new LiquidCoin(liqECID.getInt(502),fluidEC);
+		blockLiqEC = new LiquidCoin(liqECID.getInt(502), fluidEC);
 
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
 		GameRegistry.registerBlock(blockLiqEC, Ore.Item.class, "endermoneycore.liquidMoney");

@@ -40,8 +40,9 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 
 	public boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) throws TradeException {
-		if (fakeInv == null) { throw new TradeException(1, "Invalid inventory",
-				new NullPointerException()); }
+		if (fakeInv == null) {
+			throw new TradeException(1, "Invalid inventory", new NullPointerException());
+		}
 		HashMap<ItemStackMapKey, Integer> tradeInputs = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger moneyRequired = BigInteger.ZERO;
 		for (ItemStack i : getTradeInputs()) {
@@ -82,7 +83,9 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			}
 		}
 
-		if (money.compareTo(moneyRequired) < 0) { return false; }
+		if (money.compareTo(moneyRequired) < 0) {
+			return false;
+		}
 		BigInteger newMoney = money.subtract(moneyRequired);
 
 		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = tradeInputs.entrySet();
@@ -93,8 +96,12 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			ItemStackMapKey item = entry.getKey();
 			Integer amount = entry.getValue();
 			Integer available = tradeInput.get(item);
-			if (available == null) { return false; }
-			if (available < amount) { return false; }
+			if (available == null) {
+				return false;
+			}
+			if (available < amount) {
+				return false;
+			}
 			if (available - amount == 0) {
 				continue;
 			}
@@ -193,8 +200,9 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();
 		int slot = inputMinSlot;
 		while (it.hasNext()) {
-			if (slot > inputMaxSlot) { throw new TradeException(0,
-					"Couldn't complete trade: Out of inventory space"); }
+			if (slot > inputMaxSlot) {
+				throw new TradeException(0, "Couldn't complete trade: Out of inventory space");
+			}
 			if (fakeInv.getStackInSlot(slot) != null) {
 				slot++;
 				continue;

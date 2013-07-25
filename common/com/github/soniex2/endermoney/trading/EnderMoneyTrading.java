@@ -46,15 +46,15 @@ public class EnderMoneyTrading {
 		Property creativeItemTrader = config.getBlock("trader.creative.item", 501,
 				"Creative Item Trader Block ID");
 		config.save();
-		
+
 		blockCreativeItemTrader = new BlockCreativeItemTrader(creativeItemTrader.getInt(501));
 
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-		
+
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
 				"blockCreativeItemTrader");
 		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class, "containerItemTrader");
-		
+
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 	}
 

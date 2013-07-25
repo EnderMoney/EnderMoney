@@ -32,7 +32,9 @@ public abstract class AbstractTraderBlock extends BlockContainer {
 		Random rand = new Random();
 
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-		if (!(tileEntity instanceof IInventory)) { return; }
+		if (!(tileEntity instanceof IInventory)) {
+			return;
+		}
 		IInventory inventory = (IInventory) tileEntity;
 
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
