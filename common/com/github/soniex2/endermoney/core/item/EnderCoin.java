@@ -209,7 +209,8 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 			} else {
 				if (!par1World.isRemote && flag && !material.isLiquid()) {
 					par1World.destroyBlock(par2, par3, par4, true);
-				} else if (!par1World.isRemote && flag && material.isLiquid()) {
+				} else if (!par1World.isRemote && flag && material.isLiquid()
+						&& par1World.getBlockMetadata(par2, par3, par4) == 0) {
 					return false;
 				}
 				par1World.setBlock(par2, par3, par4, EnderMoney.blockLiqEC.blockID, 0, 3);
