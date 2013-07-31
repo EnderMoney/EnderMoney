@@ -82,7 +82,7 @@ public class EnderMoney {
 		blockLiqEC = new LiquidCoin(liqECID.getInt(502), fluidEC);
 
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
-		GameRegistry.registerBlock(blockLiqEC, Ore.Item.class, "endermoneycore.liquidMoney");
+		GameRegistry.registerBlock(blockLiqEC, "endermoneycore.liquidMoney");
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
