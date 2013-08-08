@@ -30,6 +30,19 @@ public class LiquidCoin extends BlockFluidClassic {
 	}
 
 	@Override
+	public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
+		if (world.isAirBlock(x, y, z)) return true;
+		int bId = world.getBlockId(x, y, z);
+		if (bId == blockID || bId == Block.waterStill.blockID || bId == Block.waterMoving.blockID)
+			return false;
+		if (displacementIds.containsKey(bId)) return displacementIds.get(bId);
+		Material material = Block.blocksList[bId].blockMaterial;
+		if (material.blocksMovement() || material == Material.portal) return false;
+		return getDensity(world, x, y, z) == Integer.MAX_VALUE
+				|| this.density > getDensity(world, x, y, z);
+	}
+
+	@Override
 	public boolean displaceIfPossible(World world, int x, int y, int z) {
 		if (world.isAirBlock(x, y, z)) return true;
 		int bId = world.getBlockId(x, y, z);
