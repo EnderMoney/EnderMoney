@@ -33,25 +33,22 @@ public class LiquidCoin extends BlockFluidClassic {
 	public boolean displaceIfPossible(World world, int x, int y, int z) {
 		if (world.isAirBlock(x, y, z)) return true;
 		int bId = world.getBlockId(x, y, z);
-		if (bId == blockID) return false;
+		if (bId == blockID || bId == Block.waterStill.blockID || bId == Block.waterMoving.blockID)
+			return false;
 		if (displacementIds.containsKey(bId)) {
 			if (displacementIds.get(bId)) {
 				Block.blocksList[bId].dropBlockAsItem(world, x, y, z,
 						world.getBlockMetadata(x, y, z), 0);
-				world.setBlock(x, y, z, 0, 0, 3);
 				return true;
 			}
 			return false;
 		}
 		Material material = Block.blocksList[bId].blockMaterial;
 		if (material.blocksMovement() || material == Material.portal) return false;
-		if (material == Material.water) {
-			return false;
-		} else if (getDensity(world, x, y, z) == Integer.MAX_VALUE
+		if (getDensity(world, x, y, z) == Integer.MAX_VALUE
 				|| this.density > getDensity(world, x, y, z)) {
 			Block.blocksList[bId].dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z),
 					0);
-			world.setBlock(x, y, z, 0, 0, 3);
 			return true;
 		} else {
 			return false;
