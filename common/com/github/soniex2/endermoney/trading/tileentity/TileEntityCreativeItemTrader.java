@@ -12,8 +12,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
 import com.github.soniex2.endermoney.core.item.EnderCoin;
-import com.github.soniex2.endermoney.trading.TradeException;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
+import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
+import com.github.soniex2.endermoney.trading.exception.TradeException;
 import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
 
 public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
@@ -41,7 +42,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	public boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) throws TradeException {
 		if (fakeInv == null) {
-			throw new TradeException(1, "Invalid inventory", new NullPointerException());
+			throw new TradeException(new NullPointerException());
 		}
 		HashMap<ItemStackMapKey, Integer> tradeInputs = new HashMap<ItemStackMapKey, Integer>();
 		BigInteger moneyRequired = BigInteger.ZERO;
@@ -190,7 +191,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				for (int b = 0; b < oldOutInv.length; b++) {
 					fakeInv.setInventorySlotContents(b + outputMinSlot, oldOutInv[b]);
 				}
-				throw new TradeException(0, "Couldn't complete trade: Out of inventory space");
+				throw new OutOfInventorySpaceException();
 			}
 		}
 		for (int _i = inputMinSlot; _i <= inputMaxSlot; _i++) {
@@ -201,7 +202,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		int slot = inputMinSlot;
 		while (it.hasNext()) {
 			if (slot > inputMaxSlot) {
-				throw new TradeException(0, "Couldn't complete trade: Out of inventory space");
+				throw new OutOfInventorySpaceException();
 			}
 			if (fakeInv.getStackInSlot(slot) != null) {
 				slot++;

@@ -7,8 +7,9 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import com.github.soniex2.endermoney.trading.TradeException;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
+import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
+import com.github.soniex2.endermoney.trading.exception.TradeException;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 
 public class ContainerCreativeItemTrader extends AbstractTraderContainer {
@@ -141,18 +142,10 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 	public void doTrade(EntityPlayer player) {
 		try {
 			((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8, 9, 17);
+		} catch (OutOfInventorySpaceException e) {
+			player.addChatMessage("Please empty the output inventory");
 		} catch (TradeException e) {
-			if (e.id == 0) {
-				e.printStackTrace();
-				if (e.getMessage().equals("Couldn't complete trade: Out of inventory space")) {
-					player.addChatMessage("Please empty the output inventory");
-				}
-			} else if (e.id == 1) {
-				e.printStackTrace();
-				if (e.getMessage().equals("Invalid inventory")) {
-					player.addChatMessage("Stop hacking, motherfucker!");
-				}
-			}
+			player.addChatMessage("Stop hacking, motherfucker!");
 		}
 		this.detectAndSendChanges();
 	}
