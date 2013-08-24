@@ -145,7 +145,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		} catch (OutOfInventorySpaceException e) {
 			player.addChatMessage("Please empty the output inventory");
 		} catch (TradeException e) {
-			player.addChatMessage("Stop hacking, motherfucker!");
+			player.addChatMessage("Something went wrong!");
+			e.printStackTrace();
 		}
 		this.detectAndSendChanges();
 	}
