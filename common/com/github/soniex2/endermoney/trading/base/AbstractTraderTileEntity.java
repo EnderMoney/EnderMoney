@@ -1,5 +1,7 @@
 package com.github.soniex2.endermoney.trading.base;
 
+import com.github.soniex2.endermoney.trading.exception.TradeException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -140,4 +142,7 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 		NBTTagCompound tag = pkt.customParam1;
 		this.owner = tag.getString("Owner");
 	}
+
+	public abstract boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
+			int outputMinSlot, int outputMaxSlot) throws TradeException;
 }
