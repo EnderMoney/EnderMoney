@@ -125,33 +125,6 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			newInput.put(index, 1);
 		}
 		ItemStack[] tradeOutputs = getTradeOutputs();
-		// TODO put commented out code below somewhere else
-		/*
-		 * int[] something = new int[tradeOutputs.length];
-		 * int[][] lookAt = new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 },
-		 * { -1, 0, 0 },
-		 * { 0, -1, 0 }, { 0, 0, -1 } };
-		 * for (int a = 0; a < lookAt.length; a++) {
-		 * TileEntity tileEntity = this.worldObj.getBlockTileEntity(this.xCoord
-		 * + lookAt[a][0],
-		 * this.yCoord + lookAt[a][1], this.zCoord + lookAt[a][2]);
-		 * if (tileEntity == null) continue;
-		 * if (tileEntity instanceof IInventory) {
-		 * IInventory iinv = (IInventory) tileEntity;
-		 * for (int b = 0; b < iinv.getSizeInventory(); b++) {
-		 * ItemStack is = iinv.getStackInSlot(b);
-		 * if (is == null) continue;
-		 * for (int c = 0; c < tradeOutputs.length; c++) {
-		 * if (tradeOutputs[c] == null) continue;
-		 * if (tradeOutputs[c].isItemEqual(is) &&
-		 * ItemStack.areItemStackTagsEqual(tradeOutputs[c], is)) {
-		 * something[c] += is.stackSize;
-		 * }
-		 * }
-		 * }
-		 * }
-		 * }
-		 */
 		ItemStack[] oldOutInv = new ItemStack[outputMaxSlot - outputMinSlot + 1];
 		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
 			oldOutInv[a - outputMinSlot] = ItemStack.copyItemStack(fakeInv.getStackInSlot(a));
