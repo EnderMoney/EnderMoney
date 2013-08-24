@@ -31,7 +31,7 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		startX = 107;
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				addSlotToContainer(new Slot(fakeInv, 9 + x + (y * 3), startX + (x * 18), startY
+				addSlotToContainer(new OutputSlot(fakeInv, 9 + x + (y * 3), startX + (x * 18), startY
 						+ (y * 18)));
 			}
 		}
