@@ -42,13 +42,13 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		int a = 8;
 		int b = 121;
 		int c = 179;
+		for (int i = 0; i < 9; i++) {
+			addSlotToContainer(new Slot(inventory, i, a + i * 18, c));
+		}
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, a + j * 18, b + i * 18));
 			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, a + i * 18, c));
 		}
 	}
 
@@ -99,15 +99,11 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 			ItemStack stackInSlot = slotObject.getStack();
 			stack = stackInSlot.copy();
 
-			// merges the item into player inventory since its in the tileEntity
-			if (slot < 9) {
-				if (!this.mergeItemStack(stackInSlot, 9, 45, true)) {
+			if (slot < 36) {
+				if (!this.mergeItemStack(stackInSlot, 54, 63, false)) {
 					return null;
 				}
-			}
-			// places it into the tileEntity is possible since its in the player
-			// inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
+			} else if (!this.mergeItemStack(stackInSlot, 0, 36, false)) {
 				return null;
 			}
 
