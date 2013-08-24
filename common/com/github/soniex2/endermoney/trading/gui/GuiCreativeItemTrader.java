@@ -22,14 +22,9 @@ public class GuiCreativeItemTrader extends AbstractTraderGui {
 	@SuppressWarnings("unused")
 	private String playerName;
 
-	private int xPos, yPos, zPos;
-
 	public GuiCreativeItemTrader(InventoryPlayer inventoryPlayer,
 			TileEntityCreativeItemTrader tileEntity, String playerName) {
 		super(new ContainerCreativeItemTrader(inventoryPlayer, tileEntity, playerName));
-		xPos = tileEntity.xCoord;
-		yPos = tileEntity.yCoord;
-		zPos = tileEntity.zCoord;
 		ySize = 204;
 		this.playerName = playerName;
 	}
@@ -45,13 +40,11 @@ public class GuiCreativeItemTrader extends AbstractTraderGui {
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 			case 1:
-				ByteArrayOutputStream baos = new ByteArrayOutputStream(36);
+				String s = "CreativeItem";
+				ByteArrayOutputStream baos = new ByteArrayOutputStream(2+s.length());
 				DataOutputStream dos = new DataOutputStream(baos);
 				try {
-					dos.writeInt(xPos);
-					dos.writeShort((short) yPos);
-					dos.writeInt(zPos);
-					dos.writeUTF("CreativeItem");
+					dos.writeUTF(s);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
