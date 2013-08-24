@@ -5,7 +5,7 @@ public final class Version {
 	/**
 	 * Mod version.
 	 */
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.1.0";
 	/**
 	 * Revision. How many times the code got reset (rewritten from scratch).
 	 */
