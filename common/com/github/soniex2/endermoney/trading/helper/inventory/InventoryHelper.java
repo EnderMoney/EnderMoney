@@ -1,6 +1,9 @@
 package com.github.soniex2.endermoney.trading.helper.inventory;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -8,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
 
+// TODO javadocs
 public class InventoryHelper {
 
 	private InventoryHelper() {
@@ -23,6 +27,20 @@ public class InventoryHelper {
 			inv.setInventorySlotContents(i - start, array[i]);
 		}
 		return inv;
+	}
+
+	public static ItemStack[] inventoryToItemStackArray(IInventory inventory) {
+		if (inventory == null) return null;
+		return inventoryToItemStackArray(inventory, 0, inventory.getSizeInventory() - 1);
+	}
+
+	public static ItemStack[] inventoryToItemStackArray(IInventory inventory, int start, int end) {
+		if (inventory == null) return null;
+		ItemStack[] array = new ItemStack[end - start + 1];
+		for (int i = start; i <= end; i++) {
+			array[i - start] = inventory.getStackInSlot(i);
+		}
+		return array;
 	}
 
 	public static HashMap<ItemStackMapKey, Integer> inventoryToHashMap(IInventory inventory) {
@@ -45,6 +63,82 @@ public class InventoryHelper {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * Inserts a {@link HashMap<ItemStackMapKey,Integer>} into an
+	 * {@link IInventory}.
+	 * Please note that, in case of failure, this method resets the IInventory
+	 * to its original state. Also note that the map stays unchanged.
+	 * 
+	 * @param inventory
+	 *            the IInventory to insert into
+	 * @param map
+	 *            the map to insert from
+	 * @return true if the insert was successful or false if it ran out of space
+	 */
+	public static boolean hashMapIntoInventory(IInventory inventory,
+			HashMap<ItemStackMapKey, Integer> map) {
+		return hashMapIntoInventory(inventory, map, 0, inventory.getSizeInventory() - 1);
+	}
+
+	/**
+	 * Inserts a {@link HashMap<ItemStackMapKey,Integer>} into an
+	 * {@link IInventory}.
+	 * Please note that, in case of failure, this method resets the IInventory
+	 * to its original state. Also note that the map stays unchanged.
+	 * 
+	 * @param inventory
+	 *            the IInventory to insert into
+	 * @param map
+	 *            the map to insert from
+	 * @param start
+	 *            the inventory slot to start at
+	 * @param end
+	 *            the inventory slot to stop at
+	 * @return true if the insert was successful or false if it ran out of space
+	 */
+	public static boolean hashMapIntoInventory(IInventory inventory,
+			HashMap<ItemStackMapKey, Integer> map, int start, int end) {
+		ItemStack[] backup = inventoryToItemStackArray(inventory);
+		Set<Entry<ItemStackMapKey, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> iterator = entrySet.iterator();
+		int slot = start;
+		while (iterator.hasNext()) {
+			if (slot > end) {
+				for (int i = 0; i < backup.length; i++) {
+					inventory.setInventorySlotContents(start + i, backup[i]);
+				}
+				return false;
+			}
+			if (inventory.getStackInSlot(slot) != null) {
+				slot++;
+				continue;
+			}
+			Entry<ItemStackMapKey, Integer> entry = iterator.next();
+			ItemStackMapKey itemData = entry.getKey();
+			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
+			item.stackTagCompound = itemData.getTag();
+			Integer amount = entry.getValue();
+			if (amount == 0 || amount < 0) {
+				continue;
+			}
+			int stacks = amount / item.getMaxStackSize();
+			int extra = amount % item.getMaxStackSize();
+			ItemStack newItem = item.copy();
+			newItem.stackSize = item.getMaxStackSize();
+			for (int n = slot; n < slot + stacks; n++) {
+				inventory.setInventorySlotContents(n, newItem);
+			}
+			slot += stacks;
+			if (extra != 0) {
+				newItem = item.copy();
+				newItem.stackSize = extra;
+				inventory.setInventorySlotContents(slot, newItem);
+				slot++;
+			}
+		}
+		return true;
 	}
 
 }

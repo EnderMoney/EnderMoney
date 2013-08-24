@@ -8,7 +8,6 @@ import java.util.Set;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
 import com.github.soniex2.endermoney.core.item.EnderCoin;
@@ -175,39 +174,8 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		for (int _i = inputMinSlot; _i <= inputMaxSlot; _i++) {
 			fakeInv.setInventorySlotContents(_i, null);
 		}
-		Set<Entry<ItemStackMapKey, Integer>> input = invInput.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> it = input.iterator();
-		int slot = inputMinSlot;
-		while (it.hasNext()) {
-			if (slot > inputMaxSlot) {
-				throw new OutOfInventorySpaceException();
-			}
-			if (fakeInv.getStackInSlot(slot) != null) {
-				slot++;
-				continue;
-			}
-			Entry<ItemStackMapKey, Integer> entry = it.next();
-			ItemStackMapKey itemData = entry.getKey();
-			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
-			item.stackTagCompound = (NBTTagCompound) itemData.getTag();
-			Integer amount = entry.getValue();
-			if (amount == 0) { // shouldn't happen but who knows...
-				continue;
-			}
-			int stacks = amount / item.getMaxStackSize();
-			int extra = amount % item.getMaxStackSize();
-			ItemStack newItem = item.copy();
-			newItem.stackSize = item.getMaxStackSize();
-			for (int n = slot; n < slot + stacks; n++) {
-				fakeInv.setInventorySlotContents(n, newItem);
-			}
-			slot += stacks;
-			if (extra != 0) {
-				newItem = item.copy();
-				newItem.stackSize = extra;
-				fakeInv.setInventorySlotContents(slot, newItem);
-				slot++;
-			}
+		if (!InventoryHelper.hashMapIntoInventory(fakeInv, invInput, inputMinSlot, inputMaxSlot)) {
+			throw new OutOfInventorySpaceException();
 		}
 		return true;
 	}
