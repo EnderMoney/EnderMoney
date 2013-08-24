@@ -26,7 +26,7 @@ public class PacketHandler implements IPacketHandler {
 				e.printStackTrace();
 				return;
 			}
-			if (doTrade.equals("CreativeItem")) {
+			if (doTrade.equals("CreativeItem") || doTrade.equals("Item")) {
 				if (player instanceof EntityPlayerMP) {
 					EntityPlayerMP p = (EntityPlayerMP) player;
 					if (p.openContainer instanceof AbstractTraderContainer) {
