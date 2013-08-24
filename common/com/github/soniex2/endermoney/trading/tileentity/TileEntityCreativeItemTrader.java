@@ -40,6 +40,38 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		}
 		return tradeOutputs;
 	}
+	
+	public boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
+			int outputMinSlot, int outputMaxSlot) {
+		HashMap<ItemStackMapKey, Integer> tradeInput = InventoryHelper
+				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(inv));
+		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
+
+		HashMap<ItemStackMapKey, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
+				inputMinSlot, inputMaxSlot);
+		BigInteger availableMoney = MoneyHelper.extractFromHashMap(tradeInput);
+
+		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = tradeInput.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> i = itemsRequired.iterator();
+		while (i.hasNext()) {
+			Entry<ItemStackMapKey, Integer> entry = i.next();
+			ItemStackMapKey item = entry.getKey();
+			Integer amount = entry.getValue();
+			Integer available = invInput.get(item);
+			if (available == null) {
+				return false;
+			}
+			if (available < amount) {
+				return false;
+			}
+		}
+
+		BigInteger newMoney = availableMoney.subtract(requiredMoney);
+		if (newMoney.signum() == -1) {
+			return false;
+		}
+		return true;
+	}
 
 	public boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) throws TradeException {

@@ -142,6 +142,9 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 		NBTTagCompound tag = pkt.customParam1;
 		this.owner = tag.getString("Owner");
 	}
+	
+	public abstract boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
+			int outputMinSlot, int outputMaxSlot);
 
 	public abstract boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) throws TradeException;
