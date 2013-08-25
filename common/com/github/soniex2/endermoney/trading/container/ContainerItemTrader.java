@@ -7,17 +7,17 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
 import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
 import com.github.soniex2.endermoney.trading.exception.TradeException;
-import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 
 public class ContainerItemTrader extends AbstractTraderContainer {
 
 	private InventoryBasic fakeInv;
 
 	public ContainerItemTrader(InventoryPlayer inventoryPlayer,
-			TileEntityCreativeItemTrader tileEntity, String playerName) {
+			TileEntityItemTrader tileEntity, String playerName) {
 		super(inventoryPlayer, tileEntity, playerName);
 		fakeInv = new InventoryBasic("endermoney.traders.item", false, 18);
 		int startX = 16;

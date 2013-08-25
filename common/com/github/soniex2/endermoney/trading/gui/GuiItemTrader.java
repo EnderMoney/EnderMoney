@@ -12,8 +12,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderGui;
-import com.github.soniex2.endermoney.trading.container.ContainerCreativeItemTrader;
-import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.container.ContainerItemTrader;
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -22,9 +22,9 @@ public class GuiItemTrader extends AbstractTraderGui {
 	@SuppressWarnings("unused")
 	private String playerName;
 
-	public GuiItemTrader(InventoryPlayer inventoryPlayer, TileEntityCreativeItemTrader tileEntity,
+	public GuiItemTrader(InventoryPlayer inventoryPlayer, TileEntityItemTrader tileEntity,
 			String playerName) {
-		super(new ContainerCreativeItemTrader(inventoryPlayer, tileEntity, playerName));
+		super(new ContainerItemTrader(inventoryPlayer, tileEntity, playerName));
 		ySize = 204;
 		this.playerName = playerName;
 	}

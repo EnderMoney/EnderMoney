@@ -181,4 +181,54 @@ public class InventoryHelper {
 		return itemStackArrayIntoInventory(inventory, hashMapToItemStackArray(map), start, end);
 	}
 
+	public static boolean removeFromHashMap(HashMap<ItemStackMapKey, Integer> removeFrom,
+			HashMap<ItemStackMapKey, Integer> toRemove) {
+		@SuppressWarnings("unchecked")
+		HashMap<ItemStackMapKey, Integer> backup = (HashMap<ItemStackMapKey, Integer>) removeFrom
+				.clone();
+		Set<Entry<ItemStackMapKey, Integer>> set = toRemove.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> i = set.iterator();
+		while (i.hasNext()) {
+			Entry<ItemStackMapKey, Integer> entry = i.next();
+			ItemStackMapKey item = entry.getKey();
+			Integer amount = entry.getValue();
+			Integer available = removeFrom.get(item);
+			// Compare
+			if (available == null) {
+				removeFrom.putAll(backup);
+				return false;
+			}
+			// Compare
+			if (available < amount) {
+				removeFrom.putAll(backup);
+				return false;
+			}
+			if (available - amount == 0) {
+				removeFrom.remove(item);
+				continue;
+			}
+			// Overwrite
+			removeFrom.put(item, available - amount);
+		}
+		return true;
+	}
+	
+	public static boolean canRemoveFromHashMap(HashMap<ItemStackMapKey, Integer> removeFrom,
+			HashMap<ItemStackMapKey, Integer> toRemove) {
+		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = toRemove.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> i = itemsRequired.iterator();
+		while (i.hasNext()) {
+			Entry<ItemStackMapKey, Integer> entry = i.next();
+			ItemStackMapKey item = entry.getKey();
+			Integer amount = entry.getValue();
+			Integer available = removeFrom.get(item);
+			if (available == null) {
+				return false;
+			}
+			if (available < amount) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

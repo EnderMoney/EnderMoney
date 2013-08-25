@@ -8,7 +8,9 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
 import com.github.soniex2.endermoney.trading.block.BlockCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.block.BlockItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -35,7 +37,7 @@ public class EnderMoneyTrading {
 			serverSide = "com.github.soniex2.endermoney.trading.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static Block blockCreativeItemTrader;
+	public static Block blockCreativeItemTrader, blockItemTrader;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -45,17 +47,23 @@ public class EnderMoneyTrading {
 		config.load();
 		Property creativeItemTrader = config.getBlock("trader.creative.item", 501,
 				"Creative Item Trader Block ID");
+		Property itemTrader = config.getBlock("trader.item", 503, "Creative Item Trader Block ID");
 		config.save();
 
 		blockCreativeItemTrader = new BlockCreativeItemTrader(creativeItemTrader.getInt(501));
+		blockItemTrader = new BlockItemTrader(itemTrader.getInt(503));
 
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
 				"blockCreativeItemTrader");
-		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class, "containerItemTrader");
+		GameRegistry.registerBlock(blockItemTrader, ItemBlock.class, "blockItemTrader");
+		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class,
+				"containerCreativeItemTrader");
+		GameRegistry.registerTileEntity(TileEntityItemTrader.class, "containerItemTrader");
 
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
+		LanguageRegistry.addName(blockItemTrader, "Item Trader");
 	}
 
 	@EventHandler

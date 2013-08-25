@@ -6,8 +6,11 @@ import net.minecraft.world.World;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.container.ContainerCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.container.ContainerItemTrader;
 import com.github.soniex2.endermoney.trading.gui.GuiCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.gui.GuiItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -21,6 +24,9 @@ public class GuiHandler implements IGuiHandler {
 				case 0:
 					return new ContainerCreativeItemTrader(player.inventory,
 							(TileEntityCreativeItemTrader) tileEntity, player.username);
+				case 1:
+					return new ContainerItemTrader(player.inventory,
+							(TileEntityItemTrader) tileEntity, player.username);
 			}
 		}
 		return null;
@@ -34,6 +40,9 @@ public class GuiHandler implements IGuiHandler {
 				case 0:
 					return new GuiCreativeItemTrader(player.inventory,
 							(TileEntityCreativeItemTrader) tileEntity, player.username);
+				case 1:
+					return new GuiItemTrader(player.inventory,
+							(TileEntityItemTrader) tileEntity, player.username);
 			}
 		}
 		return null;
