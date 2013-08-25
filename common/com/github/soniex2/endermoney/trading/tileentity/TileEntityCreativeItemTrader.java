@@ -43,7 +43,7 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	public boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) {
 		HashMap<ItemStackMapKey, Integer> tradeInput = InventoryHelper
-				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(inv));
+				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeInputs()));
 		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
 
 		HashMap<ItemStackMapKey, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
