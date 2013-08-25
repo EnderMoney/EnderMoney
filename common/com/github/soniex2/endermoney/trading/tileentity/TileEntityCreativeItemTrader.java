@@ -128,48 +128,9 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			invInput.put(index, 1);
 		}
 
-		ItemStack[] tradeOutputs = getTradeOutputs();
-		ItemStack[] oldOutInv = new ItemStack[outputMaxSlot - outputMinSlot + 1];
-		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
-			oldOutInv[a - outputMinSlot] = ItemStack.copyItemStack(fakeInv.getStackInSlot(a));
-		}
-		for (int a = outputMinSlot; a <= outputMaxSlot; a++) {
-			ItemStack is = fakeInv.getStackInSlot(a);
-			for (int b = 0; b < tradeOutputs.length; b++) {
-				if (is != null && tradeOutputs[b] != null && is.isItemEqual(tradeOutputs[b])
-						&& ItemStack.areItemStackTagsEqual(is, tradeOutputs[b])) {
-					if (is.isStackable()) {
-						if (is.stackSize < is.getMaxStackSize()) {
-							if (is.stackSize + tradeOutputs[b].stackSize > is.getMaxStackSize()) {
-								int newStackSize = tradeOutputs[b].stackSize + is.stackSize;
-								if (newStackSize > is.getMaxStackSize()) {
-									newStackSize = newStackSize - is.getMaxStackSize();
-								}
-								tradeOutputs[b].stackSize = newStackSize;
-								is.stackSize = is.getMaxStackSize();
-							} else {
-								is.stackSize = is.stackSize + tradeOutputs[b].stackSize;
-								tradeOutputs[b] = null;
-							}
-						}
-					}
-				} else if (is == null && tradeOutputs[b] != null) {
-					fakeInv.setInventorySlotContents(a, tradeOutputs[b]);
-					is = fakeInv.getStackInSlot(a);
-					tradeOutputs[b] = null;
-				}
-				if (tradeOutputs[b] != null && tradeOutputs[b].stackSize <= 0) {
-					tradeOutputs[b] = null;
-				}
-			}
-		}
-		for (int a = 0; a < tradeOutputs.length; a++) {
-			if (tradeOutputs[a] != null) {
-				for (int b = 0; b < oldOutInv.length; b++) {
-					fakeInv.setInventorySlotContents(b + outputMinSlot, oldOutInv[b]);
-				}
-				throw new OutOfInventorySpaceException();
-			}
+		if (!InventoryHelper.itemStackArrayIntoInventory(fakeInv, getTradeOutputs(), outputMinSlot,
+				outputMaxSlot)) {
+			throw new OutOfInventorySpaceException();
 		}
 		for (int _i = inputMinSlot; _i <= inputMaxSlot; _i++) {
 			fakeInv.setInventorySlotContents(_i, null);

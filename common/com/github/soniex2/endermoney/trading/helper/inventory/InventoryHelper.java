@@ -1,5 +1,6 @@
 package com.github.soniex2.endermoney.trading.helper.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -27,6 +28,83 @@ public class InventoryHelper {
 			inv.setInventorySlotContents(i - start, array[i]);
 		}
 		return inv;
+	}
+
+	public static ItemStack[] hashMapToItemStackArray(HashMap<ItemStackMapKey, Integer> map) {
+		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+		Set<Entry<ItemStackMapKey, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> iterator = entrySet.iterator();
+		while (iterator.hasNext()) {
+			Entry<ItemStackMapKey, Integer> entry = iterator.next();
+			ItemStackMapKey itemData = entry.getKey();
+			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
+			item.stackTagCompound = itemData.getTag();
+			Integer amount = entry.getValue();
+			if (amount == 0 || amount < 0) {
+				continue;
+			}
+			int stacks = amount / item.getMaxStackSize();
+			int extra = amount % item.getMaxStackSize();
+			ItemStack newItem = item.copy();
+			newItem.stackSize = item.getMaxStackSize();
+			for (int i = 0; i < stacks; i++) {
+				list.add(newItem);
+			}
+			if (extra != 0) {
+				newItem = item.copy();
+				newItem.stackSize = extra;
+				list.add(newItem);
+			}
+		}
+		return list.toArray(new ItemStack[list.size()]);
+	}
+
+	public static boolean itemStackArrayIntoInventory(IInventory inventory, ItemStack[] array) {
+		return itemStackArrayIntoInventory(inventory, array, 0, inventory.getSizeInventory());
+	}
+
+	public static boolean itemStackArrayIntoInventory(IInventory inventory, ItemStack[] array,
+			int start, int end) {
+		ItemStack[] oldInv = inventoryToItemStackArray(inventory, start, end);
+		for (int a = start; a <= end; a++) {
+			ItemStack is = inventory.getStackInSlot(a);
+			for (int b = 0; b < array.length; b++) {
+				if (is != null && array[b] != null && is.isItemEqual(array[b])
+						&& ItemStack.areItemStackTagsEqual(is, array[b])) {
+					if (is.isStackable()) {
+						if (is.stackSize < is.getMaxStackSize()) {
+							if (is.stackSize + array[b].stackSize > is.getMaxStackSize()) {
+								int newStackSize = array[b].stackSize + is.stackSize;
+								if (newStackSize > is.getMaxStackSize()) {
+									newStackSize = newStackSize - is.getMaxStackSize();
+								}
+								array[b].stackSize = newStackSize;
+								is.stackSize = is.getMaxStackSize();
+							} else {
+								is.stackSize = is.stackSize + array[b].stackSize;
+								array[b] = null;
+							}
+						}
+					}
+				} else if (is == null && array[b] != null) {
+					inventory.setInventorySlotContents(a, array[b]);
+					is = inventory.getStackInSlot(a);
+					array[b] = null;
+				}
+				if (array[b] != null && array[b].stackSize <= 0) {
+					array[b] = null;
+				}
+			}
+		}
+		for (int a = 0; a < array.length; a++) {
+			if (array[a] != null) {
+				for (int b = 0; b < oldInv.length; b++) {
+					inventory.setInventorySlotContents(b + start, oldInv[b]);
+				}
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static ItemStack[] inventoryToItemStackArray(IInventory inventory) {
@@ -100,45 +178,7 @@ public class InventoryHelper {
 	 */
 	public static boolean hashMapIntoInventory(IInventory inventory,
 			HashMap<ItemStackMapKey, Integer> map, int start, int end) {
-		ItemStack[] backup = inventoryToItemStackArray(inventory);
-		Set<Entry<ItemStackMapKey, Integer>> entrySet = map.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> iterator = entrySet.iterator();
-		int slot = start;
-		while (iterator.hasNext()) {
-			if (slot > end) {
-				for (int i = 0; i < backup.length; i++) {
-					inventory.setInventorySlotContents(start + i, backup[i]);
-				}
-				return false;
-			}
-			if (inventory.getStackInSlot(slot) != null) {
-				slot++;
-				continue;
-			}
-			Entry<ItemStackMapKey, Integer> entry = iterator.next();
-			ItemStackMapKey itemData = entry.getKey();
-			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
-			item.stackTagCompound = itemData.getTag();
-			Integer amount = entry.getValue();
-			if (amount == 0 || amount < 0) {
-				continue;
-			}
-			int stacks = amount / item.getMaxStackSize();
-			int extra = amount % item.getMaxStackSize();
-			ItemStack newItem = item.copy();
-			newItem.stackSize = item.getMaxStackSize();
-			for (int n = slot; n < slot + stacks; n++) {
-				inventory.setInventorySlotContents(n, newItem);
-			}
-			slot += stacks;
-			if (extra != 0) {
-				newItem = item.copy();
-				newItem.stackSize = extra;
-				inventory.setInventorySlotContents(slot, newItem);
-				slot++;
-			}
-		}
-		return true;
+		return itemStackArrayIntoInventory(inventory, hashMapToItemStackArray(map), start, end);
 	}
 
 }
