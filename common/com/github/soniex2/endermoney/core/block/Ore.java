@@ -170,7 +170,7 @@ public class Ore extends BlockOre {
 				}
 			}
 		} else {
-			int a = 2 + world.rand.nextInt(3);
+			int a = 2;
 			for (int i = 0; i < a; i++) {
 				ret.add(new ItemStack(EnderMoney.ender.superID, 1, EnderMoney.ender.itemID));
 			}

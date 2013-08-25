@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import com.github.soniex2.endermoney.core.block.LiquidCoin;
 import com.github.soniex2.endermoney.core.block.Ore;
@@ -48,6 +49,7 @@ public class EnderMoney {
 	public static Block ore;
 	public static EnderSubItem ender;
 	public static EnderSubItem ironDust;
+	public static EnderSubItem enderIngot;
 
 	@Instance("EnderMoneyCore")
 	public static EnderMoney instance;
@@ -77,6 +79,7 @@ public class EnderMoney {
 		ore = new Ore(oreID.getInt(500));
 		ender = new GenericItem(0, "dustEnder", "endermoneycore:dust", 0x228866, true);
 		ironDust = new GenericItem(1, "dustIron", "endermoneycore:dust", 0xDDDDDD);
+		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866, true);
 		fluidEC = new FluidEnderCoin();
 		blockLiqEC = new LiquidCoin(liqECID.getInt(502), fluidEC);
 
@@ -85,12 +88,14 @@ public class EnderMoney {
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
+		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
 		LanguageRegistry langRegistry = LanguageRegistry.instance();
 		langRegistry.addStringLocalization("item.endercoin.name", "EnderCoin");
 		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
 		LanguageRegistry.addName(ironDust.getItemStack(), "Iron Dust");
+		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
 		LanguageRegistry.addName(blockLiqEC, "Liquid EnderCoin");
@@ -100,12 +105,17 @@ public class EnderMoney {
 
 		if (craftable.getBoolean(true)) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin).getItemStack(1, 64),
-					false, "xyx", "y#y", "xyx", 'x', "dustEnder", 'y', "dustIron", '#',
-					new ItemStack(Item.enderPearl)));
+					false, "xyx", "y#y", "xyx", 'x', "ingotEnder", 'y', Item.ingotIron, '#',
+					Item.enderPearl));
 		}
+
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ender.getItemStack(2), "dustIron", "dustIron",
+				Item.enderPearl));
 
 		FurnaceRecipes.smelting().addSmelting(ironDust.superID, ironDust.itemID,
 				new ItemStack(Item.ingotIron, 1), 0F);
+		FurnaceRecipes.smelting().addSmelting(ender.superID, ender.itemID,
+				new ItemStack(enderIngot.superID, 1, enderIngot.itemID), 0.5F);
 
 		MinecraftForge.EVENT_BUS.register(new EventListener());
 		MinecraftForge.ORE_GEN_BUS.register(new OreGenListener());

@@ -6,7 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import com.github.soniex2.endermoney.core.EnderMoney;
 import com.github.soniex2.endermoney.trading.block.BlockCreativeItemTrader;
 import com.github.soniex2.endermoney.trading.block.BlockItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
@@ -64,6 +66,9 @@ public class EnderMoneyTrading {
 
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 		LanguageRegistry.addName(blockItemTrader, "Item Trader");
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(blockItemTrader, "xxx", "xyx", "xzx", 'x',
+				"ingotEnder", 'y', EnderMoney.coin, 'z', Block.chest));
 	}
 
 	@EventHandler
