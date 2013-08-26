@@ -66,6 +66,10 @@ public class InventoryHelper {
 	public static boolean itemStackArrayIntoInventory(IInventory inventory, ItemStack[] array,
 			int start, int end) {
 		ItemStack[] oldInv = inventoryToItemStackArray(inventory, start, end);
+		ItemStack[] arrayCopy = new ItemStack[array.length];
+		for (int i = 0; i < array.length; i++) {
+			arrayCopy[i] = array[i] == null ? null : array[i].copy();
+		}
 		for (int a = start; a <= end; a++) {
 			ItemStack is = inventory.getStackInSlot(a);
 			for (int b = 0; b < array.length; b++) {
@@ -100,6 +104,9 @@ public class InventoryHelper {
 			if (array[a] != null) {
 				for (int b = 0; b < oldInv.length; b++) {
 					inventory.setInventorySlotContents(b + start, oldInv[b]);
+				}
+				for (int i = 0; i < array.length; i++) {
+					array[i] = arrayCopy[i];
 				}
 				return false;
 			}
