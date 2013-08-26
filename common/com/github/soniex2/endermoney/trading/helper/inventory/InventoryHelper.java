@@ -219,7 +219,23 @@ public class InventoryHelper {
 		}
 		return true;
 	}
-	
+
+	public static void addToHashMap(HashMap<ItemStackMapKey, Integer> addTo,
+			HashMap<ItemStackMapKey, Integer> toAdd) {
+		Set<Entry<ItemStackMapKey, Integer>> set = toAdd.entrySet();
+		Iterator<Entry<ItemStackMapKey, Integer>> i = set.iterator();
+		while (i.hasNext()) {
+			Entry<ItemStackMapKey, Integer> entry = i.next();
+			ItemStackMapKey item = entry.getKey();
+			Integer amount = entry.getValue();
+			if (addTo.containsKey(item)) {
+				addTo.put(item, amount + addTo.get(item));
+			} else {
+				addTo.put(item, amount);
+			}
+		}
+	}
+
 	public static boolean canRemoveFromHashMap(HashMap<ItemStackMapKey, Integer> removeFrom,
 			HashMap<ItemStackMapKey, Integer> toRemove) {
 		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = toRemove.entrySet();

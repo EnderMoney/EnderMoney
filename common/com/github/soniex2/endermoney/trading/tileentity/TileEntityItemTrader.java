@@ -103,6 +103,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 
 		BigInteger nearestInvMoney = MoneyHelper.extractFromHashMap(nearestInventory);
 		nearestInvMoney = nearestInvMoney.add(requiredMoney);
+		InventoryHelper.addToHashMap(nearestInventory, tradeInput);
 
 		// Remove output from nearestInventory
 		HashMap<ItemStackMapKey, Integer> tradeOutput = InventoryHelper
