@@ -21,6 +21,7 @@ public class LiquidCoin extends BlockFluidClassic {
 		super(id, fluid, Material.water);
 		fluid.setBlockID(this);
 		this.setQuantaPerBlock(8);
+		this.setUnlocalizedName("endermoneycore.liquidMoney");
 	}
 
 	@Override

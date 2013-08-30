@@ -58,11 +58,13 @@ public class EnderMoneyTrading {
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
-				"blockCreativeItemTrader");
-		GameRegistry.registerBlock(blockItemTrader, ItemBlock.class, "blockItemTrader");
+				"endermoneytrading.blockCreativeItemTrader");
+		GameRegistry.registerBlock(blockItemTrader, ItemBlock.class,
+				"endermoneytrading.blockItemTrader");
 		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class,
-				"containerCreativeItemTrader");
-		GameRegistry.registerTileEntity(TileEntityItemTrader.class, "containerItemTrader");
+				"endermoneytrading.containerCreativeItemTrader");
+		GameRegistry.registerTileEntity(TileEntityItemTrader.class,
+				"endermoneytrading.containerItemTrader");
 
 		LanguageRegistry.addName(blockCreativeItemTrader, "Creative Item Trader");
 		LanguageRegistry.addName(blockItemTrader, "Item Trader");

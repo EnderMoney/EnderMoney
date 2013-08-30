@@ -142,7 +142,7 @@ public class Ore extends BlockOre {
 		setHardness(3.0F);
 		setResistance(5.0F);
 		setStepSound(soundStoneFootstep);
-		setUnlocalizedName("enderOre");
+		setUnlocalizedName("endermoneycore.enderOre");
 		setCreativeTab(EnderMoney.tab);
 		this.func_111022_d("EnderOre");
 	}

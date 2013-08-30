@@ -22,7 +22,7 @@ public class BlockItemTrader extends AbstractTraderBlock {
 		this.setHardness(40F);
 		this.setResistance(100F);
 		this.setStepSound(Block.soundMetalFootstep);
-		this.setUnlocalizedName("ItemTrader");
+		this.setUnlocalizedName("endermoneytrading.ItemTrader");
 	}
 
 	@Override

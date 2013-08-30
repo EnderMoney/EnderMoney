@@ -38,7 +38,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class EnderMoney {
 
-	public static final CreativeTabs tab = new CreativeTabs("EnderMoney") {
+	public static final CreativeTabs tab = new CreativeTabs("endermoneycore.EnderMoney") {
 		@Override
 		public ItemStack getIconItemStack() {
 			return ((EnderCoin) coin).getItemStack(10000000L);
@@ -92,14 +92,14 @@ public class EnderMoney {
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
 		LanguageRegistry langRegistry = LanguageRegistry.instance();
-		langRegistry.addStringLocalization("item.endercoin.name", "EnderCoin");
+		langRegistry.addStringLocalization("item.endermoneycore.endercoin.name", "EnderCoin");
 		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
 		LanguageRegistry.addName(ironDust.getItemStack(), "Iron Dust");
 		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
 		LanguageRegistry.addName(blockLiqEC, "Liquid EnderCoin");
-		langRegistry.addStringLocalization("itemGroup.EnderMoney", "EnderMoney");
+		langRegistry.addStringLocalization("itemGroup.endermoneycore.EnderMoney", "EnderMoney");
 
 		GameRegistry.addRecipe(new CoinCrafter());
 

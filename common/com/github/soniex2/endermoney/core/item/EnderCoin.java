@@ -32,7 +32,7 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 		super(id);
 		setMaxStackSize(64);
 		setCreativeTab(EnderMoney.tab);
-		setUnlocalizedName("endercoin");
+		setUnlocalizedName("endermoneycore.endercoin");
 		this.setHasSubtypes(true);
 		this.func_111206_d("EnderCoin");
 	}

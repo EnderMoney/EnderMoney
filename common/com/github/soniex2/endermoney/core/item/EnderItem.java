@@ -42,7 +42,7 @@ public class EnderItem extends Item {
 		}
 
 		public void updateIcons(IconRegister ireg) {
-			iconIndex = ireg.registerIcon(unlocalizedName);
+			iconIndex = ireg.registerIcon("endermoneycore:" + unlocalizedName);
 		}
 
 		public EnderSubItem setUnlocalizedName(String name) {
@@ -56,7 +56,7 @@ public class EnderItem extends Item {
 		}
 
 		public String getUnlocalizedName() {
-			return "item." + unlocalizedName;
+			return "item.endermoneycore." + unlocalizedName;
 		}
 
 		public String getItemDisplayName(ItemStack is) {
@@ -70,7 +70,7 @@ public class EnderItem extends Item {
 		}
 
 		public String getUnlocalizedName(ItemStack is) {
-			return "item." + unlocalizedName;
+			return getUnlocalizedName();
 		}
 
 		public int getColorFromItemStack(ItemStack is, int pass) {
@@ -96,7 +96,7 @@ public class EnderItem extends Item {
 	public EnderItem(int id) {
 		super(id);
 		setCreativeTab(EnderMoney.tab);
-		setUnlocalizedName("EnderItem");
+		setUnlocalizedName("endermoneycore.EnderItem");
 		setHasSubtypes(true);
 		func_111206_d("EnderItem");
 	}
