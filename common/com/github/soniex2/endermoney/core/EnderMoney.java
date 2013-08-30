@@ -66,6 +66,10 @@ public class EnderMoney {
 				"EnderMoney/Core.cfg");
 		Configuration config = new Configuration(configDir);
 		config.load();
+		Property blacklist = config.get(Configuration.CATEGORY_GENERAL, "blacklist", true);
+		if (blacklist.getBoolean(true)) {
+			proxy.checkBlacklist();
+		}
 		Property oreID = config.getBlock("ore", 500, "Ore Block ID");
 		Property liqECID = config.getBlock("coin.liquid", 502, "Liquid Money Block ID");
 		Property coinID = config.getItem("coin", 27000, "EnderCoin Item ID");

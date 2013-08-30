@@ -4,4 +4,8 @@ public class CommonProxy {
 	public void setCustomRenderers() {
 
 	}
+
+	public void checkBlacklist() {
+
+	}
 }
