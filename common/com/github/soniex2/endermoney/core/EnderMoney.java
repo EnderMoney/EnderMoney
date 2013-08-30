@@ -66,7 +66,6 @@ public class EnderMoney {
 				"EnderMoney/Core.cfg");
 		Configuration config = new Configuration(configDir);
 		config.load();
-		Property blacklist = config.get(Configuration.CATEGORY_GENERAL, "blacklist", true);
 		Property oreID = config.getBlock("ore", 500, "Ore Block ID");
 		Property liqECID = config.getBlock("coin.liquid", 502, "Liquid Money Block ID");
 		Property coinID = config.getItem("coin", 27000, "EnderCoin Item ID");
@@ -74,9 +73,6 @@ public class EnderMoney {
 		Property craftable = config.get(Configuration.CATEGORY_GENERAL, "coin.craftable", true,
 				"Set to false to disable coin crafting");
 		config.save();
-		if (blacklist.getBoolean(true)) {
-			proxy.checkBlacklist();
-		}
 
 		enderItem = EnderItem.instance = new EnderItem(itemID.getInt(27001));
 		coin = new EnderCoin(coinID.getInt(27000));
