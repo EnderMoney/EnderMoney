@@ -48,12 +48,12 @@ public class InventoryHelper {
 			ItemStack newItem = item.copy();
 			newItem.stackSize = item.getMaxStackSize();
 			for (int i = 0; i < stacks; i++) {
-				list.add(newItem);
+				list.add(newItem.copy());
 			}
 			if (extra != 0) {
 				newItem = item.copy();
 				newItem.stackSize = extra;
-				list.add(newItem);
+				list.add(newItem.copy());
 			}
 		}
 		return list.toArray(new ItemStack[list.size()]);
