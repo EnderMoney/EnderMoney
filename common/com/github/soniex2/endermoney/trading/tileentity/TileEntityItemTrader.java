@@ -12,7 +12,7 @@ import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
 import com.github.soniex2.endermoney.trading.exception.TradeException;
 import com.github.soniex2.endermoney.trading.helper.inventory.InventoryHelper;
-import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
+import com.github.soniex2.endermoney.trading.helper.item.ItemIdentifier;
 import com.github.soniex2.endermoney.trading.helper.money.MoneyHelper;
 
 public class TileEntityItemTrader extends AbstractTraderTileEntity {
@@ -39,11 +39,11 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 
 	public boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
 			int outputMinSlot, int outputMaxSlot) {
-		HashMap<ItemStackMapKey, Integer> tradeInput = InventoryHelper
+		HashMap<ItemIdentifier, Integer> tradeInput = InventoryHelper
 				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeInputs()));
 		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
 
-		HashMap<ItemStackMapKey, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
+		HashMap<ItemIdentifier, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
 				inputMinSlot, inputMaxSlot);
 		BigInteger availableMoney = MoneyHelper.extractFromHashMap(tradeInput);
 
@@ -63,13 +63,13 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		}
 
 		// Collect trade
-		HashMap<ItemStackMapKey, Integer> tradeInput = InventoryHelper
+		HashMap<ItemIdentifier, Integer> tradeInput = InventoryHelper
 				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeInputs()));
 		// Extract money from trade
 		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
 
 		// Collect input
-		HashMap<ItemStackMapKey, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
+		HashMap<ItemIdentifier, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
 				inputMinSlot, inputMaxSlot);
 		// Extract money from input
 		BigInteger availableMoney = MoneyHelper.extractFromHashMap(invInput);
@@ -86,7 +86,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			return false;
 		}
 
-		HashMap<ItemStackMapKey, Integer> nearestInventory = null;
+		HashMap<ItemIdentifier, Integer> nearestInventory = null;
 		IInventory nearestInv = null;
 		// Get nearestInventory
 		for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
@@ -106,7 +106,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		InventoryHelper.addToHashMap(nearestInventory, tradeInput);
 
 		// Remove output from nearestInventory
-		HashMap<ItemStackMapKey, Integer> tradeOutput = InventoryHelper
+		HashMap<ItemIdentifier, Integer> tradeOutput = InventoryHelper
 				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeOutputs()));
 		BigInteger outputMoney = MoneyHelper.extractFromHashMap(tradeOutput);
 		nearestInvMoney = nearestInvMoney.subtract(outputMoney);

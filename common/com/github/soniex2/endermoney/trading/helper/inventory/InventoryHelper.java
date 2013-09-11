@@ -10,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 
-import com.github.soniex2.endermoney.trading.helper.item.ItemStackMapKey;
+import com.github.soniex2.endermoney.trading.helper.item.ItemIdentifier;
 
 // TODO javadocs
 public class InventoryHelper {
@@ -30,13 +30,13 @@ public class InventoryHelper {
 		return inv;
 	}
 
-	public static ItemStack[] hashMapToItemStackArray(HashMap<ItemStackMapKey, Integer> map) {
+	public static ItemStack[] hashMapToItemStackArray(HashMap<ItemIdentifier, Integer> map) {
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-		Set<Entry<ItemStackMapKey, Integer>> entrySet = map.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> iterator = entrySet.iterator();
+		Set<Entry<ItemIdentifier, Integer>> entrySet = map.entrySet();
+		Iterator<Entry<ItemIdentifier, Integer>> iterator = entrySet.iterator();
 		while (iterator.hasNext()) {
-			Entry<ItemStackMapKey, Integer> entry = iterator.next();
-			ItemStackMapKey itemData = entry.getKey();
+			Entry<ItemIdentifier, Integer> entry = iterator.next();
+			ItemIdentifier itemData = entry.getKey();
 			ItemStack item = new ItemStack(itemData.item, 1, itemData.damage);
 			item.stackTagCompound = itemData.getTag();
 			Integer amount = entry.getValue();
@@ -128,19 +128,19 @@ public class InventoryHelper {
 		return array;
 	}
 
-	public static HashMap<ItemStackMapKey, Integer> inventoryToHashMap(IInventory inventory) {
+	public static HashMap<ItemIdentifier, Integer> inventoryToHashMap(IInventory inventory) {
 		return inventoryToHashMap(inventory, 0, inventory.getSizeInventory() - 1);
 	}
 
-	public static HashMap<ItemStackMapKey, Integer> inventoryToHashMap(IInventory inventory,
+	public static HashMap<ItemIdentifier, Integer> inventoryToHashMap(IInventory inventory,
 			int startSlot, int endSlot) {
-		HashMap<ItemStackMapKey, Integer> map = new HashMap<ItemStackMapKey, Integer>();
+		HashMap<ItemIdentifier, Integer> map = new HashMap<ItemIdentifier, Integer>();
 		for (int i = startSlot; i <= endSlot; i++) {
 			ItemStack is = inventory.getStackInSlot(i);
 			if (is == null) {
 				continue;
 			}
-			ItemStackMapKey index = new ItemStackMapKey(is);
+			ItemIdentifier index = new ItemIdentifier(is);
 			if (map.containsKey(index)) {
 				map.put(index, is.stackSize + map.get(index));
 			} else {
@@ -151,7 +151,7 @@ public class InventoryHelper {
 	}
 
 	/**
-	 * Inserts a {@link HashMap<ItemStackMapKey,Integer>} into an
+	 * Inserts a {@link HashMap<ItemIdentifier,Integer>} into an
 	 * {@link IInventory}.
 	 * Please note that, in case of failure, this method resets the IInventory
 	 * to its original state. Also note that the map stays unchanged.
@@ -163,12 +163,12 @@ public class InventoryHelper {
 	 * @return true if the insert was successful or false if it ran out of space
 	 */
 	public static boolean hashMapIntoInventory(IInventory inventory,
-			HashMap<ItemStackMapKey, Integer> map) {
+			HashMap<ItemIdentifier, Integer> map) {
 		return hashMapIntoInventory(inventory, map, 0, inventory.getSizeInventory() - 1);
 	}
 
 	/**
-	 * Inserts a {@link HashMap<ItemStackMapKey,Integer>} into an
+	 * Inserts a {@link HashMap<ItemIdentifier,Integer>} into an
 	 * {@link IInventory}.
 	 * Please note that, in case of failure, this method resets the IInventory
 	 * to its original state. Also note that the map stays unchanged.
@@ -184,20 +184,20 @@ public class InventoryHelper {
 	 * @return true if the insert was successful or false if it ran out of space
 	 */
 	public static boolean hashMapIntoInventory(IInventory inventory,
-			HashMap<ItemStackMapKey, Integer> map, int start, int end) {
+			HashMap<ItemIdentifier, Integer> map, int start, int end) {
 		return itemStackArrayIntoInventory(inventory, hashMapToItemStackArray(map), start, end);
 	}
 
-	public static boolean removeFromHashMap(HashMap<ItemStackMapKey, Integer> removeFrom,
-			HashMap<ItemStackMapKey, Integer> toRemove) {
+	public static boolean removeFromHashMap(HashMap<ItemIdentifier, Integer> removeFrom,
+			HashMap<ItemIdentifier, Integer> toRemove) {
 		@SuppressWarnings("unchecked")
-		HashMap<ItemStackMapKey, Integer> backup = (HashMap<ItemStackMapKey, Integer>) removeFrom
+		HashMap<ItemIdentifier, Integer> backup = (HashMap<ItemIdentifier, Integer>) removeFrom
 				.clone();
-		Set<Entry<ItemStackMapKey, Integer>> set = toRemove.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> i = set.iterator();
+		Set<Entry<ItemIdentifier, Integer>> set = toRemove.entrySet();
+		Iterator<Entry<ItemIdentifier, Integer>> i = set.iterator();
 		while (i.hasNext()) {
-			Entry<ItemStackMapKey, Integer> entry = i.next();
-			ItemStackMapKey item = entry.getKey();
+			Entry<ItemIdentifier, Integer> entry = i.next();
+			ItemIdentifier item = entry.getKey();
 			Integer amount = entry.getValue();
 			Integer available = removeFrom.get(item);
 			// Compare
@@ -220,13 +220,13 @@ public class InventoryHelper {
 		return true;
 	}
 
-	public static void addToHashMap(HashMap<ItemStackMapKey, Integer> addTo,
-			HashMap<ItemStackMapKey, Integer> toAdd) {
-		Set<Entry<ItemStackMapKey, Integer>> set = toAdd.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> i = set.iterator();
+	public static void addToHashMap(HashMap<ItemIdentifier, Integer> addTo,
+			HashMap<ItemIdentifier, Integer> toAdd) {
+		Set<Entry<ItemIdentifier, Integer>> set = toAdd.entrySet();
+		Iterator<Entry<ItemIdentifier, Integer>> i = set.iterator();
 		while (i.hasNext()) {
-			Entry<ItemStackMapKey, Integer> entry = i.next();
-			ItemStackMapKey item = entry.getKey();
+			Entry<ItemIdentifier, Integer> entry = i.next();
+			ItemIdentifier item = entry.getKey();
 			Integer amount = entry.getValue();
 			if (addTo.containsKey(item)) {
 				addTo.put(item, amount + addTo.get(item));
@@ -236,13 +236,13 @@ public class InventoryHelper {
 		}
 	}
 
-	public static boolean canRemoveFromHashMap(HashMap<ItemStackMapKey, Integer> removeFrom,
-			HashMap<ItemStackMapKey, Integer> toRemove) {
-		Set<Entry<ItemStackMapKey, Integer>> itemsRequired = toRemove.entrySet();
-		Iterator<Entry<ItemStackMapKey, Integer>> i = itemsRequired.iterator();
+	public static boolean canRemoveFromHashMap(HashMap<ItemIdentifier, Integer> removeFrom,
+			HashMap<ItemIdentifier, Integer> toRemove) {
+		Set<Entry<ItemIdentifier, Integer>> itemsRequired = toRemove.entrySet();
+		Iterator<Entry<ItemIdentifier, Integer>> i = itemsRequired.iterator();
 		while (i.hasNext()) {
-			Entry<ItemStackMapKey, Integer> entry = i.next();
-			ItemStackMapKey item = entry.getKey();
+			Entry<ItemIdentifier, Integer> entry = i.next();
+			ItemIdentifier item = entry.getKey();
 			Integer amount = entry.getValue();
 			Integer available = removeFrom.get(item);
 			if (available == null) {
