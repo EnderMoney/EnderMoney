@@ -46,7 +46,7 @@ public abstract class AbstractTraderBlock extends BlockContainer {
 				float rz = rand.nextFloat() * 0.8F + 0.1F;
 
 				EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz,
-						new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+						new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
 
 				if (item.hasTagCompound()) {
 					entityItem.getEntityItem().setTagCompound(

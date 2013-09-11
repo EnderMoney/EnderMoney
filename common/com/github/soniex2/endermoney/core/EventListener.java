@@ -61,7 +61,7 @@ public class EventListener {
 
 	@ForgeSubscribe
 	public void FillBucket(FillBucketEvent event) {
-		if (event.current.itemID == EnderMoney.coin.itemID) {
+		if (event.current.getItem() == EnderMoney.coin) {
 			if (EnderCoin.getValueFromItemStack(event.current) == Long.MAX_VALUE) {
 				event.setResult(Result.DENY);
 				return;

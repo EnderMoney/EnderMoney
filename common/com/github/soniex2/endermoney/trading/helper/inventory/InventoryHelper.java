@@ -37,7 +37,7 @@ public class InventoryHelper {
 		while (iterator.hasNext()) {
 			Entry<ItemStackMapKey, Integer> entry = iterator.next();
 			ItemStackMapKey itemData = entry.getKey();
-			ItemStack item = new ItemStack(itemData.itemID, 1, itemData.damage);
+			ItemStack item = new ItemStack(itemData.item, 1, itemData.damage);
 			item.stackTagCompound = itemData.getTag();
 			Integer amount = entry.getValue();
 			if (amount == 0 || amount < 0) {

@@ -22,8 +22,8 @@ public class MoneyHelper {
 		Iterator<ItemStackMapKey> keyIterator = keySet.iterator();
 		while (keyIterator.hasNext()) {
 			ItemStackMapKey key = keyIterator.next();
-			if (key.itemID == EnderMoney.coin.itemID) {
-				ItemStack is = new ItemStack(key.itemID, 1, key.damage);
+			if (key.item == EnderMoney.coin) {
+				ItemStack is = new ItemStack(key.item, 1, key.damage);
 				is.stackTagCompound = key.getTag();
 				long v = EnderCoin.getValueFromItemStack(is);
 				value = value.add(BigInteger.valueOf(v).multiply(BigInteger.valueOf(map.get(key))));
