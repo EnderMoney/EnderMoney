@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import com.github.soniex2.endermoney.config.ConfigBoolean;
 import com.github.soniex2.endermoney.core.block.LiquidCoin;
 import com.github.soniex2.endermoney.core.block.Ore;
 import com.github.soniex2.endermoney.core.fluid.FluidEnderCoin;
@@ -62,15 +63,19 @@ public class EnderMoney {
 	public static LiquidCoin blockLiqEC;
 
 	private static class Config {
-		public boolean craftableCoins = true;
+		public ConfigBoolean craftableCoins = new ConfigBoolean(
+				"Set to true to enable EnderCoin crafting", true);
+
+		private Config() {
+		}
 	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		
+
 		// WTF AM I EVEN DOING HERE?!?!
 		File configFile = new File(event.getModConfigurationDirectory(),
-				"EnderMoney/Core.cfg");
+				"EnderMoney/Core.json");
 		Config config = new Config();
 		if (!configFile.exists()) {
 			try {
@@ -139,10 +144,12 @@ public class EnderMoney {
 
 		GameRegistry.addRecipe(new CoinCrafter());
 
-		if (config.craftableCoins) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(((EnderCoin) coin)
-					.getItemStack(1, 64), false, "xyx", "y#y", "xyx", 'x',
-					"ingotEnder", 'y', Items.iron_ingot, '#', Items.ender_pearl));
+		if (config.craftableCoins.getValue()) {
+			GameRegistry
+					.addRecipe(new ShapedOreRecipe(((EnderCoin) coin)
+							.getItemStack(1, 64), false, "xyx", "y#y", "xyx",
+							'x', "ingotEnder", 'y', Items.iron_ingot, '#',
+							Items.ender_pearl));
 		}
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ender.getItemStack(2),
