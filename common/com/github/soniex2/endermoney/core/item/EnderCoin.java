@@ -7,7 +7,7 @@ import java.util.Random;
 import com.github.soniex2.endermoney.core.EnderMoney;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -28,18 +28,18 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 
 	private Random rand = new Random();
 
-	public EnderCoin(int id) {
-		super(id);
+	public EnderCoin() {
+		super();
 		setMaxStackSize(64);
 		setCreativeTab(EnderMoney.tab);
 		setUnlocalizedName("endermoneycore.endercoin");
 		this.setHasSubtypes(true);
-		this.func_111206_d("EnderCoin");
+		this.setTextureName("EnderCoin");
 	}
 
 	public ItemStack getItemStack(long value) {
 		ItemStack is = new ItemStack(this, 1, 0);
-		NBTTagCompound tag = new NBTTagCompound("tag");
+		NBTTagCompound tag = new NBTTagCompound();
 		tag.setLong("value", value);
 		is.setTagCompound(tag);
 		return is;
@@ -49,7 +49,7 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 	public int getColorFromItemStack(ItemStack is, int pass) {
 		NBTTagCompound tag = is.getTagCompound();
 		if (tag == null) {
-			tag = new NBTTagCompound("tag");
+			tag = new NBTTagCompound();
 			tag.setLong("value", 0);
 			is.setTagCompound(tag);
 		}
@@ -62,10 +62,10 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack is) {
+	public String getItemStackDisplayName(ItemStack is) {
 		NBTTagCompound tag = is.getTagCompound();
 		if (tag == null) {
-			tag = new NBTTagCompound("tag");
+			tag = new NBTTagCompound();
 			tag.setLong("value", 0);
 			is.setTagCompound(tag);
 		}
@@ -74,17 +74,17 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 	}
 
 	@Override
-	public void registerIcons(IconRegister ireg) {
+	public void registerIcons(IIconRegister ireg) {
 		itemIcon = ireg.registerIcon("endermoneycore:coin");
 	}
 
 	public static long getValueFromItemStack(ItemStack is) {
 		if (!(is.getItem() instanceof EnderCoin))
-			throw new IllegalArgumentException(is.getItem().getItemDisplayName(is)
+			throw new IllegalArgumentException(is.getItem().getItemStackDisplayName(is)
 					+ " is not a valid item for method EnderCoin.getValueFromItemStack");
 		NBTTagCompound tag = is.getTagCompound();
 		if (tag == null) {
-			tag = new NBTTagCompound("tag");
+			tag = new NBTTagCompound();
 			tag.setLong("value", 0);
 			is.setTagCompound(tag);
 		}
@@ -93,7 +93,7 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void func_150895_a(Item item, CreativeTabs tab, List list) {
 		for (int x = 0; x <= 63; x++) {
 			if (x != 63) {
 				list.add(getItemStack(BigInteger.valueOf(2).pow(x).longValue()));
@@ -198,7 +198,7 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 	}
 
 	public boolean tryPlaceContainedLiquid(World par1World, int par2, int par3, int par4) {
-		if (EnderMoney.blockLiqEC.blockID <= 0) {
+		if (EnderMoney.blockLiqEC) {
 			return false;
 		} else {
 			Material material = par1World.getBlockMaterial(par2, par3, par4);

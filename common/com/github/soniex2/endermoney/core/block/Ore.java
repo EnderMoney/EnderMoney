@@ -8,12 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,8 +30,8 @@ public class Ore extends BlockOre {
 
 	public static class Item extends ItemBlock {
 
-		public Item(int id) {
-			super(id);
+		public Item(Block b) {
+			super(b);
 			setHasSubtypes(true);
 		}
 
@@ -133,6 +133,12 @@ public class Ore extends BlockOre {
 		public int getRenderId() {
 			return ClientProxy.oreRenderType;
 		}
+
+		@Override
+		public boolean shouldRender3DInInventory(int modelId) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	}
 
 	private static Icon enderTexture;
@@ -166,13 +172,13 @@ public class Ore extends BlockOre {
 			for (int i = 0; i < count; i++) {
 				if (id > 0) {
 					ret.add(new ItemStack(id, 1, id == Block.oreIron.blockID ? 0
-							: EnderMoney.ironDust.itemID));
+							: EnderMoney.ironDust.idx));
 				}
 			}
 		} else {
 			int a = 2;
 			for (int i = 0; i < a; i++) {
-				ret.add(new ItemStack(EnderMoney.ender.superID, 1, EnderMoney.ender.itemID));
+				ret.add(new ItemStack(EnderMoney.ender.superID, 1, EnderMoney.ender.idx));
 			}
 		}
 		return ret;

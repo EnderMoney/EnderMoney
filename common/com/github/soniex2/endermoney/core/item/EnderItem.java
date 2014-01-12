@@ -4,27 +4,28 @@ import java.util.List;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 public class EnderItem extends Item {
 
 	public class EnderSubItem {
-		public final int itemID;
-		public final int superID = EnderItem.this.itemID;
-		protected Icon iconIndex;
+		public final int idx;
+		protected IIcon iconIndex;
 		private String unlocalizedName;
-		protected Icon altPassIcon;
+		protected IIcon altPassIcon;
 
 		public EnderSubItem(int id) {
-			itemID = id;
+			idx = id;
 			if (items[id] != null) {
-				System.out.println("CONFLICT @ " + id + " item slot already occupied by "
-						+ items[id] + " while adding " + this);
+				System.out.println("CONFLICT @ " + id
+						+ " item slot already occupied by " + items[id]
+						+ " while adding " + this);
 			}
 			items[id] = this;
 		}
@@ -34,14 +35,14 @@ public class EnderItem extends Item {
 		}
 
 		public final ItemStack getItemStack(int amount) {
-			return new ItemStack(EnderItem.this.itemID, amount, itemID);
+			return new ItemStack(EnderItem.this, amount, idx);
 		}
 
-		public Icon getIcon() {
+		public IIcon getIcon() {
 			return iconIndex;
 		}
 
-		public void updateIcons(IconRegister ireg) {
+		public void updateIcons(IIconRegister ireg) {
 			iconIndex = ireg.registerIcon("endermoneycore:" + unlocalizedName);
 		}
 
@@ -51,20 +52,20 @@ public class EnderItem extends Item {
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public void getSubItems(int id, int dmg, CreativeTabs tab, List list) {
-			list.add(new ItemStack(id, 1, dmg));
+		public void getSubItems(Item item, int dmg, CreativeTabs tab, List list) {
+			list.add(new ItemStack(item, 1, dmg));
 		}
 
 		public String getUnlocalizedName() {
 			return "item.endermoneycore." + unlocalizedName;
 		}
 
-		public String getItemDisplayName(ItemStack is) {
-			return ("" + StatCollector.translateToLocal(this.getLocalizedName(is) + ".name"))
-					.trim();
+		public String getItemStackDisplayName(ItemStack is) {
+			return ("" + StatCollector.translateToLocal(this
+					.getUnlocalizedNameInefficiently(is) + ".name")).trim();
 		}
 
-		public String getLocalizedName(ItemStack is) {
+		public String getUnlocalizedNameInefficiently(ItemStack is) {
 			String s = this.getUnlocalizedName(is);
 			return s == null ? "" : StatCollector.translateToLocal(s);
 		}
@@ -77,32 +78,41 @@ public class EnderItem extends Item {
 			return 0xFFFFFF;
 		}
 
+		@Deprecated
 		public boolean hasEffect(ItemStack is) {
 			return false;
 		}
 
-		public Icon getIconFromDamageForRenderPass(int damage, int pass) {
+		public boolean hasEffect(ItemStack is, int pass) {
+			return hasEffect(is) && (pass == 0);
+		}
+
+		public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
 			return iconIndex;
 		}
 
 		public int getRenderPasses(int metadata) {
 			return 1;
 		}
+
+		public int getItemStackLimit(ItemStack is) {
+			return 64;
+		}
 	}
 
 	private EnderSubItem[] items = new EnderSubItem[256];
 	public static EnderItem instance;
 
-	public EnderItem(int id) {
-		super(id);
+	public EnderItem() {
+		super();
 		setCreativeTab(EnderMoney.tab);
 		setUnlocalizedName("endermoneycore.EnderItem");
 		setHasSubtypes(true);
-		func_111206_d("EnderItem");
+		setTextureName("EnderItem");
 	}
 
 	@Override
-	public Icon getIconFromDamage(int dmg) {
+	public IIcon getIconFromDamage(int dmg) {
 		dmg &= 0xFF;
 		if (items[dmg] != null)
 			return items[dmg].getIcon();
@@ -111,7 +121,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
-	public void registerIcons(IconRegister ireg) {
+	public void registerIcons(IIconRegister ireg) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
 				items[x].updateIcons(ireg);
@@ -120,10 +130,10 @@ public class EnderItem extends Item {
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack is) {
+	public String getItemStackDisplayName(ItemStack is) {
 		int x = is.getItemDamage();
 		if (items[x] != null)
-			return items[x].getItemDisplayName(is);
+			return items[x].getItemStackDisplayName(is);
 		else
 			return "";
 	}
@@ -143,20 +153,20 @@ public class EnderItem extends Item {
 	}
 
 	@Override
-	public String getLocalizedName(ItemStack is) {
+	public String getUnlocalizedNameInefficiently(ItemStack is) {
 		int x = is.getItemDamage();
 		if (items[x] != null)
-			return items[x].getLocalizedName(is);
+			return items[x].getUnlocalizedNameInefficiently(is);
 		else
 			return "";
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void func_150895_a(Item item, CreativeTabs tab, List list) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
-				items[x].getSubItems(id, x, tab, list);
+				items[x].getSubItems(item, x, tab, list);
 			}
 		}
 	}
@@ -164,14 +174,16 @@ public class EnderItem extends Item {
 	@Override
 	public int getColorFromItemStack(ItemStack is, int pass) {
 		int dmg = is.getItemDamage();
-		if (items[dmg] != null) return items[dmg].getColorFromItemStack(is, pass);
+		if (items[dmg] != null)
+			return items[dmg].getColorFromItemStack(is, pass);
 		return 0xFFFFFF;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack is) {
+	public boolean hasEffect(ItemStack is, int pass) {
 		int dmg = is.getItemDamage();
-		if (items[dmg] != null) return items[dmg].hasEffect(is);
+		if (items[dmg] != null)
+			return items[dmg].hasEffect(is, pass);
 		return false;
 	}
 
@@ -181,13 +193,22 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	public int getItemStackLimit(ItemStack is) {
+		int dmg = is.getItemDamage();
+		if (items[dmg] != null)
+			return items[dmg].getItemStackLimit(is);
+		return 64;
+	}
+
+	@Override
 	public int getRenderPasses(int metadata) {
-		if (items[metadata] != null) return items[metadata].getRenderPasses(metadata);
+		if (items[metadata] != null)
+			return items[metadata].getRenderPasses(metadata);
 		return 1;
 	}
 
 	@Override
-	public Icon getIconFromDamageForRenderPass(int damage, int pass) {
+	public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
 		if (items[damage] != null)
 			return items[damage].getIconFromDamageForRenderPass(damage, pass);
 		return this.itemIcon;

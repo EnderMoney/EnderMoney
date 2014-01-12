@@ -1,6 +1,6 @@
 package com.github.soniex2.endermoney.core.item;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 
 import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
@@ -28,7 +28,7 @@ public class GenericItem extends EnderSubItem {
 	}
 
 	@Override
-	public void updateIcons(IconRegister ireg) {
+	public void updateIcons(IIconRegister ireg) {
 		iconIndex = ireg.registerIcon(texture);
 	}
 
@@ -38,6 +38,7 @@ public class GenericItem extends EnderSubItem {
 	}
 
 	@Override
+	@Deprecated
 	public boolean hasEffect(ItemStack is) {
 		return hasEffect;
 	}
