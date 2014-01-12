@@ -13,16 +13,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumMovingObjectType;
+//import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event;
+//import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class EnderCoin extends Item implements IFluidContainerItem {
+public class EnderCoin extends Item /*implements IFluidContainerItem*/ {
 
 	private long capacity = Long.MAX_VALUE;
 
@@ -109,7 +109,7 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 		return is;
 	}
 
-	@Override
+/*	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world,
 				player, true);
@@ -268,5 +268,5 @@ public class EnderCoin extends Item implements IFluidContainerItem {
 			container.stackTagCompound
 					.setLong("value", getValueFromItemStack(container) - maxDrain);
 		return stack;
-	}
+	}*/
 }

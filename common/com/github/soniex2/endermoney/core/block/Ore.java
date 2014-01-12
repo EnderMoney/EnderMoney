@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -43,42 +44,48 @@ public class Ore extends BlockOre {
 
 	public static class Renderer implements ISimpleBlockRenderingHandler {
 
-		private void
-				renderFace(int s, double x, double y, double z, Block b, int m, RenderBlocks r) {
+		private void renderFace(int s, double x, double y, double z, Block b,
+				int m, RenderBlocks r) {
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
 			switch (s) {
-				case 0: // -Y
-					tessellator.setNormal(0.0F, -1.0F, 0.0F);
-					r.renderFaceYNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 1, m));
-					break;
-				case 1: // +Y
-					tessellator.setNormal(0.0F, 1.0F, 0.0F);
-					r.renderFaceYPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 1, m));
-					break;
-				case 2: // +X
-					tessellator.setNormal(1.0F, 0.0F, 0.0F);
-					r.renderFaceXPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 2, m));
-					break;
-				case 3: // -X
-					tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-					r.renderFaceXNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 3, m));
-					break;
-				case 4: // +Z
-					tessellator.setNormal(0.0F, 0.0F, 1.0F);
-					r.renderFaceZPos(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 4, m));
-					break;
-				case 5: // -Z
-					tessellator.setNormal(0.0F, 0.0F, -1.0F);
-					r.renderFaceZNeg(b, x, y, z, r.getBlockIconFromSideAndMetadata(b, 5, m));
-					break;
+			case 0: // -Y
+				tessellator.setNormal(0.0F, -1.0F, 0.0F);
+				r.renderFaceYNeg(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 1, m));
+				break;
+			case 1: // +Y
+				tessellator.setNormal(0.0F, 1.0F, 0.0F);
+				r.renderFaceYPos(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 1, m));
+				break;
+			case 2: // +X
+				tessellator.setNormal(1.0F, 0.0F, 0.0F);
+				r.renderFaceXPos(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 2, m));
+				break;
+			case 3: // -X
+				tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+				r.renderFaceXNeg(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 3, m));
+				break;
+			case 4: // +Z
+				tessellator.setNormal(0.0F, 0.0F, 1.0F);
+				r.renderFaceZPos(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 4, m));
+				break;
+			case 5: // -Z
+				tessellator.setNormal(0.0F, 0.0F, -1.0F);
+				r.renderFaceZNeg(b, x, y, z,
+						r.getBlockIconFromSideAndMetadata(b, 5, m));
+				break;
 			}
 			tessellator.draw();
 		}
 
 		@Override
-		public void renderInventoryBlock(Block par1Block, int par2, int modelID,
-				RenderBlocks renderer) {
+		public void renderInventoryBlock(Block par1Block, int par2,
+				int modelID, RenderBlocks renderer) {
 			par1Block.setBlockBoundsForItemRender();
 			renderer.setRenderBoundsFromBlock(par1Block);
 			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -107,8 +114,8 @@ public class Ore extends BlockOre {
 		}
 
 		@Override
-		public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block,
-				int modelId, RenderBlocks renderer) {
+		public boolean renderWorldBlock(IBlockAccess world, int x, int y,
+				int z, Block block, int modelId, RenderBlocks renderer) {
 			if (world.getBlockMetadata(x, y, z) == 0) {
 				renderer.renderStandardBlock(Block.oreIron, x, y, z);
 			} else {
@@ -118,7 +125,8 @@ public class Ore extends BlockOre {
 				r = 0x22 / 255.0F;
 				g = 0x88 / 255.0F;
 				b = 0x66 / 255.0F;
-				renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, r, g, b);
+				renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
+						r, g, b);
 				renderer.clearOverrideBlockTexture();
 			}
 			return true;
@@ -141,57 +149,62 @@ public class Ore extends BlockOre {
 		}
 	}
 
-	private static Icon enderTexture;
+	private static IIcon enderTexture;
 
-	public Ore(int id) {
-		super(id);
+	public Ore() {
+		super();
 		setHardness(3.0F);
 		setResistance(5.0F);
 		setStepSound(soundStoneFootstep);
 		setUnlocalizedName("endermoneycore.enderOre");
-		setCreativeTab(EnderMoney.tab);
+		func_149647_a(EnderMoney.tab); // setCreativeTab
 		this.func_111022_d("EnderOre");
 	}
 
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		if (par1 == 0) {
-			if (par2Random.nextInt(4) == 0) return EnderMoney.ironDust.superID;
+			if (par2Random.nextInt(4) == 0)
+				return EnderMoney.ironDust.superID;
 			return Block.oreIron.blockID;
 		} else
 			return EnderMoney.ender.superID;
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata,
-			int fortune) {
+	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y,
+			int z, int metadata, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		if (metadata == 0) {
 			int id = idDropped(metadata, world.rand, fortune);
 			int count = id == Block.oreIron.blockID ? 1 : 2;
 			for (int i = 0; i < count; i++) {
 				if (id > 0) {
-					ret.add(new ItemStack(id, 1, id == Block.oreIron.blockID ? 0
-							: EnderMoney.ironDust.idx));
+					ret.add(new ItemStack(id, 1,
+							id == Block.oreIron.blockID ? 0
+									: EnderMoney.ironDust.idx));
 				}
 			}
 		} else {
 			int a = 2;
 			for (int i = 0; i < a; i++) {
-				ret.add(new ItemStack(EnderMoney.ender.superID, 1, EnderMoney.ender.idx));
+				ret.add(new ItemStack(EnderMoney.ender.superID, 1,
+						EnderMoney.ender.idx));
 			}
 		}
 		return ret;
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = Block.oreIron.getIcon(0, 0);
+	public void func_149651_a(IIconRegister par1IconRegister) { // registerBlockIcons
+		// blockIcon = Blocks.iron_ore.getIcon(0, 0);
+		field_149761_L = Blocks.iron_ore.func_149691_a(0, 0);
 		enderTexture = par1IconRegister.registerIcon("endermoneycore:orebase");
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int meta) {
+	public boolean canSilkHarvest(World world, EntityPlayer player, int x,
+			int y, int z, int meta) {
 		if (meta == 0)
 			return false;
 		else
@@ -227,17 +240,18 @@ public class Ore extends BlockOre {
 	}
 
 	@Override
-	public Icon getIcon(int s, int m) {
+	public IIcon func_149691_a(int s, int m) { // getIcon
 		if (m == 0)
-			return blockIcon;
+			return field_149761_L; // blockIcon
 		else
 			return enderTexture;
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5,
-			float par6, int par7) {
-		super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, par7);
+	public void dropBlockAsItemWithChance(World par1World, int par2, int par3,
+			int par4, int par5, float par6, int par7) {
+		super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5,
+				par6, par7);
 
 		if (par5 == 1 && idDropped(par5, par1World.rand, par7) != blockID) {
 			int j1 = MathHelper.getRandomIntegerInRange(par1World.rand, 2, 5);
