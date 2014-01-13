@@ -59,8 +59,9 @@ public class EnderMoney {
 
 	@SidedProxy(clientSide = "com.github.soniex2.endermoney.core.ClientProxy", serverSide = "com.github.soniex2.endermoney.core.CommonProxy")
 	public static CommonProxy proxy;
-	public static FluidEnderCoin fluidEC;
-	public static LiquidCoin blockLiqEC;
+
+	// public static FluidEnderCoin fluidEC;
+	// public static LiquidCoin blockLiqEC;
 
 	private static class Config {
 		public ConfigBoolean craftableCoins = new ConfigBoolean(
@@ -119,11 +120,11 @@ public class EnderMoney {
 				0xDDDDDD);
 		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866,
 				true);
-		fluidEC = new FluidEnderCoin();
-		blockLiqEC = new LiquidCoin(fluidEC);
+		// fluidEC = new FluidEnderCoin();
+		// blockLiqEC = new LiquidCoin(0, fluidEC);
 
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
-		GameRegistry.registerBlock(blockLiqEC, "endermoneycore.liquidMoney");
+		// GameRegistry.registerBlock(blockLiqEC, "endermoneycore.liquidMoney");
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
@@ -138,7 +139,7 @@ public class EnderMoney {
 		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
-		LanguageRegistry.addName(blockLiqEC, "Liquid EnderCoin");
+		// LanguageRegistry.addName(blockLiqEC, "Liquid EnderCoin");
 		langRegistry.addStringLocalization(
 				"itemGroup.endermoneycore.EnderMoney", "EnderMoney");
 
