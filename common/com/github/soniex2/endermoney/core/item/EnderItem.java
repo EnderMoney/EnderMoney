@@ -6,7 +6,6 @@ import com.github.soniex2.endermoney.core.EnderMoney;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -113,9 +112,8 @@ public class EnderItem extends Item {
 
 	@Override
 	public IIcon getIconFromDamage(int dmg) {
-		dmg &= 0xFF;
-		if (items[dmg] != null)
-			return items[dmg].getIcon();
+		if (items[dmg & 255] != null)
+			return items[dmg & 255].getIcon();
 		else
 			return itemIcon;
 	}
@@ -161,7 +159,6 @@ public class EnderItem extends Item {
 			return "";
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void func_150895_a(Item item, CreativeTabs tab, List list) {
 		for (int x = 0; x < items.length; x++) {

@@ -4,9 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -18,9 +16,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import com.github.soniex2.endermoney.config.ConfigBoolean;
-import com.github.soniex2.endermoney.core.block.LiquidCoin;
 import com.github.soniex2.endermoney.core.block.Ore;
-import com.github.soniex2.endermoney.core.fluid.FluidEnderCoin;
 import com.github.soniex2.endermoney.core.item.EnderCoin;
 import com.github.soniex2.endermoney.core.item.EnderItem;
 import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
@@ -47,9 +43,11 @@ public class EnderMoney {
 			return null;
 		}
 	};
+	private static final int[] enderMoneyValues = new int[] { 1, 2, 5, 10, 25,
+			50, 100 };
 	public static EnderItem enderItem;
-	public static Item coin;
-	public static Block ore;
+	public static EnderCoin coin;
+	public static Ore ore;
 	public static EnderSubItem ender;
 	public static EnderSubItem ironDust;
 	public static EnderSubItem enderIngot;
@@ -59,9 +57,6 @@ public class EnderMoney {
 
 	@SidedProxy(clientSide = "com.github.soniex2.endermoney.core.ClientProxy", serverSide = "com.github.soniex2.endermoney.core.CommonProxy")
 	public static CommonProxy proxy;
-
-	// public static FluidEnderCoin fluidEC;
-	// public static LiquidCoin blockLiqEC;
 
 	private static class Config {
 		public ConfigBoolean craftableCoins = new ConfigBoolean(
@@ -112,7 +107,7 @@ public class EnderMoney {
 		// END
 
 		enderItem = EnderItem.instance = new EnderItem();
-		coin = new EnderCoin();
+		coin = new EnderCoin(enderMoneyValues);
 		ore = new Ore();
 		ender = new GenericItem(0, "dustEnder", "endermoneycore:dust",
 				0x228866, true);
@@ -120,11 +115,8 @@ public class EnderMoney {
 				0xDDDDDD);
 		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866,
 				true);
-		// fluidEC = new FluidEnderCoin();
-		// blockLiqEC = new LiquidCoin(0, fluidEC);
 
 		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
-		// GameRegistry.registerBlock(blockLiqEC, "endermoneycore.liquidMoney");
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
@@ -139,18 +131,16 @@ public class EnderMoney {
 		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
 		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
-		// LanguageRegistry.addName(blockLiqEC, "Liquid EnderCoin");
 		langRegistry.addStringLocalization(
 				"itemGroup.endermoneycore.EnderMoney", "EnderMoney");
 
-		GameRegistry.addRecipe(new CoinCrafter());
+		coin.registerRecipes();
 
 		if (config.craftableCoins.getValue()) {
 			GameRegistry
-					.addRecipe(new ShapedOreRecipe(((EnderCoin) coin)
-							.getItemStack(1, 64), false, "xyx", "y#y", "xyx",
-							'x', "ingotEnder", 'y', Items.iron_ingot, '#',
-							Items.ender_pearl));
+					.addRecipe(new ShapedOreRecipe(new ItemStack(coin, 1, 0),
+							false, "xyx", "y#y", "xyx", 'x', "ingotEnder", 'y',
+							Items.iron_ingot, '#', Items.ender_pearl));
 		}
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ender.getItemStack(2),
