@@ -44,7 +44,7 @@ public class EnderCoin extends Item {
 				return;
 			for (int x = 0; x < metadata.length; x++) {
 				int v = metadata[x];
-				if ((index == 0 || v >= recipe[index - 1]) && v <= left) {
+				if ((index == 0 || v >= metadata[recipe[index - 1]]) && v <= left) {
 					recipe[index] = x;
 					registerRecipes(left - v, index + 1, recipe, handler);
 				}
