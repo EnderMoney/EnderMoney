@@ -13,7 +13,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CoinRecipe implements IRecipe {
 
 	private ItemStack output;
-	private int count;
 	private ArrayList<int[]> recipes = new ArrayList<int[]>();
 
 	public CoinRecipe(Item enderCoin, int coinMeta) {
@@ -94,7 +93,7 @@ public class CoinRecipe implements IRecipe {
 	}
 
 	public void register() {
-		if (count > 0) {
+		if (recipes.size() > 0) {
 			GameRegistry.addRecipe(this);
 		}
 	}
