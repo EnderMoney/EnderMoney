@@ -52,7 +52,7 @@ public class Ore extends BlockOre {
 			case 0: // -Y
 				tessellator.setNormal(0.0F, -1.0F, 0.0F);
 				r.renderFaceYNeg(b, x, y, z,
-						r.getBlockIconFromSideAndMetadata(b, 1, m));
+						r.getBlockIconFromSideAndMetadata(b, 0, m));
 				break;
 			case 1: // +Y
 				tessellator.setNormal(0.0F, 1.0F, 0.0F);
@@ -95,7 +95,7 @@ public class Ore extends BlockOre {
 					renderFace(a, 0.0, 0.0, 0.0, par1Block, par2, renderer);
 				}
 			} else {
-				Block b = Block.whiteStone;
+				Block b = Blocks.end_stone;
 				for (int a = 0; a < 6; a++) {
 					renderFace(a, 0.0, 0.0, 0.0, b, 0, renderer);
 				}
@@ -117,9 +117,9 @@ public class Ore extends BlockOre {
 		public boolean renderWorldBlock(IBlockAccess world, int x, int y,
 				int z, Block block, int modelId, RenderBlocks renderer) {
 			if (world.getBlockMetadata(x, y, z) == 0) {
-				renderer.renderStandardBlock(Block.oreIron, x, y, z);
+				renderer.renderStandardBlock(Blocks.iron_ore, x, y, z);
 			} else {
-				renderer.renderStandardBlock(Block.whiteStone, x, y, z);
+				renderer.renderStandardBlock(Blocks.end_stone, x, y, z);
 				renderer.setOverrideBlockTexture(enderTexture);
 				float r, g, b;
 				r = 0x22 / 255.0F;

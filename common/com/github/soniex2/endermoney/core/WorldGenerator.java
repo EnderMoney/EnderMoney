@@ -2,7 +2,7 @@ package com.github.soniex2.endermoney.core;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -22,14 +22,14 @@ public class WorldGenerator implements IWorldGenerator {
 			case 1:
 				startX = chunkX * 16;
 				startZ = chunkZ * 16;
-				WorldGenMinable ender = new WorldGenMinable(EnderMoney.ore.blockID, 1, 8,
-						Block.whiteStone.blockID);
+				WorldGenMinable ender = new WorldGenMinable(EnderMoney.ore, 1, 8,
+						Blocks.end_stone);
 				generateOre(startX, startZ, world, random, 20, ender, 0, 64);
 				break;
 			default:
 				startX = chunkX * 16;
 				startZ = chunkZ * 16;
-				WorldGenMinable iron = new WorldGenMinable(EnderMoney.ore.blockID, 8);
+				WorldGenMinable iron = new WorldGenMinable(EnderMoney.ore, 8);
 				generateOre(startX, startZ, world, random, 20, iron, 0, 64);
 		}
 	}

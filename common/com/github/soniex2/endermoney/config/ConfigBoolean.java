@@ -1,5 +1,6 @@
 package com.github.soniex2.endermoney.config;
 
+@SuppressWarnings("unused")
 public class ConfigBoolean {
 
 	private String comment;

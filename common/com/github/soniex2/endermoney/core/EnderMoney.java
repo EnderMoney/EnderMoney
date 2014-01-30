@@ -47,7 +47,7 @@ public class EnderMoney {
 			50, 100 };
 	public static EnderItem enderItem;
 	public static EnderCoin coin;
-	public static Ore ore;
+	//public static Ore ore;
 	public static EnderSubItem ender;
 	public static EnderSubItem ironDust;
 	public static EnderSubItem enderIngot;
@@ -108,7 +108,7 @@ public class EnderMoney {
 
 		enderItem = EnderItem.instance = new EnderItem();
 		coin = new EnderCoin(enderMoneyValues);
-		ore = new Ore();
+		//ore = new Ore();
 		ender = new GenericItem(0, "dustEnder", "endermoneycore:dust",
 				0x228866, true);
 		ironDust = new GenericItem(1, "dustIron", "endermoneycore:dust",
@@ -116,12 +116,12 @@ public class EnderMoney {
 		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866,
 				true);
 
-		GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
+		//GameRegistry.registerBlock(ore, Ore.Item.class, "endermoneycore.ore");
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
 		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
-		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
+		//OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
 		LanguageRegistry langRegistry = LanguageRegistry.instance();
 		langRegistry.addStringLocalization(
@@ -129,8 +129,8 @@ public class EnderMoney {
 		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
 		LanguageRegistry.addName(ironDust.getItemStack(), "Iron Dust");
 		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
-		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
-		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
+		//LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
+		//LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
 		langRegistry.addStringLocalization(
 				"itemGroup.endermoneycore.EnderMoney", "EnderMoney");
 
@@ -154,7 +154,7 @@ public class EnderMoney {
 				new ItemStack(enderItem, 1, enderIngot.idx), 0.5F);
 
 		MinecraftForge.EVENT_BUS.register(new EventListener());
-		MinecraftForge.ORE_GEN_BUS.register(new OreGenListener());
+		//MinecraftForge.ORE_GEN_BUS.register(new OreGenListener());
 
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 1);
 	}
