@@ -7,7 +7,6 @@ import java.util.Random;
 import com.github.soniex2.endermoney.core.CoinRecipe;
 import com.github.soniex2.endermoney.core.EnderMoney;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -33,7 +32,7 @@ public class EnderCoin extends Item {
 		for (int x = 0; x < metadata.length; x++) {
 			CoinRecipe handler = new CoinRecipe(this, x);
 			registerRecipes(metadata[x], 0, new int[9], handler);
-			GameRegistry.addRecipe(handler);
+			handler.register();
 		}
 	}
 

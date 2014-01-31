@@ -2,6 +2,8 @@ package com.github.soniex2.endermoney.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -13,7 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CoinRecipe implements IRecipe {
 
 	private ItemStack output;
-	private ArrayList<int[]> recipes = new ArrayList<int[]>();
+	private List<int[]> recipes = new ArrayList<int[]>();
 
 	public CoinRecipe(Item enderCoin, int coinMeta) {
 		output = new ItemStack(enderCoin, 1, coinMeta);
@@ -93,6 +95,7 @@ public class CoinRecipe implements IRecipe {
 	}
 
 	public void register() {
+		recipes = Collections.unmodifiableList(recipes);
 		if (recipes.size() > 0) {
 			GameRegistry.addRecipe(this);
 		}
