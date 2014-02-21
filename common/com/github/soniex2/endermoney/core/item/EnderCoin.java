@@ -78,7 +78,9 @@ public class EnderCoin extends Item {
 	}
 
 	@Override
-	public void func_150895_a(Item item, CreativeTabs tab, List list) {
-
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
+		for (int i = 0; i < metadata.length; i++) {
+			list.add(new ItemStack(item, 1, i));
+		}
 	}
 }

@@ -160,7 +160,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
-	public void func_150895_a(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
 				items[x].getSubItems(item, x, tab, list);

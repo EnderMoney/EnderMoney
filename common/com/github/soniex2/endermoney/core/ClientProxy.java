@@ -1,6 +1,6 @@
 package com.github.soniex2.endermoney.core;
 
-import com.github.soniex2.endermoney.core.block.Ore;
+import com.github.soniex2.endermoney.core.block.BlockEnderOreRenderer;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -11,7 +11,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void setCustomRenderers() {
 		oreRenderType = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new Ore.Renderer());
+		RenderingRegistry.registerBlockHandler(new BlockEnderOreRenderer());
 	}
 
 }
