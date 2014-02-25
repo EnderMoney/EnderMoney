@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
 import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
@@ -24,15 +25,15 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		int startY = 7;
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				addSlotToContainer(new Slot(fakeInv, x + (y * 3), startX + (x * 18), startY
-						+ (y * 18)));
+				addSlotToContainer(new Slot(fakeInv, x + (y * 3), startX
+						+ (x * 18), startY + (y * 18)));
 			}
 		}
 		startX = 107;
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				addSlotToContainer(new OutputSlot(fakeInv, 9 + x + (y * 3), startX + (x * 18), startY
-						+ (y * 18)));
+				addSlotToContainer(new OutputSlot(fakeInv, 9 + x + (y * 3),
+						startX + (x * 18), startY + (y * 18)));
 			}
 		}
 	}
@@ -47,7 +48,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		}
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, a + j * 18, b + i * 18));
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, a + j
+						* 18, b + i * 18));
 			}
 		}
 	}
@@ -59,15 +61,15 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 			int startY = 64;
 			for (int x = 0; x < 3; x++) {
 				for (int y = 0; y < 3; y++) {
-					addSlotToContainer(new Slot(inventory, x + (y * 3), startX + (x * 18), startY
-							+ (y * 18)));
+					addSlotToContainer(new Slot(inventory, x + (y * 3), startX
+							+ (x * 18), startY + (y * 18)));
 				}
 			}
 			startX = 107;
 			for (int x = 0; x < 3; x++) {
 				for (int y = 0; y < 3; y++) {
-					addSlotToContainer(new Slot(inventory, 9 + x + (y * 3), startX + (x * 18),
-							startY + (y * 18)));
+					addSlotToContainer(new Slot(inventory, 9 + x + (y * 3),
+							startX + (x * 18), startY + (y * 18)));
 				}
 			}
 		} else {
@@ -75,15 +77,15 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 			int startY = 64;
 			for (int x = 0; x < 3; x++) {
 				for (int y = 0; y < 3; y++) {
-					addSlotToContainer(new ReadOnlySlot(inventory, x + (y * 3), startX + (x * 18),
-							startY + (y * 18)));
+					addSlotToContainer(new ReadOnlySlot(inventory, x + (y * 3),
+							startX + (x * 18), startY + (y * 18)));
 				}
 			}
 			startX = 107;
 			for (int x = 0; x < 3; x++) {
 				for (int y = 0; y < 3; y++) {
-					addSlotToContainer(new ReadOnlySlot(inventory, 9 + x + (y * 3), startX
-							+ (x * 18), startY + (y * 18)));
+					addSlotToContainer(new ReadOnlySlot(inventory, 9 + x
+							+ (y * 3), startX + (x * 18), startY + (y * 18)));
 				}
 			}
 		}
@@ -124,11 +126,11 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		if (!tileEntity.worldObj.isRemote) {
+		if (!tileEntity.getWorldObj().isRemote) {
 			for (int i = 0; i < fakeInv.getSizeInventory(); ++i) {
 				ItemStack itemstack = this.fakeInv.getStackInSlotOnClosing(i);
 				if (itemstack != null) {
-					player.dropPlayerItem(itemstack);
+					player.dropPlayerItemWithRandomChoice(itemstack, false);
 				}
 			}
 		}
@@ -137,11 +139,13 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 	@Override
 	public void doTrade(EntityPlayer player) {
 		try {
-			((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8, 9, 17);
+			((TileEntityCreativeItemTrader) tileEntity).doTrade(fakeInv, 0, 8,
+					9, 17);
 		} catch (OutOfInventorySpaceException e) {
-			player.addChatMessage("Please empty the output inventory");
+			player.addChatMessage(new ChatComponentText(
+					"Please empty the output inventory"));
 		} catch (TradeException e) {
-			player.addChatMessage("Something went wrong!");
+			player.addChatMessage(new ChatComponentText("Something went wrong!"));
 			e.printStackTrace();
 		}
 		this.detectAndSendChanges();

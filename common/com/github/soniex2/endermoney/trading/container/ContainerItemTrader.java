@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
@@ -124,11 +125,11 @@ public class ContainerItemTrader extends AbstractTraderContainer {
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		if (!tileEntity.worldObj.isRemote) {
+		if (!tileEntity.getWorldObj().isRemote) {
 			for (int i = 0; i < fakeInv.getSizeInventory(); ++i) {
 				ItemStack itemstack = this.fakeInv.getStackInSlotOnClosing(i);
 				if (itemstack != null) {
-					player.dropPlayerItem(itemstack);
+					player.dropPlayerItemWithRandomChoice(itemstack,false);
 				}
 			}
 		}
@@ -139,9 +140,9 @@ public class ContainerItemTrader extends AbstractTraderContainer {
 		try {
 			tileEntity.doTrade(fakeInv, 0, 8, 9, 17);
 		} catch (OutOfInventorySpaceException e) {
-			player.addChatMessage("Please empty the output inventory");
+			player.addChatMessage(new ChatComponentText("Please empty the output inventory"));
 		} catch (TradeException e) {
-			player.addChatMessage("Something went wrong!");
+			player.addChatMessage(new ChatComponentText("Something went wrong!"));
 			e.printStackTrace();
 		}
 		this.detectAndSendChanges();

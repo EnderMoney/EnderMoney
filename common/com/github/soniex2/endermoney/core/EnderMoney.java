@@ -124,6 +124,7 @@ public class EnderMoney {
 		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
+		// TODO: JSON
 		LanguageRegistry langRegistry = LanguageRegistry.instance();
 		langRegistry.addStringLocalization(
 				"item.endermoneycore.endercoin.name", "EnderCoin");

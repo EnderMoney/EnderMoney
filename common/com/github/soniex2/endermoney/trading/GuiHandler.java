@@ -12,37 +12,49 @@ import com.github.soniex2.endermoney.trading.gui.GuiItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 
+@SuppressWarnings("boxing")
 public class GuiHandler implements IGuiHandler {
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+	public Object getServerGuiElement(int id, EntityPlayer player, World world,
+			int x, int y, int z) {
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity instanceof AbstractTraderTileEntity) {
-			switch (ID) {
-				case 0:
-					return new ContainerCreativeItemTrader(player.inventory,
-							(TileEntityCreativeItemTrader) tileEntity, player.username);
-				case 1:
-					return new ContainerItemTrader(player.inventory,
-							(TileEntityItemTrader) tileEntity, player.username);
+			switch (id) {
+			case 0:
+				return new ContainerCreativeItemTrader(player.inventory,
+						(TileEntityCreativeItemTrader) tileEntity,
+						player.getCommandSenderName());
+			case 1:
+				return new ContainerItemTrader(player.inventory,
+						(TileEntityItemTrader) tileEntity,
+						player.getCommandSenderName());
+			default:
+				FMLLog.warning("Invalid GUI Element ID: %s", id);
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+	public Object getClientGuiElement(int id, EntityPlayer player, World world,
+			int x, int y, int z) {
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity instanceof AbstractTraderTileEntity) {
-			switch (ID) {
-				case 0:
-					return new GuiCreativeItemTrader(player.inventory,
-							(TileEntityCreativeItemTrader) tileEntity, player.username);
-				case 1:
-					return new GuiItemTrader(player.inventory,
-							(TileEntityItemTrader) tileEntity, player.username);
+			switch (id) {
+			case 0:
+				return new GuiCreativeItemTrader(player.inventory,
+						(TileEntityCreativeItemTrader) tileEntity,
+						player.getCommandSenderName());
+			case 1:
+				return new GuiItemTrader(player.inventory,
+						(TileEntityItemTrader) tileEntity,
+						player.getCommandSenderName());
+			default:
+				FMLLog.warning("Invalid GUI Element ID: %s", id);
 			}
 		}
 		return null;

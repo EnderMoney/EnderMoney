@@ -23,6 +23,7 @@ public class ItemIdentifier {
 		this.tag = (NBTTagCompound) (tagCompound != null ? tagCompound.copy() : null);
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ItemIdentifier)) return false;
 		return item == ((ItemIdentifier) obj).item
@@ -31,6 +32,7 @@ public class ItemIdentifier {
 						.equals(((ItemIdentifier) obj).tag));
 	}
 
+	@Override
 	public int hashCode() {
 		return (item.getUnlocalizedName() + ":" + (damage & 65536) + (tag != null ? (":("
 				+ tag.toString() + ")") : "")).hashCode();
