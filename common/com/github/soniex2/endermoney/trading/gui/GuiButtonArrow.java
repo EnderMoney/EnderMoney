@@ -15,11 +15,10 @@ public class GuiButtonArrow extends GuiButton {
 
 	@Override
 	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
-		if (this.drawButton) {
+		if (this.visible) {
 			ResourceLocation rs = new ResourceLocation("endermoneytrading",
 					"textures/gui/itemtrader.png");
-			par1Minecraft.func_110434_K().func_110577_a(rs);
-			// par1Minecraft.renderEngine.bindTexture("/assets/endermoneytrading/textures/gui/itemtrader.png");
+			par1Minecraft.getTextureManager().bindTexture(rs);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			boolean flag = par2 >= this.xPosition && par3 >= this.yPosition
 					&& par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
