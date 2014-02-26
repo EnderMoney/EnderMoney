@@ -1,9 +1,20 @@
 package com.github.soniex2.endermoney.trading.tileentity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityHopper;
+
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.exception.TradeException;
+import com.github.soniex2.endermoney.trading.helper.inventory.IterableInventoryWrapper;
+import com.github.soniex2.endermoney.trading.helper.item.ItemIdentifier;
+
 import cpw.mods.fml.common.FMLLog;
 
 public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
@@ -53,17 +64,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 				outputMaxSlot)) {
 			return false;
 		}
+
 		return false;
-	}
-
-	public boolean isInvNameLocalized() {
-		return false;
-	}
-
-	public void openChest() {
-	}
-
-	public void closeChest() {
 	}
 
 	@Override

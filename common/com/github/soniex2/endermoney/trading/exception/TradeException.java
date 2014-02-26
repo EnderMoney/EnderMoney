@@ -19,5 +19,10 @@ public class TradeException extends Exception {
 	public TradeException(Throwable cause) {
 		super(cause);
 	}
+	
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
 
 }

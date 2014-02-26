@@ -1,19 +1,19 @@
 package com.github.soniex2.endermoney.trading.tileentity;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.tileentity.TileEntityChest;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
-import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
 import com.github.soniex2.endermoney.trading.exception.TradeException;
-import com.github.soniex2.endermoney.trading.helper.inventory.InventoryHelper;
+import com.github.soniex2.endermoney.trading.helper.inventory.IterableInventoryWrapper;
 import com.github.soniex2.endermoney.trading.helper.item.ItemIdentifier;
-import com.github.soniex2.endermoney.trading.helper.money.MoneyHelper;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class TileEntityItemTrader extends AbstractTraderTileEntity {
 
@@ -21,6 +21,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		super(18);
 	}
 
+	@Override
 	public ItemStack[] getTradeInputs() {
 		ItemStack[] tradeInputs = new ItemStack[9];
 		for (int i = 0; i < 9; i++) {
@@ -29,6 +30,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		return tradeInputs;
 	}
 
+	@Override
 	public ItemStack[] getTradeOutputs() {
 		ItemStack[] tradeOutputs = new ItemStack[9];
 		for (int i = 0; i < 9; i++) {
@@ -37,140 +39,110 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 		return tradeOutputs;
 	}
 
-	public boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
-			int outputMinSlot, int outputMaxSlot) {
-		HashMap<ItemIdentifier, Integer> tradeInput = InventoryHelper
-				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeInputs()));
-		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
-
-		HashMap<ItemIdentifier, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
-				inputMinSlot, inputMaxSlot);
-		BigInteger availableMoney = MoneyHelper.extractFromHashMap(tradeInput);
-
-		if (!InventoryHelper.canRemoveFromHashMap(invInput, tradeInput)) return false;
-
-		BigInteger newMoney = availableMoney.subtract(requiredMoney);
-		if (newMoney.signum() == -1) {
+	@Override
+	public boolean canTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot) {
+		if (this.worldObj.isRemote)
 			return false;
-		}
-		return true;
-	}
-
-	public boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
-			int outputMinSlot, int outputMaxSlot) throws TradeException {
-		if (fakeInv == null) {
-			throw new TradeException(new NullPointerException());
-		}
-
-		// Collect trade
-		HashMap<ItemIdentifier, Integer> tradeInput = InventoryHelper
-				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeInputs()));
-		// Extract money from trade
-		BigInteger requiredMoney = MoneyHelper.extractFromHashMap(tradeInput);
-
-		// Collect input
-		HashMap<ItemIdentifier, Integer> invInput = InventoryHelper.inventoryToHashMap(fakeInv,
-				inputMinSlot, inputMaxSlot);
-		// Extract money from input
-		BigInteger availableMoney = MoneyHelper.extractFromHashMap(invInput);
-
-		// Remove from map
-		if (!InventoryHelper.removeFromHashMap(invInput, tradeInput)) {
+		if (fakeInv == null)
 			return false;
-		}
 
-		// Decrease trade money from input money
-		BigInteger newMoney = availableMoney.subtract(requiredMoney);
-		// Compare
-		if (newMoney.signum() == -1) {
-			return false;
-		}
+		ItemStack[] inp = getTradeInputs();
 
-		HashMap<ItemIdentifier, Integer> nearestInventory = null;
-		IInventory nearestInv = null;
-		// Get nearestInventory
-		for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tile = worldObj.getBlockTileEntity(xCoord + d.offsetX, yCoord + d.offsetY,
-					zCoord + d.offsetZ);
-			if (tile != null && tile instanceof IInventory
-					&& ((IInventory) tile).getSizeInventory() > 2) {
-				nearestInv = (IInventory) tile;
-				nearestInventory = InventoryHelper.inventoryToHashMap(nearestInv);
-				break;
+		int[][] indx = new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 },
+				{ -1, 0, 0 }, { 0, -1, 0 }, { 0, 0, -1 } };
+		ArrayList<IInventory> invs = new ArrayList<IInventory>();
+		for (int[] i : indx) {
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + i[0],
+					this.yCoord + i[1], this.zCoord + i[2]);
+			if (te == null || !(te instanceof IInventory)) {
+				continue;
+			}
+			invs.add((IInventory) te);
+			if (te instanceof TileEntityChest) {
+				if (((TileEntityChest) te).adjacentChestXNeg != null) {
+					invs.add(((TileEntityChest) te).adjacentChestXNeg);
+				} else if (((TileEntityChest) te).adjacentChestZNeg != null) {
+					invs.add(((TileEntityChest) te).adjacentChestZNeg);
+				} else if (((TileEntityChest) te).adjacentChestXPos != null) {
+					invs.add(((TileEntityChest) te).adjacentChestXPos);
+				} else if (((TileEntityChest) te).adjacentChestZPos != null) {
+					invs.add(((TileEntityChest) te).adjacentChestZPos);
+				}
 			}
 		}
-		if (nearestInventory == null) return false;
 
-		BigInteger nearestInvMoney = MoneyHelper.extractFromHashMap(nearestInventory);
-		nearestInvMoney = nearestInvMoney.add(requiredMoney);
-		InventoryHelper.addToHashMap(nearestInventory, tradeInput);
+		HashMap<ItemIdentifier, Integer> map = new HashMap<ItemIdentifier, Integer>();
 
-		// Remove output from nearestInventory
-		HashMap<ItemIdentifier, Integer> tradeOutput = InventoryHelper
-				.inventoryToHashMap(InventoryHelper.itemStackArrayToInventory(getTradeOutputs()));
-		BigInteger outputMoney = MoneyHelper.extractFromHashMap(tradeOutput);
-		nearestInvMoney = nearestInvMoney.subtract(outputMoney);
-		if (nearestInvMoney.signum() == -1) {
-			return false;
+		for (IInventory inv : invs) {
+			for (ItemStack is : new IterableInventoryWrapper(inv)) {
+				if (is == null)
+					continue;
+				ItemIdentifier id = new ItemIdentifier(is);
+				if (map.containsKey(id)) {
+					map.put(id, map.get(id) + is.stackSize);
+				} else {
+					map.put(id, is.stackSize);
+				}
+			}
 		}
-		InventoryHelper.removeFromHashMap(nearestInventory, tradeOutput);
 
-		MoneyHelper.insertIntoHashMap(nearestInventory, nearestInvMoney);
+		for (ItemStack is : inv) {
+			if (is == null)
+				continue;
+			ItemIdentifier id = new ItemIdentifier(is);
+			if (!map.containsKey(id))
+				return false;
+			map.put(id, map.get(id) - is.stackSize);
+		}
 
-		MoneyHelper.insertIntoHashMap(invInput, newMoney);
+		for (Integer i : map.values()) {
+			if (i < 0)
+				return false;
+		}
 
-		ItemStack[] outBackup = InventoryHelper.inventoryToItemStackArray(fakeInv, outputMinSlot,
-				outputMaxSlot);
-		ItemStack[] inBackup = InventoryHelper.inventoryToItemStackArray(fakeInv, inputMinSlot,
-				inputMaxSlot);
-		ItemStack[] nearbyBackup = InventoryHelper.inventoryToItemStackArray(nearestInv);
-		// Insert output
-		if (!InventoryHelper.itemStackArrayIntoInventory(fakeInv, getTradeOutputs(), outputMinSlot,
-				outputMaxSlot)) {
-			throw new OutOfInventorySpaceException();
-		}
-		// Clear input
-		for (int i = inputMinSlot; i <= inputMaxSlot; i++) {
-			fakeInv.setInventorySlotContents(i, null);
-		}
-		// Insert input
-		if (!InventoryHelper.hashMapIntoInventory(fakeInv, invInput, inputMinSlot, inputMaxSlot)) {
-			InventoryHelper.itemStackArrayIntoInventory(fakeInv, outBackup, outputMinSlot,
-					outputMaxSlot);
-			InventoryHelper.itemStackArrayIntoInventory(fakeInv, inBackup, inputMinSlot,
-					inputMaxSlot);
-			throw new OutOfInventorySpaceException();
-		}
-		for (int i = 0; i < nearestInv.getSizeInventory(); i++) {
-			nearestInv.setInventorySlotContents(i, null);
-		}
-		if (!InventoryHelper.hashMapIntoInventory(nearestInv, nearestInventory)) {
-			InventoryHelper.itemStackArrayIntoInventory(fakeInv, outBackup, outputMinSlot,
-					outputMaxSlot);
-			InventoryHelper.itemStackArrayIntoInventory(fakeInv, inBackup, inputMinSlot,
-					inputMaxSlot);
-			InventoryHelper.itemStackArrayIntoInventory(nearestInv, nearbyBackup);
-			throw new OutOfInventorySpaceException();
-		}
 		return true;
 	}
 
 	@Override
-	public String getInvName() {
-		return "endermoney.traders.item";
-	}
+	public boolean doTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot)
+			throws TradeException {
+		if (this.worldObj.isRemote)
+			return false;
+		if (fakeInv == null) {
+			FMLLog.severe("Please send the following stack trace to SoniEx2:\n"
+					+ "%s\n" + "==================== END ====================",
+					org.apache.commons.lang3.exception.ExceptionUtils
+							.getStackTrace(new Exception()));
+			return false;
+		}
+		if (!canTrade(fakeInv, inputMinSlot, inputMaxSlot, outputMinSlot,
+				outputMaxSlot)) {
+			return false;
+		}
 
-	@Override
-	public boolean isInvNameLocalized() {
 		return false;
 	}
 
 	@Override
-	public void openChest() {
+	public String getInventoryName() {
+		return "endermoney.traders.item";
 	}
 
 	@Override
-	public void closeChest() {
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+
+	@Override
+	public void openInventory() {
+
+	}
+
+	@Override
+	public void closeInventory() {
+
 	}
 
 }
