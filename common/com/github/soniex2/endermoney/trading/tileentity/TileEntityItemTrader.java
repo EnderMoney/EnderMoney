@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
 import com.github.soniex2.endermoney.trading.exception.TradeException;
@@ -44,17 +45,20 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			int inputMaxSlot, int outputMinSlot, int outputMaxSlot) {
 		if (this.worldObj.isRemote)
 			return false;
-		if (fakeInv == null)
+		if (fakeInv == null || fakeInv.getSizeInventory() <= inputMinSlot
+				|| fakeInv.getSizeInventory() <= inputMaxSlot
+				|| fakeInv.getSizeInventory() <= outputMinSlot
+				|| fakeInv.getSizeInventory() <= outputMaxSlot)
 			return false;
 
 		ItemStack[] inp = getTradeInputs();
 
-		int[][] indx = new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 },
-				{ -1, 0, 0 }, { 0, -1, 0 }, { 0, 0, -1 } };
+		// Inv list
 		ArrayList<IInventory> invs = new ArrayList<IInventory>();
-		for (int[] i : indx) {
-			TileEntity te = this.worldObj.getTileEntity(this.xCoord + i[0],
-					this.yCoord + i[1], this.zCoord + i[2]);
+		for (ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS) {
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord
+					+ fd.offsetX, this.yCoord + fd.offsetY, this.zCoord
+					+ fd.offsetZ);
 			if (te == null || !(te instanceof IInventory)) {
 				continue;
 			}
@@ -72,8 +76,8 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			}
 		}
 
+		// ItemStacks
 		HashMap<ItemIdentifier, Integer> map = new HashMap<ItemIdentifier, Integer>();
-
 		for (IInventory inv : invs) {
 			for (ItemStack is : new IterableInventoryWrapper(inv)) {
 				if (is == null)
@@ -87,7 +91,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			}
 		}
 
-		for (ItemStack is : inv) {
+		for (ItemStack is : inp) {
 			if (is == null)
 				continue;
 			ItemIdentifier id = new ItemIdentifier(is);
@@ -96,7 +100,7 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			map.put(id, map.get(id) - is.stackSize);
 		}
 
-		for (Integer i : map.values()) {
+		for (int i : map.values()) {
 			if (i < 0)
 				return false;
 		}
