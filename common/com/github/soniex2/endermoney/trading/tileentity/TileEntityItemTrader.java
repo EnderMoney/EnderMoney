@@ -1,12 +1,18 @@
 package com.github.soniex2.endermoney.trading.tileentity;
 
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.minecraft.block.BlockChest;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
@@ -62,17 +68,15 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			if (te == null || !(te instanceof IInventory)) {
 				continue;
 			}
-			invs.add((IInventory) te);
-			if (te instanceof TileEntityChest) {
-				if (((TileEntityChest) te).adjacentChestXNeg != null) {
-					invs.add(((TileEntityChest) te).adjacentChestXNeg);
-				} else if (((TileEntityChest) te).adjacentChestZNeg != null) {
-					invs.add(((TileEntityChest) te).adjacentChestZNeg);
-				} else if (((TileEntityChest) te).adjacentChestXPos != null) {
-					invs.add(((TileEntityChest) te).adjacentChestXPos);
-				} else if (((TileEntityChest) te).adjacentChestZPos != null) {
-					invs.add(((TileEntityChest) te).adjacentChestZPos);
+			if (worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord) instanceof BlockChest) {
+				IInventory object = Blocks.chest.func_149951_m(worldObj,
+						te.xCoord, te.yCoord, te.zCoord);
+				if (object == null) {
+					continue;
 				}
+				invs.add(object);
+			} else {
+				invs.add((IInventory) te);
 			}
 		}
 
