@@ -68,16 +68,12 @@ public class TileEntityItemTrader extends AbstractTraderTileEntity {
 			if (te == null || !(te instanceof IInventory)) {
 				continue;
 			}
+			IInventory chest = null;
 			if (worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord) instanceof BlockChest) {
-				IInventory object = Blocks.chest.func_149951_m(worldObj,
-						te.xCoord, te.yCoord, te.zCoord);
-				if (object == null) {
-					continue;
-				}
-				invs.add(object);
-			} else {
-				invs.add((IInventory) te);
+				chest = Blocks.chest.func_149951_m(worldObj, te.xCoord,
+						te.yCoord, te.zCoord);
 			}
+			invs.add(chest != null ? chest : (IInventory) te);
 		}
 
 		// ItemStacks
