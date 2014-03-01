@@ -29,9 +29,8 @@ public class BlockEnderOre extends BlockOre {
 		setHardness(3.0F);
 		setResistance(5.0F);
 		setStepSound(Block.soundTypeStone);
-		setBlockName("endermoneycore.enderOre");
+		setBlockName("endermoney.ore");
 		setCreativeTab(EnderMoney.tab);
-		this.setBlockTextureName("endermoneycore:orebase");
 	}
 
 	@Override
@@ -73,8 +72,7 @@ public class BlockEnderOre extends BlockOre {
 
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		blockIcon = Blocks.iron_ore.getIcon(0, 0);
-		oreTexture = par1IconRegister.registerIcon("endermoneycore:orebase");
+		
 	}
 
 	@Override
@@ -116,7 +114,7 @@ public class BlockEnderOre extends BlockOre {
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 		if (metadata == 0)
-			return blockIcon;
+			return Blocks.iron_ore.getIcon(side, metadata);
 		else
 			return oreTexture;
 	}
