@@ -36,8 +36,9 @@ public class EnderMoneyTrading {
 	public static CommonProxy proxy;
 
 	public static Block blockCreativeItemTrader, blockItemTrader;
-	
-	public static final PacketPipeline packetPipe = new PacketPipeline("EnderMoney|Trading");
+
+	public static final PacketPipeline packetPipe = new PacketPipeline(
+			"EnderMoney|Trading");
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -47,14 +48,14 @@ public class EnderMoneyTrading {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
 		GameRegistry.registerBlock(blockCreativeItemTrader, ItemBlock.class,
-				"endermoneytrading.blockCreativeItemTrader");
+				"creative_item_trader", "endermoney");
 		GameRegistry.registerBlock(blockItemTrader, ItemBlock.class,
-				"endermoneytrading.blockItemTrader");
+				"item_trader", "endermoney");
 		GameRegistry.registerTileEntity(TileEntityCreativeItemTrader.class,
 				"endermoneytrading.containerCreativeItemTrader");
 		GameRegistry.registerTileEntity(TileEntityItemTrader.class,
 				"endermoneytrading.containerItemTrader");
-		
+
 		packetPipe.registerPacket(TradePacket.class);
 
 		// TODO: JSON

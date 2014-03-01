@@ -27,15 +27,20 @@ public class CoinRecipe implements IRecipe {
 		int a = 0;
 		for (int x = 0; x < size; x++) {
 			ItemStack s = ctInv.getStackInSlot(x);
+			if (s == null)
+				continue;
 			if (s.getItem() != output.getItem())
 				return false;
 			int m = s.getItemDamage();
 			if (m > a)
 				a = m;
 		}
-		int[] b = new int[a];
+		int[] b = new int[a + 1];
 		for (int x = 0; x < size; x++) {
-			int m = ctInv.getStackInSlot(x).getItemDamage();
+			ItemStack s = ctInv.getStackInSlot(x);
+			if (s == null)
+				continue;
+			int m = s.getItemDamage();
 			b[m] = b[m] + 1;
 		}
 		for (int[] recipe : recipes) {
@@ -52,15 +57,20 @@ public class CoinRecipe implements IRecipe {
 		int a = 0;
 		for (int x = 0; x < size; x++) {
 			ItemStack s = ctInv.getStackInSlot(x);
+			if (s == null)
+				continue;
 			if (s.getItem() != output.getItem())
 				return null;
 			int m = s.getItemDamage();
 			if (m > a)
 				a = m;
 		}
-		int[] b = new int[a];
+		int[] b = new int[a + 1];
 		for (int x = 0; x < size; x++) {
-			int m = ctInv.getStackInSlot(x).getItemDamage();
+			ItemStack s = ctInv.getStackInSlot(x);
+			if (s == null)
+				continue;
+			int m = s.getItemDamage();
 			b[m] = b[m] + 1;
 		}
 		for (int[] recipe : recipes) {
@@ -87,7 +97,7 @@ public class CoinRecipe implements IRecipe {
 			if (m > a)
 				a = m;
 		}
-		int[] b = new int[a];
+		int[] b = new int[a + 1];
 		for (int m : recipe) {
 			b[m] = b[m] + 1;
 		}

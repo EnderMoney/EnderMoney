@@ -1,0 +1,8 @@
+itemGroup.endermoneycore.EnderMoney=EnderMoney
+tile.endermoney.ore.0.name=Dusty Iron Ore
+tile.endermoney.ore.1.name=Ender Ore
+tile.endermoneytrading.creativeIT.name=Creative Item Trader
+tile.endermoneytrading.ItemTrader.name=Item Trader
+item.endermoneycore.dustEnder.name=Ender Dust
+item.endermoneycore.dustIron.name=Iron Dust
+item.endermoneycore.ingotEnder.name=Ender Ingot

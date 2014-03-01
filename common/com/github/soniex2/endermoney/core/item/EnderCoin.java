@@ -4,13 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.input.Keyboard;
+
 import com.github.soniex2.endermoney.core.CoinRecipe;
 import com.github.soniex2.endermoney.core.EnderMoney;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 public class EnderCoin extends Item {
 
@@ -22,9 +29,9 @@ public class EnderCoin extends Item {
 		super();
 		setMaxStackSize(64);
 		setCreativeTab(EnderMoney.tab);
-		setUnlocalizedName("endermoneycore.endercoin");
+		setUnlocalizedName("endermoney.endercoin");
 		this.setHasSubtypes(true);
-		this.setTextureName("EnderCoin");
+		this.setTextureName("endermoneycore:coin");
 		metadata = Arrays.copyOf(values, values.length);
 	}
 
@@ -43,7 +50,8 @@ public class EnderCoin extends Item {
 				return;
 			for (int x = 0; x < metadata.length; x++) {
 				int v = metadata[x];
-				if ((index == 0 || v >= metadata[recipe[index - 1]]) && v <= left) {
+				if ((index == 0 || v >= metadata[recipe[index - 1]])
+						&& v <= left) {
 					recipe[index] = x;
 					registerRecipes(left - v, index + 1, recipe, handler);
 				}
@@ -54,6 +62,7 @@ public class EnderCoin extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack is, int pass) {
 		int v = is.getItemDamage();
 		rand.setSeed(v);
@@ -73,14 +82,36 @@ public class EnderCoin extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister ireg) {
 		itemIcon = ireg.registerIcon("endermoneycore:coin");
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		for (int i = 0; i < metadata.length; i++) {
 			list.add(new ItemStack(item, 1, i));
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack is, EntityPlayer player, List list,
+			boolean debugMode) {
+		super.addInformation(is, player, list, debugMode);
+		if (Keyboard
+				.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak
+						.getKeyCode())) {
+			list.add("Nothing! -- Sorry D:");
+			if (debugMode) { // F3+H
+				list.add(EnumChatFormatting.GRAY
+						+ String.format("Color: #%06X",
+								getColorFromItemStack(is, 0))
+						+ EnumChatFormatting.RESET);
+			}
+		} else {
+			list.add("Sneak to expand");
 		}
 	}
 }

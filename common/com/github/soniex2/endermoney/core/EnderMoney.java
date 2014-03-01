@@ -41,7 +41,12 @@ public class EnderMoney {
 			"endermoneycore.EnderMoney") {
 		@Override
 		public Item getTabIconItem() {
-			return null;
+			return coin;
+		}
+
+		@Override
+		public int func_151243_f() {
+			return 0;
 		}
 	};
 	private static final int[] enderMoneyValues = new int[] { 1, 2, 5, 10, 25,
@@ -76,6 +81,7 @@ public class EnderMoney {
 		Config config = new Config();
 		if (!configFile.exists()) {
 			try {
+				configFile.getParentFile().mkdirs();
 				FileOutputStream out = new FileOutputStream(configFile);
 				Gson gson = new Gson();
 				String s = gson.toJson(config);
@@ -117,7 +123,10 @@ public class EnderMoney {
 		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866,
 				true);
 
-		GameRegistry.registerBlock(ore, ItemBlockEnderOre.class, "endermoneycore.ore");
+		GameRegistry.registerBlock(ore, ItemBlockEnderOre.class, "ender_ore",
+				"endermoney");
+		GameRegistry.registerItem(coin, "endercoin", "endermoney");
+		GameRegistry.registerItem(enderItem, "ender_item", "endermoney");
 
 		OreDictionary.registerOre("dustEnder", ender.getItemStack());
 		OreDictionary.registerOre("dustIron", ironDust.getItemStack());
