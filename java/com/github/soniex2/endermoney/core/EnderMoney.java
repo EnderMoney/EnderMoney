@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -133,6 +135,7 @@ public class EnderMoney {
 		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
+		RecipeSorter.register("endermoney:endercoin", CoinRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
 		coin.registerRecipes();
 
 		if (config.craftableCoins.getValue()) {

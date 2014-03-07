@@ -1,38 +1,37 @@
-{
-  "modinfoversion": 2,
-  "modlist": [{
-    "modid": "EnderMoneyCore",
-    "name": "EnderMoney Core",
-    "description": "The Ultimate Currency Mod.",
-    "version": "${version}.${build} ${codebase}",
-    "mcversion": "${mcversion}",
-    "url": "http://www.minecraftforum.net/topic/1753762-/",
-    "updateUrl": "",
-    "authors": [ "SoniEx2" ],
-    "credits": "TK",
-    "logoFile": "",
-    "screenshots": [],
-    "parent": "",
-    "requiredMods": [ "Forge" ],
-    "dependencies": [ "Forge" ],
-    "dependants": [],
-    "useDependencyInformation": "true"
-  },{
-    "modid": "EnderMoneyTrading",
-    "name": "EnderMoney Trading",
-    "description": "The Ultimate Currency Mod.",
-    "version": "${version}.${build} ${codebase}",
-    "mcversion": "${mcversion}",
-    "url": "http://www.minecraftforum.net/topic/1753762-/",
-    "updateUrl": "",
-    "authors": [ "SoniEx2" ],
-    "credits": "TK",
-    "logoFile": "",
-    "screenshots": [],
-    "parent": "EnderMoneyCore",
-    "requiredMods": [ "Forge", "EnderMoneyCore" ],
-    "dependencies": [ "Forge", "EnderMoneyCore" ],
-    "dependants": [],
-    "useDependencyInformation": "true"
-  }]
-}
+[
+    {
+        "modid": "EnderMoneyCore",
+        "name": "EnderMoney Core",
+        "description": "The Ultimate Currency Mod.",
+        "version": "${version}.${build} ${codebase}",
+        "mcversion": "${mcversion}",
+        "url": "http://www.minecraftforum.net/topic/1753762-/",
+        "updateUrl": "",
+        "authors": [ "SoniEx2" ],
+        "credits": "Trader GUI texture by TK",
+        "logoFile": "",
+        "screenshots": [],
+        "parent": "",
+        "requiredMods": [ "Forge" ],
+        "dependencies": [ "Forge" ],
+        "dependants": [],
+        "useDependencyInformation": true
+    },{
+        "modid": "EnderMoneyTrading",
+        "name": "EnderMoney Trading",
+        "description": "The Ultimate Currency Mod.",
+        "version": "${version}.${build} ${codebase}",
+        "mcversion": "${mcversion}",
+        "url": "http://www.minecraftforum.net/topic/1753762-/",
+        "updateUrl": "",
+        "authors": [ "SoniEx2" ],
+        "credits": "Trader GUI texture by TK",
+        "logoFile": "",
+        "screenshots": [],
+        "parent": "EnderMoneyCore",
+        "requiredMods": [ "Forge", "EnderMoneyCore" ],
+        "dependencies": [ "Forge", "EnderMoneyCore" ],
+        "dependants": [],
+        "useDependencyInformation": true
+    }
+]
