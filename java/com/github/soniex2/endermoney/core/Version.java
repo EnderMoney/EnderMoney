@@ -5,13 +5,13 @@ public final class Version {
 	/**
 	 * Mod version.
 	 */
-	public static final String VERSION = "0.1.0";
-	/**
-	 * Revision. How many times the code got reset (rewritten from scratch).
-	 */
-	public static final int REVISION = 1;
+	public static final String VERSION = "@VERSION@";
+
+	public static final String CODEBASE = "@CODEBASE@";
+	
+	public static final String BUILD_NUMBER = "@BUILD_NUMBER@";
 	/**
 	 * Version string used by the main mod class.
 	 */
-	public static final String MOD_VERSION = VERSION + " r" + REVISION;
+	public static final String MOD_VERSION = VERSION + "." + BUILD_NUMBER + " " + CODEBASE;
 }

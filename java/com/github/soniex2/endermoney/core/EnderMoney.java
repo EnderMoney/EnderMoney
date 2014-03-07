@@ -133,18 +133,6 @@ public class EnderMoney {
 		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
-		// TODO: JSON
-		LanguageRegistry langRegistry = LanguageRegistry.instance();
-		langRegistry.addStringLocalization(
-				"item.endermoneycore.endercoin.name", "EnderCoin");
-		LanguageRegistry.addName(ender.getItemStack(), "Ender Dust");
-		LanguageRegistry.addName(ironDust.getItemStack(), "Iron Dust");
-		LanguageRegistry.addName(enderIngot.getItemStack(), "Ender Ingot");
-		LanguageRegistry.addName(new ItemStack(ore, 1, 0), "Dusty Iron Ore");
-		LanguageRegistry.addName(new ItemStack(ore, 1, 1), "Ender Ore");
-		langRegistry.addStringLocalization(
-				"itemGroup.endermoneycore.EnderMoney", "EnderMoney");
-
 		coin.registerRecipes();
 
 		if (config.craftableCoins.getValue()) {

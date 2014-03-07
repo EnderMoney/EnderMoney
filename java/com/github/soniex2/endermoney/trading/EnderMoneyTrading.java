@@ -8,6 +8,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
+import com.github.soniex2.endermoney.core.Version;
 import com.github.soniex2.endermoney.trading.block.BlockCreativeItemTrader;
 import com.github.soniex2.endermoney.trading.block.BlockItemTrader;
 import com.github.soniex2.endermoney.trading.packet.PacketPipeline;
@@ -57,11 +58,6 @@ public class EnderMoneyTrading {
 				"endermoneytrading.containerItemTrader");
 
 		packetPipe.registerPacket(TradePacket.class);
-
-		// TODO: JSON
-		LanguageRegistry.addName(blockCreativeItemTrader,
-				"Creative Item Trader");
-		LanguageRegistry.addName(blockItemTrader, "Item Trader");
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(blockItemTrader, "xxx",
 				"xyx", "xzx", 'x', "ingotEnder", 'y', new ItemStack(
