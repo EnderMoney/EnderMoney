@@ -13,17 +13,22 @@ import net.minecraft.tileentity.TileEntity;
 public abstract class AbstractTraderTileEntity extends TileEntity implements
 		IInventory {
 
+	/**
+	 * Enum containing trade statuses.
+	 * @author SoniEx2
+	 *
+	 */
 	public static enum TradeStatus {
 		/**
-		 * Can trade
+		 * Can trade.
 		 */
 		AVAILABLE,
 		/**
-		 * Trade successful
+		 * Trade successful.
 		 */
 		SUCCESS,
 		/**
-		 * Trader results full
+		 * Trader results full.
 		 */
 		RESULTS_FULL,
 		/**
@@ -39,15 +44,15 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements
 		 */
 		NO_INPUT,
 		/**
-		 * Not enough items on trader input
+		 * Not enough items on trader input.
 		 */
 		NOT_ENOUGH_INPUT,
 		/**
-		 * Not enough items on input chest/inventory
+		 * Not enough items on input chest/inventory.
 		 */
 		NOT_ENOUGH_TRADE_ITEMS,
 		/**
-		 * For any invalid data, be it input or state
+		 * For any invalid data, be it input or state.
 		 */
 		INVALID;
 	}
@@ -212,6 +217,23 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements
 		}
 	}
 
+	/**
+	 * Simulate/run a trade.
+	 * 
+	 * @param fakeInv
+	 *            - The trader inventory.
+	 * @param inputMinSlot
+	 *            - Trader inventory input start slot.
+	 * @param inputMaxSlot
+	 *            - Trader inventory input end slot.
+	 * @param outputMinSlot
+	 *            - Trader inventory output start slot.
+	 * @param outputMaxSlot
+	 *            - Trader inventory output end slot.
+	 * @param really
+	 *            - True to run, false to simulate.
+	 * @return The trade status. See {@link TradeStatus}.
+	 */
 	public abstract TradeStatus doTrade(IInventory fakeInv, int inputMinSlot,
 			int inputMaxSlot, int outputMinSlot, int outputMaxSlot,
 			boolean really);
