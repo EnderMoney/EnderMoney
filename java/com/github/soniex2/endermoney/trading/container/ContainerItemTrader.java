@@ -8,10 +8,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 
-import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
-import com.github.soniex2.endermoney.trading.exception.OutOfInventorySpaceException;
-import com.github.soniex2.endermoney.trading.exception.TradeException;
+import com.github.soniex2.endermoney.trading.tileentity.TileEntityItemTrader;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class ContainerItemTrader extends AbstractTraderContainer {
 
@@ -137,13 +137,33 @@ public class ContainerItemTrader extends AbstractTraderContainer {
 
 	@Override
 	public void doTrade(EntityPlayer player) {
-		try {
-			tileEntity.doTrade(fakeInv, 0, 8, 9, 17);
-		} catch (OutOfInventorySpaceException e) {
-			player.addChatMessage(new ChatComponentText("Please empty the output inventory"));
-		} catch (TradeException e) {
-			player.addChatMessage(new ChatComponentText("Something went wrong!"));
-			e.printStackTrace();
+		switch (tileEntity.doTrade(fakeInv, 0, 8, 9, 17, true)) {
+		case NO_OUTPUT:
+			player.addChatMessage(new ChatComponentText(
+					"Whoops! This trader has nowhere to output to!"));
+			break;
+		case NO_INPUT:
+			player.addChatMessage(new ChatComponentText(
+					"Whoops! This trader has nowhere to input from!"));
+			break;
+		case CHEST_FULL:
+			player.addChatMessage(new ChatComponentText(
+					"Whoops! This trader's output inventory is full!"));
+			break;
+		case NOT_ENOUGH_TRADE_ITEMS:
+			player.addChatMessage(new ChatComponentText(
+					"Whoops! This trander's input inventory is full!"));
+			break;
+		case NOT_ENOUGH_INPUT:
+			player.addChatMessage(new ChatComponentText(
+					"Please put in the right items to trade."));
+			break;
+		case RESULTS_FULL:
+			player.addChatMessage(new ChatComponentText(
+					"Please collect your trade results."));
+			break;
+		default:
+			FMLLog.warning("Someone's been doing naughty stuff!");
 		}
 		this.detectAndSendChanges();
 	}

@@ -1,21 +1,9 @@
 package com.github.soniex2.endermoney.trading.tileentity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityHopper;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity;
-import com.github.soniex2.endermoney.trading.exception.TradeException;
-import com.github.soniex2.endermoney.trading.helper.inventory.IterableInventoryWrapper;
-import com.github.soniex2.endermoney.trading.helper.item.ItemIdentifier;
-
-import cpw.mods.fml.common.FMLLog;
 
 public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 
@@ -42,33 +30,6 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	}
 
 	@Override
-	public boolean canTrade(IInventory fakeInv, int inputMinSlot,
-			int inputMaxSlot, int outputMinSlot, int outputMaxSlot) {
-		return false;
-	}
-
-	@Override
-	public boolean doTrade(IInventory fakeInv, int inputMinSlot,
-			int inputMaxSlot, int outputMinSlot, int outputMaxSlot)
-			throws TradeException {
-		if (this.worldObj.isRemote)
-			return false;
-		if (fakeInv == null) {
-			FMLLog.severe("Please send the following stack trace to SoniEx2:\n"
-					+ "%s\n" + "==================== END ====================",
-					org.apache.commons.lang3.exception.ExceptionUtils
-							.getStackTrace(new Exception()));
-			return false;
-		}
-		if (!canTrade(fakeInv, inputMinSlot, inputMaxSlot, outputMinSlot,
-				outputMaxSlot)) {
-			return false;
-		}
-
-		return false;
-	}
-
-	@Override
 	public String getInventoryName() {
 		return "endermoney.traders.item";
 	}
@@ -86,6 +47,13 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 	@Override
 	public void closeInventory() {
 
+	}
+
+	@Override
+	public TradeStatus doTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot,
+			boolean really) {
+		return TradeStatus.INVALID;
 	}
 
 }

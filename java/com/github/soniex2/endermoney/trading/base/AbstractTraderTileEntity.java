@@ -1,7 +1,5 @@
 package com.github.soniex2.endermoney.trading.base;
 
-import com.github.soniex2.endermoney.trading.exception.TradeException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -12,7 +10,47 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class AbstractTraderTileEntity extends TileEntity implements IInventory {
+public abstract class AbstractTraderTileEntity extends TileEntity implements
+		IInventory {
+
+	public static enum TradeStatus {
+		/**
+		 * Can trade
+		 */
+		AVAILABLE,
+		/**
+		 * Trade successful
+		 */
+		SUCCESS,
+		/**
+		 * Trader results full
+		 */
+		RESULTS_FULL,
+		/**
+		 * Output chest/inventory full.
+		 */
+		CHEST_FULL,
+		/**
+		 * Trader has nowhere to output to.
+		 */
+		NO_OUTPUT,
+		/**
+		 * Trader has nowhere to input from.
+		 */
+		NO_INPUT,
+		/**
+		 * Not enough items on trader input
+		 */
+		NOT_ENOUGH_INPUT,
+		/**
+		 * Not enough items on input chest/inventory
+		 */
+		NOT_ENOUGH_TRADE_ITEMS,
+		/**
+		 * For any invalid data, be it input or state
+		 */
+		INVALID;
+	}
 
 	protected ItemStack[] inv;
 	protected String owner;
@@ -52,6 +90,7 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 				inv[i] = null;
 			}
 			is.stackSize = j;
+			this.markDirty();
 			return is;
 		}
 	}
@@ -82,7 +121,8 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
-				&& entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+				&& entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+						zCoord + 0.5) < 64;
 	}
 
 	@Override
@@ -134,7 +174,8 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		this.writeToNBT(nbttagcompound);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, nbttagcompound);
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
+				this.zCoord, 3, nbttagcompound);
 	}
 
 	@Override
@@ -142,10 +183,36 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements IIn
 		NBTTagCompound tag = pkt.func_148857_g();
 		this.owner = tag.getString("Owner");
 	}
-	
-	public abstract boolean canTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
-			int outputMinSlot, int outputMaxSlot);
 
-	public abstract boolean doTrade(IInventory fakeInv, int inputMinSlot, int inputMaxSlot,
-			int outputMinSlot, int outputMaxSlot) throws TradeException;
+	@Deprecated
+	public boolean canTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot) {
+		switch (doTrade(fakeInv, inputMinSlot, inputMaxSlot, outputMinSlot,
+				outputMaxSlot, false)) {
+		case SUCCESS:
+			throw new IllegalStateException();
+		case AVAILABLE:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	@Deprecated
+	public boolean doTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot) {
+		switch (doTrade(fakeInv, inputMinSlot, inputMaxSlot, outputMinSlot,
+				outputMaxSlot, true)) {
+		case AVAILABLE:
+			throw new IllegalStateException();
+		case SUCCESS:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	public abstract TradeStatus doTrade(IInventory fakeInv, int inputMinSlot,
+			int inputMaxSlot, int outputMinSlot, int outputMaxSlot,
+			boolean really);
 }
