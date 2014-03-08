@@ -1,31 +1,26 @@
 package com.github.soniex2.endermoney.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import com.github.soniex2.endermoney.config.ConfigBoolean;
 import com.github.soniex2.endermoney.core.block.BlockEnderOre;
 import com.github.soniex2.endermoney.core.block.ItemBlockEnderOre;
 import com.github.soniex2.endermoney.core.item.EnderCoin;
 import com.github.soniex2.endermoney.core.item.EnderItem;
 import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
 import com.github.soniex2.endermoney.core.item.GenericItem;
-import com.google.gson.Gson;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -34,7 +29,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "EnderMoneyCore", name = "EnderMoney Core", version = Version.MOD_VERSION, dependencies = "required-after:Forge")
 public class EnderMoney {
@@ -66,54 +60,15 @@ public class EnderMoney {
 	@SidedProxy(clientSide = "com.github.soniex2.endermoney.core.ClientProxy", serverSide = "com.github.soniex2.endermoney.core.CommonProxy")
 	public static CommonProxy proxy;
 
-	private static class Config {
-		public ConfigBoolean craftableCoins = new ConfigBoolean(
-				"Set to true to enable EnderCoin crafting", true);
-
-		private Config() {
-		}
-	}
-
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		// WTF AM I EVEN DOING HERE?!?!
-		File configFile = new File(event.getModConfigurationDirectory(),
-				"EnderMoney/Core.json");
-		Config config = new Config();
-		if (!configFile.exists()) {
-			try {
-				configFile.getParentFile().mkdirs();
-				FileOutputStream out = new FileOutputStream(configFile);
-				Gson gson = new Gson();
-				String s = gson.toJson(config);
-				out.write(s.getBytes("UTF-8"));
-				out.close();
-			} catch (Exception e) {
-				if (e instanceof RuntimeException)
-					throw (RuntimeException) e;
-				throw new RuntimeException(e);
-			}
-		} else {
-			try {
-				FileInputStream in = new FileInputStream(configFile);
-				Gson gson = new Gson();
-				ByteArrayOutputStream bs = new ByteArrayOutputStream(4096);
-				byte[] b = new byte[4096];
-				int x;
-				while ((x = in.read(b)) > -1) {
-					bs.write(b, 0, x);
-				}
-				String s = new String(bs.toByteArray(), "UTF-8");
-				config = gson.fromJson(s, Config.class);
-				in.close();
-			} catch (Exception e) {
-				if (e instanceof RuntimeException)
-					throw (RuntimeException) e;
-				throw new RuntimeException(e);
-			}
-		}
-		// END
+		Configuration config = new Configuration(new File(
+				event.getModConfigurationDirectory(), "endermoney/core.cfg"));
+		config.load();
+		Property craftableCoins = config.get(Configuration.CATEGORY_GENERAL,
+				"Enable EnderCoin crafting", true);
+		config.save();
 
 		enderItem = EnderItem.instance = new EnderItem();
 		coin = new EnderCoin(enderMoneyValues);
@@ -135,10 +90,11 @@ public class EnderMoney {
 		OreDictionary.registerOre("ingotEnder", enderIngot.getItemStack());
 		OreDictionary.registerOre("oreEnderDust", new ItemStack(ore, 1, 1));
 
-		RecipeSorter.register("endermoney:endercoin", CoinRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register("endermoney:endercoin", CoinRecipe.class,
+				Category.SHAPELESS, "after:minecraft:shapeless");
 		coin.registerRecipes();
 
-		if (config.craftableCoins.getValue()) {
+		if (craftableCoins.getBoolean(true)) {
 			GameRegistry
 					.addRecipe(new ShapedOreRecipe(new ItemStack(coin, 1, 0),
 							false, "xyx", "y#y", "xyx", 'x', "ingotEnder", 'y',

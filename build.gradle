@@ -62,3 +62,4 @@ processResources
     }
 }
 project.version += "." + project.buildnumber + " " + project.codebase_id
+project.version = project.minecraft.version + "-" + project.version
