@@ -1,5 +1,6 @@
 package com.github.soniex2.endermoney.trading.helper.item;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,14 +10,14 @@ public class ItemIdentifier {
 	public final Item item;
 	public final int damage;
 	private final NBTTagCompound tag;
-	private int hashCode = 0;
-	private boolean hashCodeCached = false;
 
 	public ItemIdentifier(ItemStack is) {
 		this.item = is.getItem();
-		this.damage = is.getItemDamage();
-		this.tag = (NBTTagCompound) (is.stackTagCompound != null ? is.stackTagCompound
-				.copy() : null);
+		// Reflectionless hack to get ItemStack.itemDamage
+		this.damage = Items.diamond.getDamage(is);
+		// Use .getTagCompound() because that's the proper way to do it
+		this.tag = (NBTTagCompound) (is.getTagCompound() != null ? is
+				.getTagCompound().copy() : null);
 	}
 
 	public ItemIdentifier(Item item, int damage, NBTTagCompound tagCompound) {
@@ -38,12 +39,8 @@ public class ItemIdentifier {
 
 	@Override
 	public int hashCode() {
-		if (!hashCodeCached) {
-			hashCodeCached = true;
-			hashCode = item.getClass().getCanonicalName().hashCode()
-					+ (damage & 65535) + (tag != null ? tag.hashCode() : 0);
-		}
-		return hashCode;
+		return item.hashCode() + (damage & 65535)
+				+ (tag != null ? tag.hashCode() : 0);
 	}
 
 	public NBTTagCompound getTag() {
