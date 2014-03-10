@@ -16,7 +16,7 @@ public class ItemIdentifier {
 		// Reflectionless hack to get ItemStack.itemDamage
 		this.damage = Items.diamond.getDamage(is);
 		// Use .getTagCompound() because that's the proper way to do it
-		this.tag = (NBTTagCompound) (is.getTagCompound() != null ? is
+		this.tag = (NBTTagCompound) (is.hasTagCompound() ? is
 				.getTagCompound().copy() : null);
 	}
 
