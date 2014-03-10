@@ -54,7 +54,11 @@ public abstract class AbstractTraderTileEntity extends TileEntity implements
 		/**
 		 * For any invalid data, be it input or state.
 		 */
-		INVALID;
+		INVALID,
+		/**
+		 * Unexpected overflow. Items were deleted.
+		 */
+		OVERFLOW;
 	}
 
 	protected ItemStack[] inv;

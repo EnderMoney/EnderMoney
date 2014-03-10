@@ -163,6 +163,10 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 			player.addChatMessage(new ChatComponentText(
 					"Please collect your trade results."));
 			break;
+		case OVERFLOW:
+			player.addChatMessage(new ChatComponentText(
+					"Something went really wrong! Items were deleted!"));
+			break;
 		default:
 			FMLLog.warning("Someone's been doing naughty stuff!");
 		}
