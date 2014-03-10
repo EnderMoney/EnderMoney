@@ -85,7 +85,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 		}
 		HashMap<NBTTagCompound, Integer> newPlayerInputs = new HashMap<NBTTagCompound, Integer>();
 		for (Entry<NBTTagCompound, Integer> entry : tradeInputs) {
-			int got = playerInputs.get(entry.getKey());
+			int got = playerInputs.get(entry.getKey()) != null ? playerInputs
+					.get(entry.getKey()) : 0;
 			int value = entry.getValue();
 			if (got < value) {
 				return TradeStatus.NOT_ENOUGH_INPUT;
