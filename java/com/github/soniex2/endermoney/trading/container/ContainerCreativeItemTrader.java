@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 
 import com.github.soniex2.endermoney.trading.base.AbstractTraderContainer;
+import com.github.soniex2.endermoney.trading.base.AbstractTraderTileEntity.TradeStatus;
 import com.github.soniex2.endermoney.trading.tileentity.TileEntityCreativeItemTrader;
 
 import cpw.mods.fml.common.FMLLog;
@@ -138,7 +139,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 
 	@Override
 	public void doTrade(EntityPlayer player) {
-		switch (tileEntity.doTrade(fakeInv, 0, 8, 9, 17, true)) {
+		TradeStatus s;
+		switch (s = tileEntity.doTrade(fakeInv, 0, 8, 9, 17, true)) {
 		case NO_OUTPUT:
 			player.addChatMessage(new ChatComponentText(
 					"Whoops! This trader has nowhere to output to!"));
@@ -166,6 +168,8 @@ public class ContainerCreativeItemTrader extends AbstractTraderContainer {
 		case OVERFLOW:
 			player.addChatMessage(new ChatComponentText(
 					"Something went really wrong! Items were deleted!"));
+			break;
+		case SUCCESS:
 			break;
 		default:
 			FMLLog.warning("Someone's been doing naughty stuff!");

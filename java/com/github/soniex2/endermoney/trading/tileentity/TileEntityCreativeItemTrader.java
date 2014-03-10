@@ -93,7 +93,8 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			} else {
 				if (really) {
 					got -= value;
-					newPlayerInputs.put(entry.getKey(), got);
+					if (got > 0)
+						newPlayerInputs.put(entry.getKey(), got);
 				}
 			}
 		}
@@ -110,11 +111,11 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 			for (int j = outputMinSlot; j <= outputMaxSlot; j++) {
 				ItemStack o = fakeInv.getStackInSlot(j);
 				if (really) {
-					playerOutputs[j] = o;
+					playerOutputs[j - outputMinSlot] = o;
 				}
 				if (o == null) {
 					if (really) {
-						playerOutputs[j] = tradeOutputs[i];
+						playerOutputs[j - outputMinSlot] = tradeOutputs[i];
 					}
 					tradeOutputs[i] = null;
 				} else if (is.isItemEqual(o)
@@ -127,14 +128,14 @@ public class TileEntityCreativeItemTrader extends AbstractTraderTileEntity {
 						if (really) {
 							ItemStack nis = is.copy();
 							nis.stackSize += o.stackSize;
-							playerOutputs[j] = nis;
+							playerOutputs[j - outputMinSlot] = nis;
 						}
 						tradeOutputs[i] = null;
 					} else {
 						if (really) {
 							ItemStack nis = is.copy();
 							nis.stackSize = maxSize;
-							playerOutputs[j] = nis;
+							playerOutputs[j - outputMinSlot] = nis;
 						}
 						// is.stackSize = is.stackSize + o.stackSize - maxSize;
 						// this is only + and - so operator order doesn't matter
