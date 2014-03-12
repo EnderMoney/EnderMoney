@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.github.soniex2.endermoney.core.CoinRecipe;
 import com.github.soniex2.endermoney.core.EnderMoney;
+import com.github.soniex2.endermoney.helper.LocalHelper;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -18,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class EnderCoin extends Item {
 
@@ -76,7 +78,7 @@ public class EnderCoin extends Item {
 	public String getItemStackDisplayName(ItemStack is) {
 		int v = is.getItemDamage();
 		if (v >= 0 && v < metadata.length)
-			return "$" + metadata[v] + " EnderCoin";
+			return LocalHelper.formatted(is, metadata[v]);
 		else
 			return "INVALID";
 	}
@@ -103,15 +105,19 @@ public class EnderCoin extends Item {
 		if (Keyboard
 				.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak
 						.getKeyCode())) {
-			list.add("Nothing! -- Sorry D:");
+			list.add(LocalHelper.plain("endermoney:endercoin.tooltip"));
 			if (debugMode) { // F3+H
-				list.add(EnumChatFormatting.GRAY
-						+ String.format("Color: #%06X",
-								getColorFromItemStack(is, 0))
-						+ EnumChatFormatting.RESET);
+				/*
+				 * list.add(EnumChatFormatting.GRAY +
+				 * String.format("Color: #%06X", getColorFromItemStack(is, 0)) +
+				 * EnumChatFormatting.RESET);
+				 */
+				list.add(LocalHelper.formatted(
+						"endermoney:endercoin.tooltip.extension",
+						getColorFromItemStack(is, 0)));
 			}
 		} else {
-			list.add("Sneak to expand");
+			list.add(LocalHelper.plain("endermoney:endercoin.tooltip.sneak"));
 		}
 	}
 }

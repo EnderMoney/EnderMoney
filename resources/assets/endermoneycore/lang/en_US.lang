@@ -7,3 +7,7 @@ item.endermoneycore.dustEnder.name=Ender Dust
 item.endermoneycore.dustIron.name=Iron Dust
 item.endermoneycore.ingotEnder.name=Ender Ingot
 item.endermoneycore.chestception.name=Chestception
+item.endermoney.endercoin.name=$%d EnderCoin
+endermoney:endercoin.tooltip.sneak=Sneak to expand
+endermoney:endercoin.tooltip=Nothing! -- Sorry D:
+endermoney:endercoin.tooltip.extension=§9Color: #%06X§r
