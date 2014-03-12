@@ -1,6 +1,7 @@
 package com.github.soniex2.endermoney.core;
 
 import java.io.File;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import com.github.soniex2.endermoney.core.item.EnderCoin;
 import com.github.soniex2.endermoney.core.item.EnderItem;
 import com.github.soniex2.endermoney.core.item.EnderItem.EnderSubItem;
 import com.github.soniex2.endermoney.core.item.GenericItem;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -53,6 +55,7 @@ public class EnderMoney {
 	public static EnderSubItem ender;
 	public static EnderSubItem ironDust;
 	public static EnderSubItem enderIngot;
+	public static EnderSubItem chestception;
 
 	@Instance("EnderMoneyCore")
 	public static EnderMoney instance;
@@ -79,6 +82,7 @@ public class EnderMoney {
 				0xDDDDDD);
 		enderIngot = new GenericItem(2, "ingotEnder", "iron_ingot", 0x228866,
 				true);
+		chestception = new GenericItem(3, "chestception", "chestception");
 
 		GameRegistry.registerBlock(ore, ItemBlockEnderOre.class, "ender_ore",
 				"endermoney");

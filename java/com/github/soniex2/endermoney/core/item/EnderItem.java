@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.github.soniex2.endermoney.core.EnderMoney;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,8 +17,10 @@ public class EnderItem extends Item {
 
 	public class EnderSubItem {
 		public final int idx;
+		@SideOnly(Side.CLIENT)
 		protected IIcon iconIndex;
 		private String unlocalizedName;
+		@SideOnly(Side.CLIENT)
 		protected IIcon altPassIcon;
 
 		public EnderSubItem(int id) {
@@ -37,10 +41,12 @@ public class EnderItem extends Item {
 			return new ItemStack(EnderItem.this, amount, idx);
 		}
 
+		@SideOnly(Side.CLIENT)
 		public IIcon getIcon() {
 			return iconIndex;
 		}
 
+		@SideOnly(Side.CLIENT)
 		public void updateIcons(IIconRegister ireg) {
 			iconIndex = ireg.registerIcon("endermoneycore:" + unlocalizedName);
 		}
@@ -51,6 +57,7 @@ public class EnderItem extends Item {
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@SideOnly(Side.CLIENT)
 		public void getSubItems(Item item, int dmg, CreativeTabs tab, List list) {
 			list.add(new ItemStack(item, 1, dmg));
 		}
@@ -73,19 +80,23 @@ public class EnderItem extends Item {
 			return getUnlocalizedName();
 		}
 
+		@SideOnly(Side.CLIENT)
 		public int getColorFromItemStack(ItemStack is, int pass) {
 			return 0xFFFFFF;
 		}
 
 		@Deprecated
+		@SideOnly(Side.CLIENT)
 		public boolean hasEffect(ItemStack is) {
 			return false;
 		}
 
+		@SideOnly(Side.CLIENT)
 		public boolean hasEffect(ItemStack is, int pass) {
 			return hasEffect(is) && (pass == 0);
 		}
 
+		@SideOnly(Side.CLIENT)
 		public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
 			return iconIndex;
 		}
@@ -111,6 +122,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int dmg) {
 		if (items[dmg & 255] != null)
 			return items[dmg & 255].getIcon();
@@ -119,6 +131,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister ireg) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
@@ -160,6 +173,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		for (int x = 0; x < items.length; x++) {
 			if (items[x] != null) {
@@ -169,6 +183,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack is, int pass) {
 		int dmg = is.getItemDamage();
 		if (items[dmg] != null)
@@ -177,6 +192,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack is, int pass) {
 		int dmg = is.getItemDamage();
 		if (items[dmg] != null)
@@ -185,6 +201,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses() {
 		return true;
 	}
@@ -205,6 +222,7 @@ public class EnderItem extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
 		if (items[damage] != null)
 			return items[damage].getIconFromDamageForRenderPass(damage, pass);
