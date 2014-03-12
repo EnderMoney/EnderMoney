@@ -1,0 +1,9 @@
+itemGroup.endermoneycore.EnderMoney=EnderMoney
+tile.endermoney.ore.0.name=Staubiges Eisenerz
+tile.endermoney.ore.1.name=Endererz
+tile.endermoneytrading.creativeIT.name=Kreativ-Item-Händler
+tile.endermoneytrading.ItemTrader.name=Item-Händler
+item.endermoneycore.dustEnder.name=Enderstaub
+item.endermoneycore.dustIron.name=Eisenstaub
+item.endermoneycore.ingotEnder.name=Enderbarren
+item.endermoneycore.chestception.name=Chestception
