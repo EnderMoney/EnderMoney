@@ -1,0 +1,24 @@
+itemGroup.endermoneycore.EnderMoney=EnderMoney
+tile.endermoney.ore.0.name=Staubiges Eisenerz
+tile.endermoney.ore.1.name=Endererz
+tile.endermoneytrading.creativeIT.name=Kreativ-Item-Händler
+tile.endermoneytrading.ItemTrader.name=Item-Händler
+item.endermoneycore.dustEnder.name=Enderstaub
+item.endermoneycore.dustIron.name=Eisenstaub
+item.endermoneycore.ingotEnder.name=Enderbarren
+item.endermoneycore.chestception.name=Chestception
+
+####################################
+####################################
+
+# Special translations
+# Use %=<whatever>(d/f) instead of %<whatever>(d/f)
+# MC drops the .2 part of a %.2f and converts it to a %s
+# actually it only keeps the 1$ part of a %1$0,5.5f
+# so yeah use %=d and %=f for %d and %f respectively
+# THIS IS NOT SUPPORTED ON THE OTHER TRANSLATIONS!
+
+item.endermoney.endercoin.name=$%=d Endermünze
+endermoney:endercoin.tooltip.sneak=Schleiche zum Erweitern
+endermoney:endercoin.tooltip=Nichts! -- Sorry D:
+endermoney:endercoin.tooltip.extension=§9Farbe: #%06X§r
