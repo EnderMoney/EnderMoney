@@ -7,7 +7,18 @@ item.endermoneycore.dustEnder.name=Ender Dust
 item.endermoneycore.dustIron.name=Iron Dust
 item.endermoneycore.ingotEnder.name=Ender Ingot
 item.endermoneycore.chestception.name=Chestception
-item.endermoney.endercoin.name=$%d EnderCoin
+
+####################################
+####################################
+
+# Special translations
+# Use %=<whatever>(d/f) instead of %<whatever>(d/f)
+# MC drops the .2 part of a %.2f and converts it to a %s
+# actually it only keeps the 1$ part of a %1$0,5.5f
+# so yeah use %=d and %=f for %d and %f respectively
+# THIS IS NOT SUPPORTED ON THE OTHER TRANSLATIONS!
+
+item.endermoney.endercoin.name=$%=d EnderCoin
 endermoney:endercoin.tooltip.sneak=Sneak to expand
 endermoney:endercoin.tooltip=Nothing! -- Sorry D:
 endermoney:endercoin.tooltip.extension=§9Color: #%06X§r

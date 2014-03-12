@@ -107,11 +107,6 @@ public class EnderCoin extends Item {
 						.getKeyCode())) {
 			list.add(LocalHelper.plain("endermoney:endercoin.tooltip"));
 			if (debugMode) { // F3+H
-				/*
-				 * list.add(EnumChatFormatting.GRAY +
-				 * String.format("Color: #%06X", getColorFromItemStack(is, 0)) +
-				 * EnumChatFormatting.RESET);
-				 */
 				list.add(LocalHelper.formatted(
 						"endermoney:endercoin.tooltip.extension",
 						getColorFromItemStack(is, 0)));
