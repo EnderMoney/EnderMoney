@@ -18,7 +18,7 @@ item.endermoneycore.chestception.name=Chestception
 # so yeah use %=d and %=f for %d and %f respectively
 # THIS IS NOT SUPPORTED ON THE OTHER TRANSLATIONS!
 
-item.endermoney.endercoin.name=$%=d EnderCoin
+item.endermoney.endercoin.name=%=dEND
 endermoney:endercoin.tooltip.sneak=Sneak to expand
 endermoney:endercoin.tooltip=Nothing! -- Sorry D:
 endermoney:endercoin.tooltip.extension=§9Color: #%06X§r

@@ -65,8 +65,6 @@ public class EnderMoney {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		
-		System.out.println(String.format("%.4s", Math.PI));
 
 		Configuration config = new Configuration(new File(
 				event.getModConfigurationDirectory(), "endermoney/core.cfg"));
